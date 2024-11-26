@@ -3505,6 +3505,12 @@ bool GeneratorOptions::ParseFromOptions(
         return false;
       }
       annotate_code = true;
+    } else if (option.first == "generate_dts") {
+      if (!option.second.empty()) {
+        *error = "Unexpected option value for generate_dts";
+        return false;
+      }
+      generate_dts = true;
     } else {
       // Assume any other option is an output directory, as long as it is a bare
       // `key` rather than a `key=value` option.
@@ -3517,12 +3523,27 @@ bool GeneratorOptions::ParseFromOptions(
   }
 
   if (import_style != kImportClosure &&
-      (add_require_for_enums || testonly || !library.empty() ||
-       extension != ".js" || one_output_file_per_input_file)) {
+      (add_require_for_enums || testonly || extension != ".js" ||
+       one_output_file_per_input_file)) {
     *error =
-        "The add_require_for_enums, testonly, library, extension, and "
+        "The add_require_for_enums, testonly, extension, and "
         "one_output_file_per_input_file options should only be "
         "used for import_style=closure";
+    return false;
+  }
+
+  if (import_style != kImportClosure && import_style != kImportEs6 &&
+      !library.empty()) {
+    *error =
+        "The library option should only be "
+        "used for import_style=closure or es6";
+    return false;
+  }
+
+  if (generate_dts && (import_style != kImportEs6 || library.empty())) {
+    *error =
+        "The generate_dts option should only be "
+        "used for import_style=es6 and with library set";
     return false;
   }
 
@@ -3530,9 +3551,10 @@ bool GeneratorOptions::ParseFromOptions(
 }
 
 GeneratorOptions::OutputMode GeneratorOptions::output_mode() const {
-  // We use one output file per input file if we are not using Closure or if
-  // this is explicitly requested.
-  if (import_style != kImportClosure || one_output_file_per_input_file) {
+  // We use one output file per input file if we are not using Closure or ES6,
+  // or if this is explicitly requested.
+  if ((import_style != kImportClosure && import_style != kImportEs6) ||
+      one_output_file_per_input_file) {
     return kOneOutputFilePerInputFile;
   }
 
@@ -3540,6 +3562,10 @@ GeneratorOptions::OutputMode GeneratorOptions::output_mode() const {
   if (!library.empty()) {
     return kEverythingInOneFile;
   }
+
+  // SCC for ES6 is not implemented
+  ABSL_CHECK(import_style != kImportEs6)
+      << "ES6 must specify either one_output_file_per_input_file or library";
 
   // Otherwise, we create one output file per SCC.
   return kOneOutputFilePerSCC;
@@ -3585,12 +3611,7 @@ void Generator::GenerateFileAndDeps(
 bool Generator::GenerateFile(const FileDescriptor* file,
                              const GeneratorOptions& options,
                              GeneratorContext* context,
-                             bool use_short_name) const {
-  std::string filename =
-      options.output_dir + "/" +
-      GetJSFilename(options, use_short_name
-                                 ? file->name().substr(file->name().rfind('/'))
-                                 : file->name());
+                             const std::string& filename) const {
   std::unique_ptr<io::ZeroCopyOutputStream> output(context->Open(filename));
   ABSL_CHECK(output);
   GeneratedCodeInfo annotations;
@@ -3629,8 +3650,9 @@ void Generator::GenerateFile(const GeneratorOptions& options,
     }
     printer->Print("var goog = jspb;\n");
 
-    // Do not use global scope in strict mode
-    if (options.import_style == GeneratorOptions::kImportCommonJsStrict) {
+    // Do not use global scope in strict mode or with ES6
+    if (options.import_style == GeneratorOptions::kImportCommonJsStrict ||
+        options.import_style == GeneratorOptions::kImportEs6) {
       printer->Print("var proto = {};\n\n");
     } else {
       // To get the global object we call a function with .call(null), this will
@@ -3739,6 +3761,315 @@ void Generator::GenerateFile(const GeneratorOptions& options,
   }
 }
 
+bool Generator::GenerateDTS(const FileDescriptor* file,
+                            const GeneratorOptions& options,
+                            GeneratorContext* context,
+                            const std::string& js_filename) const {
+  if (!options.generate_dts) {
+    return true;
+  }
+
+  ABSL_CHECK(options.import_style == GeneratorOptions::kImportEs6);
+
+  std::string dts_filename =
+      js_filename.substr(0, js_filename.length() - options.extension.length()) +
+      ".d.ts";
+  std::unique_ptr<io::ZeroCopyOutputStream> output(context->Open(dts_filename));
+  ABSL_CHECK(output);
+  io::Printer printer(output.get(), '$', nullptr);
+
+  GenerateDTS(options, &printer, file);
+
+  return !printer.failed();
+}
+
+const std::string DTS_INDENT = "  ";
+
+void Generator::GenerateDTS(const GeneratorOptions& options,
+                            io::Printer* printer,
+                            const FileDescriptor* file) const {
+  std::string ns = GetNamespace(options, file);
+  printer->Print("declare namespace $ns$ {\n", "ns", ns);
+
+  const std::string& indent = DTS_INDENT;
+  std::set<std::string> exported;
+  for (int i = 0; i < file->message_type_count(); i++) {
+    auto desc = file->message_type(i);
+    GenerateMessageDTS(options, printer, desc, indent);
+    exported.insert(desc->name());
+  }
+  for (int i = 0; i < file->enum_type_count(); i++) {
+    auto enumdesc = file->enum_type(i);
+    GenerateEnumDTS(options, printer, enumdesc, indent);
+    exported.insert(enumdesc->name());
+  }
+
+  printer->Print("}\n");
+
+  if (!exported.empty()) {
+    for (auto name : exported) {
+      std::string fullname = ns + "." + name;
+      printer->Print(
+          "\ndeclare module \"goog:$fullname$ \" {\n"
+          "$indent$import $name$ = $fullname$;\n"
+          "$indent$export default $name$;\n"
+          "}\n",
+          "name", name, "fullname", fullname, "indent", indent);
+    }
+
+    printer->Print("\n");
+    for (auto name : exported) {
+      std::string fullname = ns + "." + name;
+      printer->Print("import $name$ = $fullname$;\n", "name", name, "fullname",
+                     fullname);
+    }
+    printer->Print("\n");
+    printer->Print("export {\n");
+    for (auto name : exported) {
+      printer->Print("$indent$$name$,\n", "name", name, "indent", indent);
+    }
+    printer->Print("};\n");
+  }
+
+  // Emit well-known type methods.
+  for (FileToc* toc = well_known_types_js; toc->name != NULL; toc++) {
+    std::string name = std::string("google/protobuf/") + toc->name;
+    if (name == StripProto(file->name()) + ".js") {
+      printer->Print(toc->dts_data);
+    }
+  }
+}
+
+void Generator::GenerateMessageDTS(const GeneratorOptions& options,
+                                   io::Printer* printer, const Descriptor* desc,
+                                   const std::string& indent) const {
+  if (IgnoreMessage(desc)) {
+    return;
+  }
+
+  printer->Print("$indent$export class $classname$ extends jspb.Message {\n",
+                 "classname", desc->name(), "indent", indent);
+
+  const std::string nested_indent = indent + DTS_INDENT;
+  printer->Print("$indent$constructor(data?: any[] | null);\n", "indent",
+                 nested_indent);
+
+  if (HasOneofFields(desc)) {
+    for (int i = 0; i < desc->oneof_decl_count(); i++) {
+      GenerateOneofDTS(options, printer, desc->oneof_decl(i), nested_indent);
+    }
+  }
+
+  printer->Print(
+      "$indent$toObject(includeInstance?: boolean): GlobalObject;\n"
+      "$indent$static toObject(includeInstance: boolean | undefined, msg: "
+      "$class$): GlobalObject;\n"
+      "$indent$static deserializeBinary(bytes: jspb.ByteSource): $class$;\n"
+      "$indent$static deserializeBinaryFromReader(msg: $class$, reader: "
+      "jspb.BinaryReader): $class$;\n"
+      "$indent$serializeBinary(): Uint8Array;\n"
+      "$indent$static serializeBinaryToWriter(message: $class$, writer: "
+      "jspb.BinaryWriter): void;\n",
+      "class", GetMessagePath(options, desc), "indent", nested_indent);
+
+  for (int i = 0; i < desc->nested_type_count(); i++) {
+    GenerateMessageDTS(options, printer, desc->nested_type(i), nested_indent);
+  }
+  for (int i = 0; i < desc->enum_type_count(); i++) {
+    GenerateEnumDTS(options, printer, desc->enum_type(i), nested_indent);
+  }
+
+  for (int i = 0; i < desc->field_count(); i++) {
+    if (!IgnoreField(desc->field(i))) {
+      GenerateFieldDTS(options, printer, desc->field(i), nested_indent);
+    }
+  }
+
+  printer->Print("$indent$}\n\n", "indent", indent);
+}
+
+void Generator::GenerateOneofDTS(const GeneratorOptions& options,
+                                 io::Printer* printer,
+                                 const OneofDescriptor* oneof,
+                                 const std::string& indent) const {
+  if (IgnoreOneof(oneof)) {
+    return;
+  }
+  printer->Print("$indent$enum $oneof$Case = {\n", "oneof", JSOneofName(oneof),
+                 "indent", indent);
+
+  const std::string nested_indent = indent + DTS_INDENT;
+  printer->Print("$indent$$upcase$_NOT_SET: 0,\n", "upcase",
+                 ToEnumCase(oneof->name()), "indent", nested_indent);
+
+  for (int i = 0; i < oneof->field_count(); i++) {
+    auto field = oneof->field(i);
+    if (IgnoreField(field)) {
+      continue;
+    }
+    printer->Print("$indent$$upcase$: $number$,\n", "upcase",
+                   ToEnumCase(field->name()), "number", JSFieldIndex(field),
+                   "indent", nested_indent);
+  }
+
+  printer->Print("$indent$};\n", "indent", indent);
+  printer->Print("$indent$get$oneof$Case(): $class$.$oneof$Case;\n", "class",
+                 GetMessagePath(options, oneof->containing_type()), "oneof",
+                 JSOneofName(oneof), "indent", indent);
+}
+
+std::string DTSFieldType(const GeneratorOptions& options,
+                         const FieldDescriptor* field,
+                         BytesMode bytes_mode = BYTES_DEFAULT,
+                         bool force_singular = false) {
+  std::string jstype = JSTypeName(options, field, bytes_mode);
+  if (!force_singular && field->is_repeated()) {
+    if (field->type() == FieldDescriptor::TYPE_BYTES &&
+        bytes_mode == BYTES_DEFAULT) {
+      jstype = "Uint8Array[] | string[]";
+    } else {
+      jstype += "[]";
+    }
+  }
+  return jstype;
+}
+
+std::string DTSFieldReturnType(const GeneratorOptions& options,
+                               const FieldDescriptor* field,
+                               BytesMode bytes_mode = BYTES_DEFAULT) {
+  std::string jstype = DTSFieldType(options, field, bytes_mode);
+  if (DeclaredReturnTypeIsNullable(options, field)) {
+    jstype += " | null";
+  }
+  return jstype;
+}
+
+std::string DTSFieldSetterType(const GeneratorOptions& options,
+                               const FieldDescriptor* field) {
+  std::string jstype = DTSFieldType(options, field);
+  if (SetterAcceptsNull(options, field)) {
+    jstype += " | null";
+  }
+  if (SetterAcceptsUndefined(options, field)) {
+    jstype += " | undefined";
+  }
+  return jstype;
+}
+
+void Generator::GenerateFieldDTS(const GeneratorOptions& options,
+                                 io::Printer* printer,
+                                 const FieldDescriptor* field,
+                                 const std::string& indent) const {
+  if (field->is_map()) {
+    printer->Print(
+        "$indent$$gettername$(noLazyCreate?: boolean): "
+        "jspb.Map<$keytype$,$valuetype$> "
+        "| undefined;\n",
+        "class", GetMessagePath(options, field->containing_type()),
+        "gettername", "get" + JSGetterName(options, field), "keytype",
+        DTSFieldType(options, MapFieldKey(field)), "valuetype",
+        DTSFieldType(options, MapFieldValue(field)), "indent", indent);
+  } else if (field->cpp_type() == FieldDescriptor::CPPTYPE_MESSAGE) {
+    printer->Print("$indent$$gettername$(): $type$;\n", "gettername",
+                   "get" + JSGetterName(options, field), "type",
+                   DTSFieldReturnType(options, field), "indent", indent);
+    printer->Print("$indent$$settername$(value: $optionaltype$): $class$;\n",
+                   "settername", "set" + JSGetterName(options, field),
+                   "optionaltype", DTSFieldSetterType(options, field), "class",
+                   GetMessagePath(options, field->containing_type()), "indent",
+                   indent);
+    if (field->is_repeated()) {
+      printer->Print(
+          "$indent$$addername$(value?: $optionaltype$, index?: number): "
+          "$optionaltype$;\n",
+          "addername",
+          "add" +
+              JSGetterName(options, field, BYTES_DEFAULT, /* drop_list */ true),
+          "optionaltype", JSTypeName(options, field, BYTES_DEFAULT), "indent",
+          indent);
+    }
+  } else {
+    BytesMode bytes_mode =
+        field->type() == FieldDescriptor::TYPE_BYTES && !options.binary
+            ? BYTES_B64
+            : BYTES_DEFAULT;
+    printer->Print("$indent$$gettername$(): $type$;\n", "gettername",
+                   "get" + JSGetterName(options, field), "type",
+                   DTSFieldReturnType(options, field, bytes_mode), "indent",
+                   indent);
+
+    if (field->type() == FieldDescriptor::TYPE_BYTES) {
+      printer->Print("$indent$get$name$(): $type$;\n", "type",
+                     DTSFieldReturnType(options, field, BYTES_B64), "name",
+                     JSGetterName(options, field, BYTES_B64), "indent", indent);
+      printer->Print("$indent$get$name$(): $type$;\n", "type",
+                     DTSFieldReturnType(options, field, BYTES_U8), "name",
+                     JSGetterName(options, field, BYTES_U8), "indent", indent);
+    }
+
+    printer->Print("$indent$$settername$(value: $optionaltype$): $class$;\n",
+                   "settername", "set" + JSGetterName(options, field),
+                   "optionaltype", DTSFieldSetterType(options, field), "class",
+                   GetMessagePath(options, field->containing_type()), "indent",
+                   indent);
+
+    if (field->is_repeated()) {
+      printer->Print(
+          "$indent$$addername$(value: $optionaltype$, index?: number): "
+          "$class$;\n",
+          "addername",
+          "add" + JSGetterName(options, field, BYTES_DEFAULT,
+                               /* drop_list = */ true),
+          "optionaltype", DTSFieldType(options, field, BYTES_DEFAULT, true),
+          "class", GetMessagePath(options, field->containing_type()), "indent",
+          indent);
+    }
+  }
+
+  if (field->is_map() || field->is_repeated() ||
+      (field->cpp_type() == FieldDescriptor::CPPTYPE_MESSAGE &&
+       !field->is_required()) ||
+      HasFieldPresence(options, field)) {
+    printer->Print("$indent$$clearername$(): $class$;\n", "clearername",
+                   "clear" + JSGetterName(options, field), "class",
+                   GetMessagePath(options, field->containing_type()), "indent",
+                   indent);
+  }
+
+  if (HasFieldPresence(options, field)) {
+    printer->Print("$indent$$hasername$(): boolean;\n", "hasername",
+                   "has" + JSGetterName(options, field), "indent", indent);
+  }
+}
+
+void Generator::GenerateEnumDTS(const GeneratorOptions& options,
+                                io::Printer* printer,
+                                const EnumDescriptor* enumdesc,
+                                const std::string& indent) const {
+  printer->Print("$indent$enum $name$ {\n", "indent", indent, "name",
+                 enumdesc->name());
+
+  std::set<std::string> used_name;
+  std::vector<const EnumValueDescriptor*> valid_values;
+  for (int i = 0; i < enumdesc->value_count(); i++) {
+    const EnumValueDescriptor* value = enumdesc->value(i);
+    if (enumdesc->options().allow_alias() &&
+        !used_name.insert(ToEnumCase(value->name())).second) {
+      continue;
+    }
+    valid_values.push_back(value);
+  }
+
+  const std::string nested_indent = indent + DTS_INDENT;
+  for (auto value : valid_values) {
+    printer->Print("$indent$$name$ = $value$,\n", "indent", nested_indent,
+                   "name", ToEnumCase(value->name()), "value",
+                   absl::StrCat(value->number()));
+  }
+
+  printer->Print("$indent$}\n\n", "indent", indent);
+}
+
 bool Generator::GenerateAll(const std::vector<const FileDescriptor*>& files,
                             const std::string& parameter,
                             GeneratorContext* context,
@@ -3754,6 +4085,16 @@ bool Generator::GenerateAll(const std::vector<const FileDescriptor*>& files,
     // All output should go in a single file.
     std::string filename = options.output_dir + "/" + options.library +
                            options.GetFileNameExtension();
+    if (options.import_style == GeneratorOptions::kImportEs6) {
+      // all-in-one for ES6 not actually supported. but we abuse this branch to
+      // allow specifying the output name via library when there's a single
+      // input.
+      ABSL_CHECK(files.size() == 1)
+          << "ES6 only supports one input file with library option";
+      return GenerateFile(files[0], options, context, filename) &&
+             GenerateDTS(files[0], options, context, filename);
+    }
+
     std::unique_ptr<io::ZeroCopyOutputStream> output(context->Open(filename));
     ABSL_CHECK(output.get());
     GeneratedCodeInfo annotations;
@@ -3812,7 +4153,11 @@ bool Generator::GenerateAll(const std::vector<const FileDescriptor*>& files,
     for (auto file : files) {
       // Force well known type to generate in a whole file.
       if (IsWellKnownTypeFile(file)) {
-        if (!GenerateFile(file, options, context, true)) {
+        std::string filename =
+            options.output_dir + "/" +
+            GetJSFilename(options,
+                          file->name().substr(file->name().rfind('/')));
+        if (!GenerateFile(file, options, context, filename)) {
           return false;
         }
         generated = true;
@@ -3959,7 +4304,9 @@ bool Generator::GenerateAll(const std::vector<const FileDescriptor*>& files,
     // Generate one output file per input (.proto) file.
 
     for (auto file : files) {
-      if (!GenerateFile(file, options, context, false)) {
+      std::string filename =
+          options.output_dir + "/" + GetJSFilename(options, file->name());
+      if (!GenerateFile(file, options, context, filename)) {
         return false;
       }
     }
