@@ -86,8 +86,15 @@ struct FileToc well_known_types_js[] = {
      "  } else {\n"
      "    return null;\n"
      "  }\n"
-     "};\n"
-    },
+     "};\n",
+     "declare namespace proto.google.protobuf {\n"
+     "  export class Any {\n"
+     "    getTypeName(): string;\n"
+     "    pack(serialized: Uint8Array, name: string, typeUrlPrefix?: string): "
+     "void;\n"
+     "    unpack<T>(deserialize: (Uint8Array) => T, name: string): T | null;\n"
+     "  }\n"
+     "};\n"},
     {"timestamp.js",
      "/* This code will be inserted into generated code for\n"
      " * google/protobuf/timestamp.proto. */\n"
@@ -124,6 +131,13 @@ struct FileToc well_known_types_js[] = {
      "  var timestamp = new proto.google.protobuf.Timestamp();\n"
      "  timestamp.fromDate(value);\n"
      "  return timestamp;\n"
+     "};\n",
+     "declare namespace proto.google.protobuf {\n"
+     "  export class Timestamp {\n"
+     "    toDate(): Date;\n"
+     "    fromDate(value: Date): void;\n"
+     "    static fromDate(value: Date): proto.google.protobuf.Timestamp;\n"
+     "  }\n"
      "};\n"},
     {"struct.js",
      "/* This code will be inserted into generated code for\n"
@@ -265,6 +279,28 @@ struct FileToc well_known_types_js[] = {
      "  }\n"
      "\n"
      "  return ret;\n"
+     "};\n",
+     "declare namespace proto.google.protobuf {\n"
+     "  export type JavaScriptValue = "
+     "null|number|string|boolean|JavaScriptValue[]|{ [field: string]: "
+     "JavaScriptValue }};\n"
+     "  export class Value {\n"
+     "    toJavaScript(): proto.google.protobuf.JavaScriptValue;\n"
+     "    static fromJavaScript(value: proto.google.protobuf.JavaScriptValue): "
+     "proto.google.protobuf.Value;\n"
+     "  }\n"
+     "  export class ListValue {\n"
+     "    toJavaScript(): proto.google.protobuf.JavaScriptValue[];\n"
+     "    static fromJavaScript(value: "
+     "proto.google.protobuf.JavaScriptValue[]): "
+     "proto.google.protobuf.ListValue;\n"
+     "  }\n"
+     "  export class Struct {\n"
+     "    toJavaScript(): { [field: string]: "
+     "proto.google.protobuf.JavaScriptValue };\n"
+     "    static fromJavaScript(value: { [field: string]: "
+     "proto.google.protobuf.JavaScriptValue }): proto.google.protobuf.Struct;\n"
+     "  }\n"
      "};\n"},
     {NULL, NULL}  // Terminate the list.
 };
