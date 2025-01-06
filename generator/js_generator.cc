@@ -3680,10 +3680,10 @@ void Generator::GenerateFile(const GeneratorOptions& options,
     if (options.import_style == GeneratorOptions::kImportEs6) {
       for (int i = 0; i < file->dependency_count(); i++) {
         const std::string& name = file->dependency(i)->name();
-        printer->Print("import * as $alias$ from '$file$';\n"
-                       "goog.object.extend(proto, $alias$);\n",
-                       "alias", ModuleAlias(name), "file",
-                       GetRootPath(file->name(), name) + GetJSFilename(options, name));
+        printer->Print(
+            "import * as $alias$ from '$file$';\n", "alias", ModuleAlias(name),
+            "file",
+            GetRootPath(file->name(), name) + GetJSFilename(options, name));
       }
     } else {
       for (int i = 0; i < file->dependency_count(); i++) {

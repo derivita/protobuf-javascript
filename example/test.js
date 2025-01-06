@@ -16,7 +16,6 @@ var goog = jspb;
 var proto = {};
 
 import * as google_protobuf_descriptor_pb from 'google-protobuf/google/protobuf/descriptor.js';
-goog.object.extend(proto, google_protobuf_descriptor_pb);
 goog.exportSymbol('proto.jspb.test.BooleanFields', null, global);
 goog.exportSymbol('proto.jspb.test.CloneExtension', null, global);
 goog.exportSymbol('proto.jspb.test.Complex', null, global);
