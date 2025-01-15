@@ -243,9 +243,13 @@ class Generator : public CodeGenerator {
   void GenerateMessageDTS(const GeneratorOptions& options, io::Printer* printer,
                           const Descriptor* desc,
                           const std::string& indent) const;
-  void GenerateOneofDTS(const GeneratorOptions& options, io::Printer* printer,
-                        const OneofDescriptor* oneof,
-                        const std::string& indent) const;
+  void GenerateOneofMethodDTS(const GeneratorOptions& options,
+                              io::Printer* printer,
+                              const OneofDescriptor* oneof,
+                              const std::string& indent) const;
+  void GenerateOneofEnumDTS(const GeneratorOptions& options,
+                            io::Printer* printer, const OneofDescriptor* oneof,
+                            const std::string& indent) const;
   void GenerateFieldDTS(const GeneratorOptions& options, io::Printer* printer,
                         const FieldDescriptor* field,
                         const std::string& indent) const;

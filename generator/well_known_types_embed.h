@@ -36,6 +36,7 @@
 struct FileToc {
   const char* name;
   const char* data;
+  const char* es6_data;
   const char* dts_data;
 };
 
