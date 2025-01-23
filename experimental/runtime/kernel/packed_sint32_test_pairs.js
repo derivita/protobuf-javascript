@@ -1,5 +1,3 @@
-goog.module('protobuf.binary.packedSint32TestPairs');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
 
@@ -30,4 +28,4 @@ function getPackedSint32Pairs() {
   ];
 }
 
-exports = {getPackedSint32Pairs};
+export default {getPackedSint32Pairs};

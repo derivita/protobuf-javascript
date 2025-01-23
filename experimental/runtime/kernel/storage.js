@@ -1,5 +1,3 @@
-goog.module('protobuf.runtime.Storage');
-
 /**
  * Interface for getting and storing fields of a protobuf message.
  *
@@ -64,4 +62,4 @@ Storage.DEFAULT_PIVOT = 24;
 // LINT.ThenChange(//depot/google3/third_party/protobuf/javascript/runtime/kernel/binary_storage_test.js,
 // //depot/google3/net/proto2/contrib/js_proto/internal/kernel_message_generator.cc)
 
-exports = Storage;
+export { Storage };

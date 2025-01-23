@@ -1,5 +1,3 @@
-goog.module('javascript.protobuf.conformance');
-
 const ConformanceRequest = goog.require('proto.conformance.ConformanceRequest');
 const ConformanceResponse = goog.require('proto.conformance.ConformanceResponse');
 const TestAllTypesProto2 = goog.require('proto.conformance.TestAllTypesProto2');
@@ -98,6 +96,6 @@ function runConformanceTest(base64Request) {
 }
 
 // Needed for node test
-exports.doTest = doTest;
+export { doTest };
 // Needed for browser test
 goog.exportSymbol('runConformanceTest', runConformanceTest);

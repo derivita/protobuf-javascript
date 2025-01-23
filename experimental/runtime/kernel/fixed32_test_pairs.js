@@ -1,8 +1,6 @@
 /**
  * @fileoverview Test data for float encoding and decoding.
  */
-goog.module('protobuf.binary.fixed32TestPairs');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
 
@@ -33,4 +31,4 @@ function getFixed32Pairs() {
   return [...fixed32Pairs];
 }
 
-exports = {getFixed32Pairs};
+export default {getFixed32Pairs};

@@ -14,8 +14,6 @@
 # exists to make proto code generation easier.           #
 ##########################################################
 */
-goog.module('protobuf.runtime.MessageSet');
-
 const InternalMessage = goog.require('protobuf.binary.InternalMessage');
 const Kernel = goog.require('protobuf.runtime.Kernel');
 
@@ -282,4 +280,4 @@ class Item {
   }
 }
 
-exports = MessageSet;
+export { MessageSet };

@@ -10,8 +10,6 @@
  * by binary_json_conformance_suite. Ultimately all of the tests in this file
  * should be moved to binary_json_conformance_suite.
  */
-goog.module('protobuf.runtime.KernelCompatibilityTest');
-
 goog.setTestOnly();
 
 const ByteString = goog.require('protobuf.ByteString');

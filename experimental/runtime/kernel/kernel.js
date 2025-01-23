@@ -12,8 +12,6 @@
  * fields), Kernel will only need the full type information of used
  * fields.
  */
-goog.module('protobuf.runtime.Kernel');
-
 const BinaryStorage = goog.require('protobuf.runtime.BinaryStorage');
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const ByteString = goog.require('protobuf.ByteString');
@@ -4119,4 +4117,4 @@ class Kernel {
   }
 }
 
-exports = Kernel;
+export { Kernel };

@@ -1,8 +1,6 @@
 /**
  * @fileoverview Kernel wrapper message.
  */
-goog.module('protobuf.testing.binary.TestMessage');
-
 const ByteString = goog.require('protobuf.ByteString');
 const Int64 = goog.require('protobuf.Int64');
 const InternalMessage = goog.require('protobuf.binary.InternalMessage');
@@ -1766,4 +1764,4 @@ class TestMessage {
   }
 }
 
-exports = TestMessage;
+export { TestMessage };

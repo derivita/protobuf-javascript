@@ -1,8 +1,6 @@
 /**
  * @fileoverview Test data for int64 encoding and decoding.
  */
-goog.module('protobuf.binary.int64TestPairs');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const Int64 = goog.require('protobuf.Int64');
 const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
@@ -56,4 +54,4 @@ function getInt64Pairs() {
   return [...int64Pairs];
 }
 
-exports = {getInt64Pairs};
+export default {getInt64Pairs};

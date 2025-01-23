@@ -2,8 +2,6 @@
  * @fileoverview Contains classes that hold data for a protobuf field.
  */
 
-goog.module('protobuf.binary.field');
-
 const WireType = goog.requireType('protobuf.binary.WireType');
 const Writer = goog.requireType('protobuf.binary.Writer');
 const {checkDefAndNotNull, checkState} = goog.require('protobuf.internal.checks');
@@ -190,7 +188,7 @@ class Field {
   }
 }
 
-exports = {
+export default {
   IndexEntry,
   Field,
 };

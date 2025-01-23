@@ -1,8 +1,6 @@
 /**
  * @fileoverview Tests for indexer.js.
  */
-goog.module('protobuf.binary.IndexerTest');
-
 goog.setTestOnly();
 
 // Note to the reader:

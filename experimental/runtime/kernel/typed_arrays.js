@@ -1,8 +1,6 @@
 /**
  * @fileoverview Helper methods for typed arrays.
  */
-goog.module('protobuf.binary.typedArrays');
-
 const {assert} = goog.require('goog.asserts');
 
 /**
@@ -107,7 +105,7 @@ function hashUint8Array(array) {
   return result;
 }
 
-exports = {
+export default {
   arrayBufferEqual,
   uint8ArrayEqual,
   arrayBufferSlice,

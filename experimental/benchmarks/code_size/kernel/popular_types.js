@@ -17,8 +17,6 @@
  * ('STRING__LABEL_REQUIRED', '1.0785%')
  *
  */
-goog.module('protobuf.benchmark.KernelCodeSizeBenchmarkPopularTypes');
-
 const Int64 = goog.require('protobuf.Int64');
 const Kernel = goog.require('protobuf.runtime.Kernel');
 const TestMessage = goog.require('protobuf.testing.binary.TestMessage');

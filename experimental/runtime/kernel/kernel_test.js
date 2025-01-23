@@ -1,8 +1,6 @@
 /**
  * @fileoverview Tests for kernel.js.
  */
-goog.module('protobuf.runtime.KernelTest');
-
 goog.setTestOnly();
 
 const ByteString = goog.require('protobuf.ByteString');

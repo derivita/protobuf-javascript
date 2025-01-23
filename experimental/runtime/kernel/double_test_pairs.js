@@ -1,8 +1,6 @@
 /**
  * @fileoverview Test data for double encoding and decoding.
  */
-goog.module('protobuf.binary.doubleTestPairs');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
 
@@ -86,4 +84,4 @@ function getDoublePairs() {
   return [...doublePairs];
 }
 
-exports = {getDoublePairs};
+export default {getDoublePairs};

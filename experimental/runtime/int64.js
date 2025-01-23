@@ -1,8 +1,6 @@
 /**
  * @fileoverview Protobufs Int64 representation.
  */
-goog.module('protobuf.Int64');
-
 const Long = goog.require('goog.math.Long');
 const {assert} = goog.require('goog.asserts');
 
@@ -400,4 +398,4 @@ const TWO_PWR_32_DBL = 0x100000000;
 /** @const {string} */
 const HEX_DIGITS = '0123456789abcdef';
 
-exports = Int64;
+export { Int64 };

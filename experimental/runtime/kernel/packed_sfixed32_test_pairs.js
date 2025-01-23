@@ -1,5 +1,3 @@
-goog.module('protobuf.binary.packedSfixed32TestPairs');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
 
@@ -31,4 +29,4 @@ function getPackedSfixed32Pairs() {
   ];
 }
 
-exports = {getPackedSfixed32Pairs};
+export default {getPackedSfixed32Pairs};

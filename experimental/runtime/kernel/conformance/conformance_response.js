@@ -1,8 +1,6 @@
 /**
  * @fileoverview Handwritten code of ConformanceResponse.
  */
-goog.module('proto.conformance.ConformanceResponse');
-
 const ByteString = goog.require('protobuf.ByteString');
 const Kernel = goog.require('protobuf.runtime.Kernel');
 
@@ -73,4 +71,4 @@ class ConformanceResponse {
   }
 }
 
-exports = ConformanceResponse;
+export { ConformanceResponse };

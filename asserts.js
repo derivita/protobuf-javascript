@@ -9,8 +9,6 @@
  * invariants runtime.
  */
 
-goog.provide('jspb.asserts');
-
 /**
  * Throws an exception with the given message and "Assertion failed" prefixed
  * onto it.
@@ -20,7 +18,7 @@ goog.provide('jspb.asserts');
  * @param {!Array<*>} givenArgs The substitution arguments for givenMessage.
  * @throws {Error} When the value is not a number.
  */
-jspb.asserts.doAssertFailure = function(defaultMessage, defaultArgs, givenMessage, givenArgs) {
+export function doAssertFailure(defaultMessage, defaultArgs, givenMessage, givenArgs) {
   let message = 'Assertion failed';
   let args;
   if (givenMessage) {
@@ -47,12 +45,12 @@ jspb.asserts.doAssertFailure = function(defaultMessage, defaultArgs, givenMessag
  * @throws {Error} When the condition evaluates to false.
  */
 
-jspb.asserts.assert = function(condition, opt_message, ...args) {
+export function assert(condition, opt_message, ...args) {
   if (!condition) {
-    jspb.asserts.doAssertFailure('', null, opt_message, args);
+    doAssertFailure('', null, opt_message, args);
   }
   return condition;
-};
+}
 
 
 /**
@@ -63,14 +61,14 @@ jspb.asserts.assert = function(condition, opt_message, ...args) {
  * @return {string} The value, guaranteed to be a string when asserts enabled.
  * @throws {Error} When the value is not a string.
  */
-jspb.asserts.assertString = function(value, opt_message, ...args) {
+export function assertString(value, opt_message, ...args) {
   if (typeof value !== 'string') {
-    jspb.asserts.doAssertFailure(
+    doAssertFailure(
         'Expected string but got %s: %s.', [goog.typeOf(value), value],
         opt_message, args);
   }
   return /** @type {string} */ (value);
-};
+}
 
 
 /**
@@ -81,14 +79,14 @@ jspb.asserts.assertString = function(value, opt_message, ...args) {
  * @return {!Array<?>} The value, guaranteed to be a non-null array.
  * @throws {Error} When the value is not an array.
  */
-jspb.asserts.assertArray = function(value, opt_message, ...args) {
+export function assertArray(value, opt_message, ...args) {
   if (!Array.isArray(value)) {
-    jspb.asserts.doAssertFailure(
+    doAssertFailure(
         'Expected array but got %s: %s.', [goog.typeOf(value), value],
         opt_message, args);
   }
   return /** @type {!Array<?>} */ (value);
-};
+}
 
 /**
  * Triggers a failure. This function is useful in case when we want to add a
@@ -98,7 +96,7 @@ jspb.asserts.assertArray = function(value, opt_message, ...args) {
  *  switch(type) {
  *    case FOO: doSomething(); break;
  *    case BAR: doSomethingElse(); break;
- *    default: jspb.asserts.JspbFail('Unrecognized type: ' + type);
+ *    default: JspbFail('Unrecognized type: ' + type);
  *      // We have only 2 types - "default:" section is unreachable code.
  *  }
  * </pre>
@@ -108,11 +106,11 @@ jspb.asserts.assertArray = function(value, opt_message, ...args) {
  * @return {void}
  * @throws {Error} Failure.
  */
-jspb.asserts.fail = function(opt_message, ...args) {
+export function fail(opt_message, ...args) {
   throw new Error(
       'Failure' + (opt_message ? ': ' + opt_message : ''),
       args);
-};
+}
 
 /**
  * Checks if the value is an instance of the user-defined type.
@@ -130,15 +128,15 @@ jspb.asserts.fail = function(opt_message, ...args) {
  * @return {T}
  * @template T
  */
-jspb.asserts.assertInstanceof = function(value, type, opt_message, ...args) {
+export function assertInstanceof(value, type, opt_message, ...args) {
   if (!(value instanceof type)) {
-    jspb.asserts.doAssertFailure(
+    doAssertFailure(
         'Expected instanceof %s but got %s.',
-        [jspb.asserts.getType(type), jspb.asserts.getType(value)],
+        [getType(type), getType(value)],
         opt_message, args);
   }
   return value;
-};
+}
 
 /**
  * Returns the type of a value. If a constructor is passed, and a suitable
@@ -147,7 +145,7 @@ jspb.asserts.assertInstanceof = function(value, type, opt_message, ...args) {
  * @return {string} The best display name for the value, or 'unknown type name'.
  * @private
  */
-jspb.asserts.getType = function(value) {
+function getType(value) {
   if (value instanceof Function) {
     return value.displayName || value.name || 'unknown type name';
   } else if (value instanceof Object) {

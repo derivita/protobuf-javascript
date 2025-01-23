@@ -1,8 +1,6 @@
 /**
  * @fileoverview Tests for message_set.js.
  */
-goog.module('protobuf.runtime.MessageSetTest');
-
 goog.setTestOnly();
 
 const Kernel = goog.require('protobuf.runtime.Kernel');

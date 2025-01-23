@@ -1,8 +1,6 @@
 /**
  * @fileoverview Test data for float encoding and decoding.
  */
-goog.module('protobuf.binary.floatTestPairs');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
 
@@ -75,4 +73,4 @@ function getFloatPairs() {
   return [...floatPairs];
 }
 
-exports = {getFloatPairs};
+export default {getFloatPairs};

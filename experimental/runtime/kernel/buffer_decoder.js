@@ -2,8 +2,6 @@
  * @fileoverview A buffer implementation that can decode data for protobufs.
  */
 
-goog.module('protobuf.binary.BufferDecoder');
-
 const ByteString = goog.require('protobuf.ByteString');
 const functions = goog.require('goog.functions');
 const {POLYFILL_TEXT_ENCODING, checkCriticalPositionIndex, checkCriticalState, checkState} = goog.require('protobuf.internal.checks');
@@ -340,4 +338,4 @@ class BufferDecoder {
   }
 }
 
-exports = BufferDecoder;
+export { BufferDecoder };

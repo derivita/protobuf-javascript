@@ -1,8 +1,6 @@
 /**
  * @fileoverview Tests for storage.js.
  */
-goog.module('protobuf.runtime.BinaryStorageTest');
-
 goog.setTestOnly();
 
 const BinaryStorage = goog.require('protobuf.runtime.BinaryStorage');

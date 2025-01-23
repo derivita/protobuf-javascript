@@ -1,8 +1,6 @@
 /**
  * @fileoverview Test data for sfixed32 encoding and decoding.
  */
-goog.module('protobuf.binary.sfixed64TestPairs');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const Int64 = goog.require('protobuf.Int64');
 const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
@@ -49,4 +47,4 @@ function getSfixed64Pairs() {
   return [...sfixed64Pairs];
 }
 
-exports = {getSfixed64Pairs};
+export default {getSfixed64Pairs};

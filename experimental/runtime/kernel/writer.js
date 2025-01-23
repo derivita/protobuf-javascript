@@ -2,8 +2,6 @@
  * @fileoverview Implements Writer for writing data as the binary wire format
  * bytes array.
  */
-goog.module('protobuf.binary.Writer');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const ByteString = goog.require('protobuf.ByteString');
 const Int64 = goog.require('protobuf.Int64');
@@ -740,4 +738,4 @@ class Writer {
   }
 }
 
-exports = Writer;
+export { Writer };

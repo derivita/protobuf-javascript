@@ -1,8 +1,6 @@
 /**
  * @fileoverview Helper methods to create BufferDecoders.
  */
-goog.module('protobuf.binary.bufferDecoderHelper');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 
 /**
@@ -13,6 +11,6 @@ function createBufferDecoder(...bytes) {
   return BufferDecoder.fromArrayBuffer(new Uint8Array(bytes).buffer);
 }
 
-exports = {
+export default {
   createBufferDecoder,
 };

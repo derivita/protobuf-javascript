@@ -1,8 +1,6 @@
 /**
  * @fileoverview Tests for textdecoder.js.
  */
-goog.module('protobuf.binary.TextDecoderTest');
-
 goog.setTestOnly();
 
 const {decode, encode} = goog.require('protobuf.binary.textencoding');

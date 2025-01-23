@@ -1,8 +1,6 @@
 /**
  * @fileoverview Installs our custom equality matchers in Jasmine.
  */
-goog.module('protobuf.testing.jasmineProtoBuf');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const ByteString = goog.require('protobuf.ByteString');
 const {arrayBufferEqual} = goog.require('protobuf.binary.typedArrays');

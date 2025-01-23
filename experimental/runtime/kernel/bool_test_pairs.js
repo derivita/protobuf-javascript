@@ -1,8 +1,6 @@
 /**
  * @fileoverview Test data for bool encoding and decoding.
  */
-goog.module('protobuf.binary.boolTestPairs');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
 
@@ -76,4 +74,4 @@ function getBoolPairs() {
   return [...boolPairs];
 }
 
-exports = {getBoolPairs};
+export default {getBoolPairs};

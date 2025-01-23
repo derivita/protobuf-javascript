@@ -1,5 +1,3 @@
-goog.module('protobuf.binary.tag');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const WireType = goog.require('protobuf.binary.WireType');
 const {checkCriticalElementIndex, checkCriticalState} = goog.require('protobuf.internal.checks');
@@ -134,7 +132,7 @@ function skipGroup_(bufferDecoder, groupFieldNumber) {
   return false;
 }
 
-exports = {
+export default {
   createTag,
   get32BitVarintLength,
   getTagLength,

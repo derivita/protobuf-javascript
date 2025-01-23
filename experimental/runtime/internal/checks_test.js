@@ -1,8 +1,6 @@
 /**
  * @fileoverview Tests for checks.js.
  */
-goog.module('protobuf.internal.checksTest');
-
 const {CHECK_TYPE, checkDefAndNotNull, checkFunctionExists} = goog.require('protobuf.internal.checks');
 
 describe('checkDefAndNotNull', () => {

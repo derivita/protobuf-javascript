@@ -1,8 +1,6 @@
 /**
  * @fileoverview Tests for uint8arrays.js.
  */
-goog.module('protobuf.binary.Uint8ArraysTest');
-
 goog.setTestOnly();
 
 const {concatenateByteArrays} = goog.require('protobuf.binary.uint8arrays');

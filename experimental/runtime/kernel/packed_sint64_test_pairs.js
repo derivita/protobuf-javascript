@@ -1,5 +1,3 @@
-goog.module('protobuf.binary.packedSint64TestPairs');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const Int64 = goog.require('protobuf.Int64');
 const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
@@ -31,4 +29,4 @@ function getPackedSint64Pairs() {
   ];
 }
 
-exports = {getPackedSint64Pairs};
+export default {getPackedSint64Pairs};

@@ -1,8 +1,6 @@
 /**
  * @fileoverview Handwritten code of ConformanceRequest.
  */
-goog.module('proto.conformance.ConformanceRequest');
-
 const Kernel = goog.require('protobuf.runtime.Kernel');
 const WireFormat = goog.require('proto.conformance.WireFormat');
 
@@ -88,4 +86,4 @@ ConformanceRequest.PayloadCase = {
   TEXT_PAYLOAD: 8,
 };
 
-exports = ConformanceRequest;
+export { ConformanceRequest };

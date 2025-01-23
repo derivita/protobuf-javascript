@@ -2,8 +2,6 @@
  * @fileoverview The code size benchmark of binary kernel for accessing all
  * types setter and getter.
  */
-goog.module('protobuf.benchmark.KernelCodeSizeBenchmarkAllTypes');
-
 const ByteString = goog.require('protobuf.ByteString');
 const Int64 = goog.require('protobuf.Int64');
 const Kernel = goog.require('protobuf.runtime.Kernel');

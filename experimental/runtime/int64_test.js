@@ -1,7 +1,6 @@
 /**
  * @fileoverview Tests for Int64.
  */
-goog.module('protobuf.Int64Test');
 goog.setTestOnly();
 
 const Int64 = goog.require('protobuf.Int64');

@@ -1,5 +1,3 @@
-goog.module('protobuf.runtime.BinaryStorage');
-
 const Storage = goog.require('protobuf.runtime.Storage');
 const {checkDefAndNotNull} = goog.require('protobuf.internal.checks');
 
@@ -127,4 +125,4 @@ class BinaryStorage {
   }
 }
 
-exports = BinaryStorage;
+export { BinaryStorage };

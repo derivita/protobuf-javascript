@@ -1,8 +1,6 @@
 /**
  * @fileoverview A UTF8 decoder.
  */
-goog.module('protobuf.binary.textencoding');
-
 const {checkElementIndex} = goog.require('protobuf.internal.checks');
 
 /**
@@ -110,7 +108,7 @@ function encode(value) {
   return new Uint8Array(buffer);
 }
 
-exports = {
+export default {
   decode,
   encode,
 };

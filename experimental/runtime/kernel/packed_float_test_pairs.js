@@ -1,5 +1,3 @@
-goog.module('protobuf.binary.packedFloatTestPairs');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
 
@@ -31,4 +29,4 @@ function getPackedFloatPairs() {
   ];
 }
 
-exports = {getPackedFloatPairs};
+export default {getPackedFloatPairs};

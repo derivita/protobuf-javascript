@@ -1,8 +1,6 @@
 /**
  * @fileoverview UTF8 encoding and decoding routines
  */
-goog.provide('jspb.binary.utf8');
-
 goog.require('jspb.asserts');
 
 
@@ -75,9 +73,12 @@ function codeUnitsToString(
  *
  * @return {string}
  */
-jspb.binary.utf8.polyfillDecodeUtf8 = function (
-    /** !Uint8Array */ bytes, /** number */ offset, /** number */ length,
-    /** boolean */ parsingErrorsAreFatal) {
+export function polyfillDecodeUtf8(
+  /** !Uint8Array */ bytes,
+  /** number */ offset,
+  /** number */ length,
+  /** boolean */ parsingErrorsAreFatal
+) {
   let cursor = offset;
   const end = cursor + length;
   const codeUnits = [];
@@ -283,9 +284,12 @@ function subarray(
 /**
  * @return {string}
  */
-jspb.binary.utf8.textDecoderDecodeUtf8 = function (
-    /** !Uint8Array*/ bytes, /** number */ offset, /** number */ length,
-    /** boolean*/ parsingErrorsAreFatal) {
+export function textDecoderDecodeUtf8(
+  /** !Uint8Array*/ bytes,
+  /** number */ offset,
+  /** number */ length,
+  /** boolean*/ parsingErrorsAreFatal
+) {
   const /** !TextDecoder */ decoder = parsingErrorsAreFatal ?
     getFatalDecoderInstance() :
     getNonFatalDecoderInstance();
@@ -311,22 +315,24 @@ const useTextDecoderDecode =
  * our polyfill implementation
  * @return {string}
  */
-jspb.binary.utf8.decodeUtf8 = function (
-    /** !Uint8Array*/ bytes, /** number */ offset, /** number */ length,
-    /** boolean*/ parsingErrorsAreFatal) {
+export function decodeUtf8(
+  /** !Uint8Array*/ bytes,
+  /** number */ offset,
+  /** number */ length,
+  /** boolean*/ parsingErrorsAreFatal
+) {
   return useTextDecoderDecode ?
-    jspb.binary.utf8.textDecoderDecodeUtf8(bytes, offset, length, parsingErrorsAreFatal) :
-    jspb.binary.utf8.polyfillDecodeUtf8(bytes, offset, length, parsingErrorsAreFatal);
+    textDecoderDecodeUtf8(bytes, offset, length, parsingErrorsAreFatal) :
+    polyfillDecodeUtf8(bytes, offset, length, parsingErrorsAreFatal);
 }
 
 /** @type {!TextEncoder|undefined} */
 let textEncoderInstance;
 
 /** @return {!Uint8Array} */
-jspb.binary.utf8.textEncoderEncode = function (
-    /** string */ s, /** boolean */ rejectUnpairedSurrogates) {
+export function textEncoderEncode(/** string */ s, /** boolean */ rejectUnpairedSurrogates) {
   if (rejectUnpairedSurrogates) {
-    jspb.binary.utf8.checkWellFormed(s);
+    checkWellFormed(s);
   }
 
   if (!textEncoderInstance) {
@@ -341,7 +347,7 @@ jspb.binary.utf8.textEncoderEncode = function (
 const /** boolean */ HAS_WELL_FORMED_METHOD = goog.FEATURESET_YEAR > 2023 ||
   typeof String.prototype.isWellFormed === 'function';
 
-jspb.binary.utf8.checkWellFormed = function (/** string */ text) {
+checkWellFormed = function (/** string */ text) {
   if (HAS_WELL_FORMED_METHOD ?
     // Externs don't contain the definition of this function yet.
     // http://go/mdn/JavaScript/Reference/Global_Objects/String/isWellFormed
@@ -356,8 +362,7 @@ jspb.binary.utf8.checkWellFormed = function (/** string */ text) {
 
 
 /** @return {!Uint8Array} */
-jspb.binary.utf8.polyfillEncode = function (
-    /** string */ s, /** boolean */ rejectUnpairedSurrogates) {
+export function polyfillEncode(/** string */ s, /** boolean */ rejectUnpairedSurrogates) {
   let bi = 0;
   // The worse case is that every character requires 3 output bytes, so we
   // allocate for this.  This assumes that the buffer will be short lived.
@@ -416,10 +421,10 @@ const useTextEncoderEncode =
  * our polyfill implementation
  * @return {!Uint8Array}
  */
-jspb.binary.utf8.encodeUtf8 = function (
-    /**string*/ string, /** boolean=*/ rejectUnpairedSurrogates = false) {
+export function encodeUtf8(/**string*/ string, /** boolean=*/ rejectUnpairedSurrogates = false) {
   jspb.asserts.assertString(string);
   return useTextEncoderEncode ?
-    jspb.binary.utf8.textEncoderEncode(string, rejectUnpairedSurrogates) :
-    jspb.binary.utf8.polyfillEncode(string, rejectUnpairedSurrogates);
+    textEncoderEncode(string, rejectUnpairedSurrogates) :
+    polyfillEncode(string, rejectUnpairedSurrogates);
 }
+export var checkWellFormed;

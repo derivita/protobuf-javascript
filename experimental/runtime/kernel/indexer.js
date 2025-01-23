@@ -2,8 +2,6 @@
  * @fileoverview Utilities to index a binary proto by fieldnumbers without
  * relying on strutural proto information.
  */
-goog.module('protobuf.binary.indexer');
-
 const BinaryStorage = goog.require('protobuf.runtime.BinaryStorage');
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const WireType = goog.require('protobuf.binary.WireType');
@@ -49,7 +47,7 @@ function buildIndex(bufferDecoder, pivot) {
   return storage;
 }
 
-exports = {
+export default {
   buildIndex,
   tagToWireType,
 };

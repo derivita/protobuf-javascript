@@ -1,5 +1,3 @@
-goog.module('protobuf.binary.packedSfixed64TestPairs');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const Int64 = goog.require('protobuf.Int64');
 const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
@@ -50,4 +48,4 @@ function getPackedSfixed64Pairs() {
   ];
 }
 
-exports = {getPackedSfixed64Pairs};
+export default {getPackedSfixed64Pairs};

@@ -1,5 +1,3 @@
-goog.module('protobuf.binary.packedDoubleTestPairs');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
 
@@ -49,4 +47,4 @@ function getPackedDoublePairs() {
   ];
 }
 
-exports = {getPackedDoublePairs};
+export default {getPackedDoublePairs};

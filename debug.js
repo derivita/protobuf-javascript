@@ -32,8 +32,6 @@
  * @fileoverview Utilities to debug JSPB based proto objects.
  */
 
-goog.provide('jspb.debug');
-
 goog.require('goog.array');
 goog.require('goog.object');
 
@@ -44,7 +42,7 @@ goog.require('jspb.Message');
 
 /**
  * Turns a proto into a human readable object that can i.e. be written to the
- * console: `console.log(jspb.debug.dump(myProto))`.
+ * console: `console.log(dump(myProto))`.
  * This function makes a best effort and may not work in all cases. It will not
  * work in obfuscated and or optimized code.
  * Use this in environments where {@see jspb.Message.prototype.toObject} is
@@ -53,7 +51,7 @@ goog.require('jspb.Message');
  * @return {Object}
  * @export
  */
-jspb.debug.dump = function(message) {
+export function dump(message) {
   if (!goog.DEBUG) {
     return null;
   }
@@ -63,8 +61,8 @@ jspb.debug.dump = function(message) {
   var object = message;
   jspb.asserts.assert(object['getExtension'],
       'Only unobfuscated and unoptimized compilation modes supported.');
-  return /** @type {Object} */ (jspb.debug.dump_(message));
-};
+  return /** @type {Object} */ (dump_(message));
+}
 
 
 /**
@@ -75,7 +73,7 @@ jspb.debug.dump = function(message) {
  * @return {*}
  * @private
  */
-jspb.debug.dump_ = function(thing) {
+function dump_(thing) {
   var type = goog.typeOf(thing);
   var message = thing;  // Copy because we don't want type inference on thing.
   if (type == 'number' || type == 'string' || type == 'boolean' ||
@@ -91,14 +89,14 @@ jspb.debug.dump_ = function(thing) {
 
   if (type == 'array') {
     jspb.asserts.assertArray(thing);
-    return goog.array.map(thing, jspb.debug.dump_);
+    return goog.array.map(thing, dump_);
   }
 
   if (message instanceof jspb.Map) {
     var mapObject = {};
     var entries = message.entries();
     for (var entry = entries.next(); !entry.done; entry = entries.next()) {
-      mapObject[entry.value[0]] = jspb.debug.dump_(entry.value[1]);
+      mapObject[entry.value[0]] = dump_(entry.value[1]);
     }
     return mapObject;
   }
@@ -117,7 +115,7 @@ jspb.debug.dump_ = function(thing) {
       var has = 'has' + match[1];
       if (!thing[has] || thing[has]()) {
         var val = thing[name]();
-        object[jspb.debug.formatFieldName_(match[1])] = jspb.debug.dump_(val);
+        object[formatFieldName_(match[1])] = dump_(val);
       }
     }
   }
@@ -137,13 +135,13 @@ jspb.debug.dump_ = function(thing) {
         if (!extensionsObject) {
           extensionsObject = object['$extensions'] = {};
         }
-        extensionsObject[jspb.debug.formatFieldName_(fieldName)] =
-            jspb.debug.dump_(extVal);
+        extensionsObject[formatFieldName_(fieldName)] =
+            dump_(extVal);
       }
     }
   }
   return object;
-};
+}
 
 
 /**
@@ -153,9 +151,9 @@ jspb.debug.dump_ = function(thing) {
  * @return {string}
  * @private
  */
-jspb.debug.formatFieldName_ = function(name) {
+function formatFieldName_(name) {
   // Name may be in TitleCase.
   return name.replace(/^[A-Z]/, function(c) {
     return c.toLowerCase();
   });
-};
+}

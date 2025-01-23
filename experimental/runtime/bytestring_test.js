@@ -1,4 +1,3 @@
-goog.module('proto.im.integration.ByteStringFieldsTest');
 goog.setTestOnly();
 
 const ByteString = goog.require('protobuf.ByteString');

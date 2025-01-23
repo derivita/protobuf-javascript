@@ -4,8 +4,6 @@
  * see b/131864652
  */
 
-goog.module('protobuf.testing.ensureCustomEqualityTest');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const ByteString = goog.require('protobuf.ByteString');
 

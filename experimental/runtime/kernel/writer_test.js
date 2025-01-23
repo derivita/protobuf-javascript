@@ -1,8 +1,6 @@
 /**
  * @fileoverview Tests for writer.js.
  */
-goog.module('protobuf.binary.WriterTest');
-
 goog.setTestOnly();
 
 // Note to the reader:

@@ -1,8 +1,6 @@
 /**
  * @fileoverview Test data for int32 encoding and decoding.
  */
-goog.module('protobuf.binary.uint32TestPairs');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
 
@@ -65,4 +63,4 @@ function getUint32Pairs() {
   return [...uint32Pairs];
 }
 
-exports = {getUint32Pairs};
+export default {getUint32Pairs};

@@ -1,5 +1,3 @@
-goog.module('protobuf.binary.packedBoolTestPairs');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
 
@@ -56,4 +54,4 @@ function getPackedBoolPairs() {
   ];
 }
 
-exports = {getPackedBoolPairs};
+export default {getPackedBoolPairs};

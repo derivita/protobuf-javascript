@@ -2,8 +2,6 @@
  * @fileoverview Internal interface for messages implemented with the binary
  * kernel.
  */
-goog.module('protobuf.binary.InternalMessage');
-
 const Kernel = goog.requireType('protobuf.runtime.Kernel');
 
 /**
@@ -21,4 +19,4 @@ class InternalMessage {
   internalGetKernel() {}
 }
 
-exports = InternalMessage;
+export { InternalMessage };

@@ -1,8 +1,6 @@
 /**
  * @fileoverview Tests for reader.js.
  */
-goog.module('protobuf.binary.ReaderTest');
-
 goog.setTestOnly();
 
 // Note to the reader:

@@ -1,8 +1,6 @@
 /**
  * @fileoverview Provides ByteString as a basic data type for protos.
  */
-goog.module('protobuf.ByteString');
-
 const base64 = goog.require('goog.crypt.base64');
 const {arrayBufferSlice, cloneArrayBufferView, hashUint8Array, uint8ArrayEqual} = goog.require('protobuf.binary.typedArrays');
 
@@ -180,4 +178,4 @@ class ByteString {
 /** @const {!ByteString} */
 ByteString.EMPTY = new ByteString(new Uint8Array(0), null);
 
-exports = ByteString;
+export { ByteString };

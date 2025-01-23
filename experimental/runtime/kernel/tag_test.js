@@ -1,8 +1,6 @@
 /**
  * @fileoverview Tests for tag.js.
  */
-goog.module('protobuf.binary.TagTests');
-
 const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
 const WireType = goog.require('protobuf.binary.WireType');
 const {CHECK_CRITICAL_STATE} = goog.require('protobuf.internal.checks');

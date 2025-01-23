@@ -36,8 +36,6 @@
  * @author aappleby@google.com (Austin Appleby)
  */
 
-goog.provide('jspb.utils');
-
 goog.require('goog.crypt');
 goog.require('goog.crypt.base64');
 goog.require('goog.string');
@@ -59,7 +57,7 @@ goog.require('jspb.BinaryConstants');
  * @type {number}
  * @private
  */
-jspb.utils.split64Low = 0;
+var split64Low = 0;
 
 
 /**
@@ -68,23 +66,23 @@ jspb.utils.split64Low = 0;
  * @type {number}
  * @private
  */
-jspb.utils.split64High = 0;
+var split64High = 0;
 
 
 /**
  * @return {number}
  * @export
  */
-jspb.utils.getSplit64Low = function() {
-  return jspb.utils.split64Low;
+export function getSplit64Low() {
+  return split64Low;
 }
 
 /**
  * @return {number}
  * @export
  */
-jspb.utils.getSplit64High = function() {
-  return jspb.utils.split64High;
+export function getSplit64High() {
+  return split64High;
 }
 
 
@@ -94,15 +92,15 @@ jspb.utils.getSplit64High = function() {
  * @param {number} value The number to split.
  * @export
  */
-jspb.utils.splitUint64 = function(value) {
+export function splitUint64(value) {
   // Extract low 32 bits and high 32 bits as unsigned integers.
   var lowBits = value >>> 0;
   var highBits =
       Math.floor((value - lowBits) / jspb.BinaryConstants.TWO_TO_32) >>> 0;
 
-  jspb.utils.split64Low = lowBits;
-  jspb.utils.split64High = highBits;
-};
+  split64Low = lowBits;
+  split64High = highBits;
+}
 
 
 /**
@@ -111,7 +109,7 @@ jspb.utils.splitUint64 = function(value) {
  * @param {number} value The number to split.
  * @export
  */
-jspb.utils.splitInt64 = function(value) {
+export function splitInt64(value) {
   // Convert to sign-magnitude representation.
   var sign = (value < 0);
   value = Math.abs(value);
@@ -133,9 +131,9 @@ jspb.utils.splitInt64 = function(value) {
     }
   }
 
-  jspb.utils.split64Low = lowBits;
-  jspb.utils.split64High = highBits;
-};
+  split64Low = lowBits;
+  split64High = highBits;
+}
 
 
 /**
@@ -144,14 +142,14 @@ jspb.utils.splitInt64 = function(value) {
  * @param {number} value The number to split.
  * @export
  */
-jspb.utils.splitZigzag64 = function(value) {
+export function splitZigzag64(value) {
   // Convert to sign-magnitude and scale by 2 before we split the value.
   var sign = (value < 0);
   value = Math.abs(value) * 2;
 
-  jspb.utils.splitUint64(value);
-  var lowBits = jspb.utils.split64Low;
-  var highBits = jspb.utils.split64High;
+  splitUint64(value);
+  var lowBits = split64Low;
+  var highBits = split64High;
 
   // If the value is negative, subtract 1 from the split representation so we
   // don't lose the sign bit due to precision issues.
@@ -169,9 +167,9 @@ jspb.utils.splitZigzag64 = function(value) {
     }
   }
 
-  jspb.utils.split64Low = lowBits;
-  jspb.utils.split64High = highBits;
-};
+  split64Low = lowBits;
+  split64High = highBits;
+}
 
 
 /**
@@ -180,7 +178,7 @@ jspb.utils.splitZigzag64 = function(value) {
  * @param {number} value
  * @export
  */
-jspb.utils.splitFloat32 = function(value) {
+export function splitFloat32(value) {
   var sign = (value < 0) ? 1 : 0;
   value = sign ? -value : value;
   var exp;
@@ -190,27 +188,27 @@ jspb.utils.splitFloat32 = function(value) {
   if (value === 0) {
     if ((1 / value) > 0) {
       // Positive zero.
-      jspb.utils.split64High = 0;
-      jspb.utils.split64Low = 0x00000000;
+      split64High = 0;
+      split64Low = 0x00000000;
     } else {
       // Negative zero.
-      jspb.utils.split64High = 0;
-      jspb.utils.split64Low = 0x80000000;
+      split64High = 0;
+      split64Low = 0x80000000;
     }
     return;
   }
 
   // Handle nans.
   if (isNaN(value)) {
-    jspb.utils.split64High = 0;
-    jspb.utils.split64Low = 0x7FFFFFFF;
+    split64High = 0;
+    split64Low = 0x7FFFFFFF;
     return;
   }
 
   // Handle infinities.
   if (value > jspb.BinaryConstants.FLOAT32_MAX) {
-    jspb.utils.split64High = 0;
-    jspb.utils.split64Low = ((sign << 31) | (0x7F800000)) >>> 0;
+    split64High = 0;
+    split64Low = ((sign << 31) | (0x7F800000)) >>> 0;
     return;
   }
 
@@ -218,8 +216,8 @@ jspb.utils.splitFloat32 = function(value) {
   if (value < jspb.BinaryConstants.FLOAT32_MIN) {
     // Number is a denormal.
     mant = Math.round(value / Math.pow(2, -149));
-    jspb.utils.split64High = 0;
-    jspb.utils.split64Low = ((sign << 31) | mant) >>> 0;
+    split64High = 0;
+    split64Low = ((sign << 31) | mant) >>> 0;
     return;
   }
 
@@ -231,9 +229,9 @@ jspb.utils.splitFloat32 = function(value) {
   }
   mant = mant & 0x7FFFFF;
 
-  jspb.utils.split64High = 0;
-  jspb.utils.split64Low = ((sign << 31) | ((exp + 127) << 23) | mant) >>> 0;
-};
+  split64High = 0;
+  split64Low = ((sign << 31) | ((exp + 127) << 23) | mant) >>> 0;
+}
 
 
 /**
@@ -242,7 +240,7 @@ jspb.utils.splitFloat32 = function(value) {
  * @param {number} value
  * @export
  */
-jspb.utils.splitFloat64 = function(value) {
+export function splitFloat64(value) {
   var sign = (value < 0) ? 1 : 0;
   value = sign ? -value : value;
 
@@ -250,27 +248,27 @@ jspb.utils.splitFloat64 = function(value) {
   if (value === 0) {
     if ((1 / value) > 0) {
       // Positive zero.
-      jspb.utils.split64High = 0x00000000;
-      jspb.utils.split64Low = 0x00000000;
+      split64High = 0x00000000;
+      split64Low = 0x00000000;
     } else {
       // Negative zero.
-      jspb.utils.split64High = 0x80000000;
-      jspb.utils.split64Low = 0x00000000;
+      split64High = 0x80000000;
+      split64Low = 0x00000000;
     }
     return;
   }
 
   // Handle nans.
   if (isNaN(value)) {
-    jspb.utils.split64High = 0x7FFFFFFF;
-    jspb.utils.split64Low = 0xFFFFFFFF;
+    split64High = 0x7FFFFFFF;
+    split64Low = 0xFFFFFFFF;
     return;
   }
 
   // Handle infinities.
   if (value > jspb.BinaryConstants.FLOAT64_MAX) {
-    jspb.utils.split64High = ((sign << 31) | (0x7FF00000)) >>> 0;
-    jspb.utils.split64Low = 0;
+    split64High = ((sign << 31) | (0x7FF00000)) >>> 0;
+    split64Low = 0;
     return;
   }
 
@@ -279,8 +277,8 @@ jspb.utils.splitFloat64 = function(value) {
     // Number is a denormal.
     var mant = value / Math.pow(2, -1074);
     var mantHigh = (mant / jspb.BinaryConstants.TWO_TO_32);
-    jspb.utils.split64High = ((sign << 31) | mantHigh) >>> 0;
-    jspb.utils.split64Low = (mant >>> 0);
+    split64High = ((sign << 31) | mantHigh) >>> 0;
+    split64Low = (mant >>> 0);
     return;
   }
 
@@ -308,10 +306,10 @@ jspb.utils.splitFloat64 = function(value) {
   var mantHigh = (mant * jspb.BinaryConstants.TWO_TO_20) & 0xFFFFF;
   var mantLow = (mant * jspb.BinaryConstants.TWO_TO_52) >>> 0;
 
-  jspb.utils.split64High =
+  split64High =
       ((sign << 31) | ((exp + 1023) << 20) | mantHigh) >>> 0;
-  jspb.utils.split64Low = mantLow;
-};
+  split64Low = mantLow;
+}
 
 
 /**
@@ -320,7 +318,7 @@ jspb.utils.splitFloat64 = function(value) {
  * @param {string} hash
  * @export
  */
-jspb.utils.splitHash64 = function(hash) {
+export function splitHash64(hash) {
   var a = hash.charCodeAt(0);
   var b = hash.charCodeAt(1);
   var c = hash.charCodeAt(2);
@@ -330,9 +328,9 @@ jspb.utils.splitHash64 = function(hash) {
   var g = hash.charCodeAt(6);
   var h = hash.charCodeAt(7);
 
-  jspb.utils.split64Low = (a + (b << 8) + (c << 16) + (d << 24)) >>> 0;
-  jspb.utils.split64High = (e + (f << 8) + (g << 16) + (h << 24)) >>> 0;
-};
+  split64Low = (a + (b << 8) + (c << 16) + (d << 24)) >>> 0;
+  split64High = (e + (f << 8) + (g << 16) + (h << 24)) >>> 0;
+}
 
 
 /**
@@ -343,9 +341,9 @@ jspb.utils.splitHash64 = function(hash) {
  * @return {number}
  * @export
  */
-jspb.utils.joinUint64 = function(bitsLow, bitsHigh) {
+export function joinUint64(bitsLow, bitsHigh) {
   return bitsHigh * jspb.BinaryConstants.TWO_TO_32 + (bitsLow >>> 0);
-};
+}
 
 
 /**
@@ -356,7 +354,7 @@ jspb.utils.joinUint64 = function(bitsLow, bitsHigh) {
  * @return {number}
  * @export
  */
-jspb.utils.joinInt64 = function(bitsLow, bitsHigh) {
+export function joinInt64(bitsLow, bitsHigh) {
   // If the high bit is set, do a manual two's complement conversion.
   var sign = (bitsHigh & 0x80000000);
   if (sign) {
@@ -367,9 +365,9 @@ jspb.utils.joinInt64 = function(bitsLow, bitsHigh) {
     }
   }
 
-  var result = jspb.utils.joinUint64(bitsLow, bitsHigh);
+  var result = joinUint64(bitsLow, bitsHigh);
   return sign ? -result : result;
-};
+}
 
 /**
  * Converts split 64-bit values from standard two's complement encoding to
@@ -383,7 +381,7 @@ jspb.utils.joinInt64 = function(bitsLow, bitsHigh) {
  * @template T
  * @export
  */
-jspb.utils.toZigzag64 = function(bitsLow, bitsHigh, convert) {
+export function toZigzag64(bitsLow, bitsHigh, convert) {
   // See
   // https://engdoc.corp.google.com/eng/howto/protocolbuffers/developerguide/encoding.shtml?cl=head#types
   // 64-bit math is: (n << 1) ^ (n >> 63)
@@ -397,7 +395,7 @@ jspb.utils.toZigzag64 = function(bitsLow, bitsHigh, convert) {
   bitsHigh = (bitsHigh << 1 | bitsLow >>> 31) ^ signFlipMask;
   bitsLow = (bitsLow << 1) ^ signFlipMask;
   return convert(bitsLow, bitsHigh);
-};
+}
 
 
 /**
@@ -408,9 +406,9 @@ jspb.utils.toZigzag64 = function(bitsLow, bitsHigh, convert) {
  * @return {number}
  * @export
  */
-jspb.utils.joinZigzag64 = function(bitsLow, bitsHigh) {
-  return jspb.utils.fromZigzag64(bitsLow, bitsHigh, jspb.utils.joinInt64);
-};
+export function joinZigzag64(bitsLow, bitsHigh) {
+  return fromZigzag64(bitsLow, bitsHigh, joinInt64);
+}
 
 
 /**
@@ -425,7 +423,7 @@ jspb.utils.joinZigzag64 = function(bitsLow, bitsHigh) {
  * @template T
  * @export
  */
-jspb.utils.fromZigzag64 = function(bitsLow, bitsHigh, convert) {
+export function fromZigzag64(bitsLow, bitsHigh, convert) {
   // 64 bit math is:
   //   signmask = (zigzag & 1) ? -1 : 0;
   //   twosComplement = (zigzag >> 1) ^ signmask;
@@ -437,7 +435,7 @@ jspb.utils.fromZigzag64 = function(bitsLow, bitsHigh, convert) {
   bitsLow = ((bitsLow >>> 1) | (bitsHigh << 31)) ^ signFlipMask;
   bitsHigh = (bitsHigh >>> 1) ^ signFlipMask;
   return convert(bitsLow, bitsHigh);
-};
+}
 
 
 /**
@@ -448,7 +446,7 @@ jspb.utils.fromZigzag64 = function(bitsLow, bitsHigh, convert) {
  * @return {number}
  * @export
  */
-jspb.utils.joinFloat32 = function(bitsLow, bitsHigh) {
+export function joinFloat32(bitsLow, bitsHigh) {
   var sign = ((bitsLow >> 31) * 2 + 1);
   var exp = (bitsLow >>> 23) & 0xFF;
   var mant = bitsLow & 0x7FFFFF;
@@ -467,7 +465,7 @@ jspb.utils.joinFloat32 = function(bitsLow, bitsHigh) {
   } else {
     return sign * Math.pow(2, exp - 150) * (mant + Math.pow(2, 23));
   }
-};
+}
 
 
 /**
@@ -478,7 +476,7 @@ jspb.utils.joinFloat32 = function(bitsLow, bitsHigh) {
  * @return {number}
  * @export
  */
-jspb.utils.joinFloat64 = function(bitsLow, bitsHigh) {
+export function joinFloat64(bitsLow, bitsHigh) {
   var sign = ((bitsHigh >> 31) * 2 + 1);
   var exp = (bitsHigh >>> 20) & 0x7FF;
   var mant = jspb.BinaryConstants.TWO_TO_32 * (bitsHigh & 0xFFFFF) + bitsLow;
@@ -498,7 +496,7 @@ jspb.utils.joinFloat64 = function(bitsLow, bitsHigh) {
     return sign * Math.pow(2, exp - 1075) *
         (mant + jspb.BinaryConstants.TWO_TO_52);
   }
-};
+}
 
 
 /**
@@ -508,7 +506,7 @@ jspb.utils.joinFloat64 = function(bitsLow, bitsHigh) {
  * @return {string}
  * @export
  */
-jspb.utils.joinHash64 = function(bitsLow, bitsHigh) {
+export function joinHash64(bitsLow, bitsHigh) {
   var a = (bitsLow >>> 0) & 0xFF;
   var b = (bitsLow >>> 8) & 0xFF;
   var c = (bitsLow >>> 16) & 0xFF;
@@ -519,22 +517,22 @@ jspb.utils.joinHash64 = function(bitsLow, bitsHigh) {
   var h = (bitsHigh >>> 24) & 0xFF;
 
   return String.fromCharCode(a, b, c, d, e, f, g, h);
-};
+}
 
 /**
  * Individual digits for number->string conversion.
  * @const {!Array<string>}
  * @export
  */
-jspb.utils.DIGITS = [
+export var DIGITS = [
   '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
 ];
 
 /** @const @private {number} '0' */
-jspb.utils.ZERO_CHAR_CODE_ = 48;
+var ZERO_CHAR_CODE_ = 48;
 
 /** @const @private {number} 'a' */
-jspb.utils.A_CHAR_CODE_ = 97;
+var A_CHAR_CODE_ = 97;
 
 /**
  * Losslessly converts a 64-bit unsigned integer in 32:32 split representation
@@ -544,11 +542,11 @@ jspb.utils.A_CHAR_CODE_ = 97;
  * @return {string} The binary number represented as a string.
  * @export
  */
-jspb.utils.joinUnsignedDecimalString = function(bitsLow, bitsHigh) {
+export function joinUnsignedDecimalString(bitsLow, bitsHigh) {
   // Skip the expensive conversion if the number is small enough to use the
   // built-in conversions.
   if (bitsHigh <= 0x1FFFFF) {
-    return '' + jspb.utils.joinUint64(bitsLow, bitsHigh);
+    return '' + joinUint64(bitsLow, bitsHigh);
   }
 
   // What this code is doing is essentially converting the input number from
@@ -599,7 +597,7 @@ jspb.utils.joinUnsignedDecimalString = function(bitsLow, bitsHigh) {
       // If the final 1e7 digit didn't need leading zeros, we would have
       // returned via the trivial code path at the top.
       decimalFrom1e7(digitA, /*needLeadingZeros=*/ 1);
-};
+}
 
 
 /**
@@ -610,7 +608,7 @@ jspb.utils.joinUnsignedDecimalString = function(bitsLow, bitsHigh) {
  * @return {string} The binary number represented as a string.
  * @export
  */
-jspb.utils.joinSignedDecimalString = function(bitsLow, bitsHigh) {
+export function joinSignedDecimalString(bitsLow, bitsHigh) {
   // If we're treating the input as a signed value and the high bit is set, do
   // a manual two's complement conversion before the decimal conversion.
   var negative = (bitsHigh & 0x80000000);
@@ -620,9 +618,9 @@ jspb.utils.joinSignedDecimalString = function(bitsLow, bitsHigh) {
     bitsHigh = (~bitsHigh + carry) >>> 0;
   }
 
-  var result = jspb.utils.joinUnsignedDecimalString(bitsLow, bitsHigh);
+  var result = joinUnsignedDecimalString(bitsLow, bitsHigh);
   return negative ? '-' + result : result;
-};
+}
 
 
 /**
@@ -634,13 +632,13 @@ jspb.utils.joinSignedDecimalString = function(bitsLow, bitsHigh) {
  * @return {string}
  * @export
  */
-jspb.utils.hash64ToDecimalString = function(hash, signed) {
-  jspb.utils.splitHash64(hash);
-  var bitsLow = jspb.utils.split64Low;
-  var bitsHigh = jspb.utils.split64High;
-  return signed ? jspb.utils.joinSignedDecimalString(bitsLow, bitsHigh) :
-                  jspb.utils.joinUnsignedDecimalString(bitsLow, bitsHigh);
-};
+export function hash64ToDecimalString(hash, signed) {
+  splitHash64(hash);
+  var bitsLow = split64Low;
+  var bitsHigh = split64High;
+  return signed ? joinSignedDecimalString(bitsLow, bitsHigh) :
+                  joinUnsignedDecimalString(bitsLow, bitsHigh);
+}
 
 
 /**
@@ -652,13 +650,13 @@ jspb.utils.hash64ToDecimalString = function(hash, signed) {
  * @return {!Array<string>}
  * @export
  */
-jspb.utils.hash64ArrayToDecimalStrings = function(hashes, signed) {
+export function hash64ArrayToDecimalStrings(hashes, signed) {
   var result = new Array(hashes.length);
   for (var i = 0; i < hashes.length; i++) {
-    result[i] = jspb.utils.hash64ToDecimalString(hashes[i], signed);
+    result[i] = hash64ToDecimalString(hashes[i], signed);
   }
   return result;
-};
+}
 
 
 /**
@@ -668,7 +666,7 @@ jspb.utils.hash64ArrayToDecimalStrings = function(hashes, signed) {
  * @return {string}
  * @export
  */
-jspb.utils.decimalStringToHash64 = function(dec) {
+export function decimalStringToHash64(dec) {
   jspb.asserts.assert(dec.length > 0);
 
   // Check for minus sign.
@@ -699,7 +697,7 @@ jspb.utils.decimalStringToHash64 = function(dec) {
 
   // For each decimal digit, set result to 10*result + digit.
   for (var i = 0; i < dec.length; i++) {
-    muladd(10, dec.charCodeAt(i) - jspb.utils.ZERO_CHAR_CODE_);
+    muladd(10, dec.charCodeAt(i) - ZERO_CHAR_CODE_);
   }
 
   // If there's a minus sign, convert into two's complement.
@@ -709,7 +707,7 @@ jspb.utils.decimalStringToHash64 = function(dec) {
   }
 
   return goog.crypt.byteArrayToString(resultBytes);
-};
+}
 
 
 /**
@@ -718,32 +716,32 @@ jspb.utils.decimalStringToHash64 = function(dec) {
  * @param {string} value The decimal string to convert.
  * @export
  */
-jspb.utils.splitDecimalString = function(value) {
-  jspb.utils.splitHash64(jspb.utils.decimalStringToHash64(value));
-};
+export function splitDecimalString(value) {
+  splitHash64(decimalStringToHash64(value));
+}
 
 /**
  * @param {number} nibble A 4-bit integer.
  * @return {string}
  * @private
  */
-jspb.utils.toHexDigit_ = function(nibble) {
+function toHexDigit_(nibble) {
   return String.fromCharCode(
-      nibble < 10 ? jspb.utils.ZERO_CHAR_CODE_ + nibble :
-                    jspb.utils.A_CHAR_CODE_ - 10 + nibble);
-};
+      nibble < 10 ? ZERO_CHAR_CODE_ + nibble :
+                    A_CHAR_CODE_ - 10 + nibble);
+}
 
 /**
  * @param {number} hexCharCode
  * @return {number}
  * @private
  */
-jspb.utils.fromHexCharCode_ = function(hexCharCode) {
-  if (hexCharCode >= jspb.utils.A_CHAR_CODE_) {
-    return hexCharCode - jspb.utils.A_CHAR_CODE_ + 10;
+function fromHexCharCode_(hexCharCode) {
+  if (hexCharCode >= A_CHAR_CODE_) {
+    return hexCharCode - A_CHAR_CODE_ + 10;
   }
-  return hexCharCode - jspb.utils.ZERO_CHAR_CODE_;
-};
+  return hexCharCode - ZERO_CHAR_CODE_;
+}
 
 /**
  * Converts an 8-character hash string into its hexadecimal representation.
@@ -751,20 +749,20 @@ jspb.utils.fromHexCharCode_ = function(hexCharCode) {
  * @return {string}
  * @export
  */
-jspb.utils.hash64ToHexString = function(hash) {
+export function hash64ToHexString(hash) {
   var temp = new Array(18);
   temp[0] = '0';
   temp[1] = 'x';
 
   for (var i = 0; i < 8; i++) {
     var c = hash.charCodeAt(7 - i);
-    temp[i * 2 + 2] = jspb.utils.toHexDigit_(c >> 4);
-    temp[i * 2 + 3] = jspb.utils.toHexDigit_(c & 0xF);
+    temp[i * 2 + 2] = toHexDigit_(c >> 4);
+    temp[i * 2 + 3] = toHexDigit_(c & 0xF);
   }
 
   var result = temp.join('');
   return result;
-};
+}
 
 
 /**
@@ -773,7 +771,7 @@ jspb.utils.hash64ToHexString = function(hash) {
  * @return {string}
  * @export
  */
-jspb.utils.hexStringToHash64 = function(hex) {
+export function hexStringToHash64(hex) {
   hex = hex.toLowerCase();
   jspb.asserts.assert(hex.length == 18);
   jspb.asserts.assert(hex[0] == '0');
@@ -781,13 +779,13 @@ jspb.utils.hexStringToHash64 = function(hex) {
 
   var result = '';
   for (var i = 0; i < 8; i++) {
-    var hi = jspb.utils.fromHexCharCode_(hex.charCodeAt(i * 2 + 2));
-    var lo = jspb.utils.fromHexCharCode_(hex.charCodeAt(i * 2 + 3));
+    var hi = fromHexCharCode_(hex.charCodeAt(i * 2 + 2));
+    var lo = fromHexCharCode_(hex.charCodeAt(i * 2 + 3));
     result = String.fromCharCode(hi * 16 + lo) + result;
   }
 
   return result;
-};
+}
 
 
 /**
@@ -800,13 +798,13 @@ jspb.utils.hexStringToHash64 = function(hex) {
  * @return {number}
  * @export
  */
-jspb.utils.hash64ToNumber = function(hash, signed) {
-  jspb.utils.splitHash64(hash);
-  var bitsLow = jspb.utils.split64Low;
-  var bitsHigh = jspb.utils.split64High;
-  return signed ? jspb.utils.joinInt64(bitsLow, bitsHigh) :
-                  jspb.utils.joinUint64(bitsLow, bitsHigh);
-};
+export function hash64ToNumber(hash, signed) {
+  splitHash64(hash);
+  var bitsLow = split64Low;
+  var bitsHigh = split64High;
+  return signed ? joinInt64(bitsLow, bitsHigh) :
+                  joinUint64(bitsLow, bitsHigh);
+}
 
 
 /**
@@ -816,10 +814,10 @@ jspb.utils.hash64ToNumber = function(hash, signed) {
  * @return {string}
  * @export
  */
-jspb.utils.numberToHash64 = function(value) {
-  jspb.utils.splitInt64(value);
-  return jspb.utils.joinHash64(jspb.utils.split64Low, jspb.utils.split64High);
-};
+export function numberToHash64(value) {
+  splitInt64(value);
+  return joinHash64(split64Low, split64High);
+}
 
 
 /**
@@ -830,7 +828,7 @@ jspb.utils.numberToHash64 = function(value) {
  * @return {number} The number of varints in the buffer.
  * @export
  */
-jspb.utils.countVarints = function(buffer, start, end) {
+export function countVarints(buffer, start, end) {
   // Count how many high bits of each byte were set in the buffer.
   var count = 0;
   for (var i = start; i < end; i++) {
@@ -841,7 +839,7 @@ jspb.utils.countVarints = function(buffer, start, end) {
   // the number of non-terminal bytes in the buffer (those with the high bit
   // set).
   return (end - start) - count;
-};
+}
 
 
 /**
@@ -854,7 +852,7 @@ jspb.utils.countVarints = function(buffer, start, end) {
  * @return {number} The number of matching fields in the buffer.
  * @export
  */
-jspb.utils.countVarintFields = function(buffer, start, end, field) {
+export function countVarintFields(buffer, start, end, field) {
   var count = 0;
   var cursor = start;
   var tag = field * 8 + jspb.BinaryConstants.WireType.VARINT;
@@ -896,7 +894,7 @@ jspb.utils.countVarintFields = function(buffer, start, end, field) {
     }
   }
   return count;
-};
+}
 
 
 /**
@@ -910,7 +908,7 @@ jspb.utils.countVarintFields = function(buffer, start, end, field) {
  * @return {number} The number of fields with a matching tag in the buffer.
  * @private
  */
-jspb.utils.countFixedFields_ = function(buffer, start, end, tag, stride) {
+function countFixedFields_(buffer, start, end, tag, stride) {
   var count = 0;
   var cursor = start;
 
@@ -944,7 +942,7 @@ jspb.utils.countFixedFields_ = function(buffer, start, end, tag, stride) {
     }
   }
   return count;
-};
+}
 
 
 /**
@@ -957,10 +955,10 @@ jspb.utils.countFixedFields_ = function(buffer, start, end, tag, stride) {
  * @return {number} The number of matching fields in the buffer.
  * @export
  */
-jspb.utils.countFixed32Fields = function(buffer, start, end, field) {
+export function countFixed32Fields(buffer, start, end, field) {
   var tag = field * 8 + jspb.BinaryConstants.WireType.FIXED32;
-  return jspb.utils.countFixedFields_(buffer, start, end, tag, 4);
-};
+  return countFixedFields_(buffer, start, end, tag, 4);
+}
 
 
 /**
@@ -973,10 +971,10 @@ jspb.utils.countFixed32Fields = function(buffer, start, end, field) {
  * @return {number} The number of matching fields in the buffer.
  * @export
  */
-jspb.utils.countFixed64Fields = function(buffer, start, end, field) {
+export function countFixed64Fields(buffer, start, end, field) {
   var tag = field * 8 + jspb.BinaryConstants.WireType.FIXED64;
-  return jspb.utils.countFixedFields_(buffer, start, end, tag, 8);
-};
+  return countFixedFields_(buffer, start, end, tag, 8);
+}
 
 
 /**
@@ -989,7 +987,7 @@ jspb.utils.countFixed64Fields = function(buffer, start, end, field) {
  * @return {number} The number of matching fields in the buffer.
  * @export
  */
-jspb.utils.countDelimitedFields = function(buffer, start, end, field) {
+export function countDelimitedFields(buffer, start, end, field) {
   var count = 0;
   var cursor = start;
   var tag = field * 8 + jspb.BinaryConstants.WireType.DELIMITED;
@@ -1020,7 +1018,7 @@ jspb.utils.countDelimitedFields = function(buffer, start, end, field) {
     cursor += length;
   }
   return count;
-};
+}
 
 
 /**
@@ -1031,10 +1029,10 @@ jspb.utils.countDelimitedFields = function(buffer, start, end, field) {
  * @return {string} Stringified bytes for text format.
  * @export
  */
-jspb.utils.debugBytesToTextFormat = function(byteSource) {
+export function debugBytesToTextFormat(byteSource) {
   var s = '"';
   if (byteSource) {
-    var bytes = jspb.utils.byteSourceToUint8Array(byteSource);
+    var bytes = byteSourceToUint8Array(byteSource);
     for (var i = 0; i < bytes.length; i++) {
       s += '\\x';
       if (bytes[i] < 16) s += '0';
@@ -1042,7 +1040,7 @@ jspb.utils.debugBytesToTextFormat = function(byteSource) {
     }
   }
   return s + '"';
-};
+}
 
 
 /**
@@ -1051,13 +1049,13 @@ jspb.utils.debugBytesToTextFormat = function(byteSource) {
  * @return {string} Stringified scalar for text format.
  * @export
  */
-jspb.utils.debugScalarToTextFormat = function(scalar) {
+export function debugScalarToTextFormat(scalar) {
   if (typeof scalar === 'string') {
     return goog.string.quote(scalar);
   } else {
     return scalar.toString();
   }
-};
+}
 
 
 /**
@@ -1068,7 +1066,7 @@ jspb.utils.debugScalarToTextFormat = function(scalar) {
  * @return {!Uint8Array}
  * @export
  */
-jspb.utils.stringToByteArray = function(str) {
+export function stringToByteArray(str) {
   var arr = new Uint8Array(str.length);
   for (var i = 0; i < str.length; i++) {
     var codepoint = str.charCodeAt(i);
@@ -1080,7 +1078,7 @@ jspb.utils.stringToByteArray = function(str) {
     arr[i] = codepoint;
   }
   return arr;
-};
+}
 
 
 /**
@@ -1090,7 +1088,7 @@ jspb.utils.stringToByteArray = function(str) {
  * @suppress {invalidCasts}
  * @export
  */
-jspb.utils.byteSourceToUint8Array = function(data) {
+export function byteSourceToUint8Array(data) {
   if (data.constructor === Uint8Array) {
     return /** @type {!Uint8Array} */ (data);
   }
@@ -1121,4 +1119,4 @@ jspb.utils.byteSourceToUint8Array = function(data) {
 
   jspb.asserts.fail('Type not convertible to Uint8Array.');
   return /** @type {!Uint8Array} */ (new Uint8Array(0));
-};
+}
