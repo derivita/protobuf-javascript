@@ -2,9 +2,10 @@
  * @fileoverview Contains classes that hold data for a protobuf field.
  */
 
-const WireType = goog.requireType('protobuf.binary.WireType');
-const Writer = goog.requireType('protobuf.binary.Writer');
-const {checkDefAndNotNull, checkState} = goog.require('protobuf.internal.checks');
+import { WireType } from './wire_type.js';
+import { Writer } from './writer.js';
+import checks from '../internal/checks.js';
+const {checkDefAndNotNull, checkState} = checks;
 
 /**
  * Number of bits taken to represent a wire type.

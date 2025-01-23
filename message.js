@@ -35,12 +35,12 @@
  * @author mwr@google.com (Mark Rawling)
  */
 
-goog.require('goog.array');
-goog.require('goog.crypt.base64');
+import '../closure-library/closure/goog/array/array.js';
 
-goog.require('jspb.asserts');
-goog.require('jspb.BinaryReader');
-goog.require('jspb.Map');
+import * as base64 from '../closure-library/closure/goog/crypt/base64.js';
+import * as asserts from './asserts.js';
+import { BinaryReader } from './binary/reader.js';
+import { Map } from './map.js';
 
 
 /**
@@ -100,7 +100,7 @@ export function ExtensionFieldInfo(fieldNumber, fieldName, ctor, toObjectFn, isR
 /**
  * Stores binary-related information for a single extension field.
  * @param {!ExtensionFieldInfo<T>} fieldInfo
- * @param {function(this:jspb.BinaryReader,number,?,?)} binaryReaderFn
+ * @param {function(this:BinaryReader,number,?,?)} binaryReaderFn
  * @param {function(this:jspb.BinaryWriter,number,?)
  *        |function(this:jspb.BinaryWriter,number,?,?,?,?,?)} binaryWriterFn
  * @param {function(?,?)=} opt_binaryMessageSerializeFn
@@ -627,7 +627,7 @@ Message.serializeBinaryExtensions = function(
  * Reads an extension field from the given reader and, if a valid extension,
  * sets the extension value.
  * @param {!Message} msg A jspb proto.
- * @param {!jspb.BinaryReader} reader
+ * @param {!BinaryReader} reader
  * @param {!Object} extensions The extensions object.
  * @param {function(this:Message,!ExtensionFieldInfo)} getExtensionFn
  * @param {function(this:Message,!ExtensionFieldInfo, ?)}
@@ -800,9 +800,9 @@ Message.bytesAsB64 = function(value) {
     return value;
   }
   if (Message.SUPPORTS_UINT8ARRAY_ && value instanceof Uint8Array) {
-    return goog.crypt.base64.encodeByteArray(value);
+    return base64.encodeByteArray(value);
   }
-  jspb.asserts.fail('Cannot coerce to b64 string: ' + goog.typeOf(value));
+  asserts.fail('Cannot coerce to b64 string: ' + goog.typeOf(value));
   return null;
 };
 
@@ -820,9 +820,9 @@ Message.bytesAsU8 = function(value) {
     return value;
   }
   if (typeof value === 'string') {
-    return goog.crypt.base64.decodeStringToUint8Array(value);
+    return base64.decodeStringToUint8Array(value);
   }
-  jspb.asserts.fail('Cannot coerce to Uint8Array: ' + goog.typeOf(value));
+  asserts.fail('Cannot coerce to Uint8Array: ' + goog.typeOf(value));
   return null;
 };
 
@@ -871,7 +871,7 @@ Message.assertConsistentTypes_ = function(array) {
     var expected = goog.typeOf(array[0]);
     goog.array.forEach(array, function(e) {
       if (goog.typeOf(e) != expected) {
-        jspb.asserts.fail(
+        asserts.fail(
             'Inconsistent type in JSPB repeated field array. ' +
             'Got ' + goog.typeOf(e) + ' expected ' + expected);
       }
@@ -969,7 +969,7 @@ Message.getFieldProto3 = Message.getFieldWithDefault;
  * @param {number} fieldNumber
  * @param {boolean|undefined} noLazyCreate
  * @param {?=} opt_valueCtor
- * @return {!jspb.Map<K, V>|undefined}
+ * @return {!Map<K, V>|undefined}
  * @export
  */
 Message.getMapField = function(
@@ -990,8 +990,7 @@ Message.getMapField = function(
     arr = [];
     Message.setField(msg, fieldNumber, arr);
   }
-  return msg.wrappers_[fieldNumber] = new jspb.Map(
-             /** @type {!Array<!Array<!Object>>} */ (arr), opt_valueCtor);
+  return msg.wrappers_[fieldNumber] = new Map( (arr), opt_valueCtor);
 };
 
 
@@ -1006,7 +1005,7 @@ Message.getMapField = function(
  */
 Message.setField = function(msg, fieldNumber, value) {
   // TODO(b/35241823): replace this with a bounded generic when available
-  jspb.asserts.assertInstanceof(msg, Message);
+  asserts.assertInstanceof(msg, Message);
   if (fieldNumber < msg.pivot_) {
     msg.array[Message.getIndex_(msg, fieldNumber)] = value;
   } else {
@@ -1130,7 +1129,7 @@ Message.setProto3StringIntField = function(msg, fieldNumber, value) {
 Message.setFieldIgnoringDefault_ = function(
     msg, fieldNumber, value, defaultValue) {
   // TODO(b/35241823): replace this with a bounded generic when available
-  jspb.asserts.assertInstanceof(msg, Message);
+  asserts.assertInstanceof(msg, Message);
   if (value !== defaultValue) {
     Message.setField(msg, fieldNumber, value);
   } else if (fieldNumber < msg.pivot_) {
@@ -1155,7 +1154,7 @@ Message.setFieldIgnoringDefault_ = function(
  */
 Message.addToRepeatedField = function(msg, fieldNumber, value, opt_index) {
   // TODO(b/35241823): replace this with a bounded generic when available
-  jspb.asserts.assertInstanceof(msg, Message);
+  asserts.assertInstanceof(msg, Message);
   var arr = Message.getRepeatedField(msg, fieldNumber);
   if (opt_index != undefined) {
     arr.splice(opt_index, 0, value);
@@ -1179,7 +1178,7 @@ Message.addToRepeatedField = function(msg, fieldNumber, value, opt_index) {
  */
 Message.setOneofField = function(msg, fieldNumber, oneof, value) {
   // TODO(b/35241823): replace this with a bounded generic when available
-  jspb.asserts.assertInstanceof(msg, Message);
+  asserts.assertInstanceof(msg, Message);
   var currentCase = Message.computeOneofCase(msg, oneof);
   if (currentCase && currentCase !== fieldNumber && value !== undefined) {
     if (msg.wrappers_ && currentCase in msg.wrappers_) {
@@ -1305,7 +1304,7 @@ Message.wrapRepeatedField_ = function(msg, ctor, fieldNumber) {
  * Sets a proto field and syncs it to the backing array.
  * @param {T} msg A jspb proto.
  * @param {number} fieldNumber The field number.
- * @param {?Message|?jspb.Map|undefined} value A new value for this proto
+ * @param {?Message|?Map|undefined} value A new value for this proto
  * field.
  * @return {T} the msg
  * @template T
@@ -1313,7 +1312,7 @@ Message.wrapRepeatedField_ = function(msg, ctor, fieldNumber) {
  */
 Message.setWrapperField = function(msg, fieldNumber, value) {
   // TODO(b/35241823): replace this with a bounded generic when available
-  jspb.asserts.assertInstanceof(msg, Message);
+  asserts.assertInstanceof(msg, Message);
   if (!msg.wrappers_) {
     msg.wrappers_ = {};
   }
@@ -1336,7 +1335,7 @@ Message.setWrapperField = function(msg, fieldNumber, value) {
  */
 Message.setOneofWrapperField = function(msg, fieldNumber, oneof, value) {
   // TODO(b/35241823): replace this with a bounded generic when available
-  jspb.asserts.assertInstanceof(msg, Message);
+  asserts.assertInstanceof(msg, Message);
   if (!msg.wrappers_) {
     msg.wrappers_ = {};
   }
@@ -1357,7 +1356,7 @@ Message.setOneofWrapperField = function(msg, fieldNumber, oneof, value) {
  */
 Message.setRepeatedWrapperField = function(msg, fieldNumber, value) {
   // TODO(b/35241823): replace this with a bounded generic when available
-  jspb.asserts.assertInstanceof(msg, Message);
+  asserts.assertInstanceof(msg, Message);
   if (!msg.wrappers_) {
     msg.wrappers_ = {};
   }
@@ -1729,15 +1728,15 @@ Message.compareFields = function(field1, field2) {
       var val2 = typedField2[i];
 
       if (val1 && (val1.constructor == Object)) {
-        jspb.asserts.assert(extension1 === undefined);
-        jspb.asserts.assert(i === typedField1.length - 1);
+        asserts.assert(extension1 === undefined);
+        asserts.assert(i === typedField1.length - 1);
         extension1 = val1;
         val1 = undefined;
       }
 
       if (val2 && (val2.constructor == Object)) {
-        jspb.asserts.assert(extension2 === undefined);
-        jspb.asserts.assert(i === typedField2.length - 1);
+        asserts.assert(extension2 === undefined);
+        asserts.assert(i === typedField2.length - 1);
         extension2 = val2;
         val2 = undefined;
       }
@@ -1828,9 +1827,9 @@ Message.cloneMessage = function(msg) {
  * @export
  */
 Message.copyInto = function(fromMessage, toMessage) {
-  jspb.asserts.assertInstanceof(fromMessage, Message);
-  jspb.asserts.assertInstanceof(toMessage, Message);
-  jspb.asserts.assert(
+  asserts.assertInstanceof(fromMessage, Message);
+  asserts.assertInstanceof(toMessage, Message);
+  asserts.assert(
       fromMessage.constructor == toMessage.constructor,
       'Copy source and target message should have the same type.');
 
@@ -1871,7 +1870,7 @@ Message.clone_ = function(obj) {
         // NOTE:redundant null check existing for NTI compatibility.
         // see b/70515949
         clonedArray[i] = (typeof o == 'object') ?
-            Message.clone_(jspb.asserts.assert(o)) :
+            Message.clone_(asserts.assert(o)) :
             o;
       }
     }
@@ -1887,7 +1886,7 @@ Message.clone_ = function(obj) {
       // NOTE:redundant null check existing for NTI compatibility.
       // see b/70515949
       clone[key] = (typeof o == 'object') ?
-          Message.clone_(jspb.asserts.assert(o)) :
+          Message.clone_(asserts.assert(o)) :
           o;
     }
   }

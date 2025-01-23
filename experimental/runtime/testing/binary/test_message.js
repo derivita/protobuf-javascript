@@ -1,10 +1,11 @@
 /**
  * @fileoverview Kernel wrapper message.
  */
-const ByteString = goog.require('protobuf.ByteString');
-const Int64 = goog.require('protobuf.Int64');
-const InternalMessage = goog.require('protobuf.binary.InternalMessage');
-const Kernel = goog.require('protobuf.runtime.Kernel');
+import { ByteString } from '../../bytestring.js';
+
+import { Int64 } from '../../int64.js';
+import { InternalMessage } from '../../kernel/internal_message.js';
+import { Kernel } from '../../kernel/kernel.js';
 
 /**
  * A protobuf message implemented as a Kernel wrapper.

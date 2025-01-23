@@ -1,8 +1,9 @@
 /**
  * @fileoverview Handwritten code of TestAllTypesProto2.
  */
-const InternalMessage = goog.require('protobuf.binary.InternalMessage');
-const Kernel = goog.require('protobuf.runtime.Kernel');
+import { InternalMessage } from '../internal_message.js';
+
+import { Kernel } from '../kernel.js';
 
 /**
  * Handwritten code of conformance.TestAllTypesProto2.

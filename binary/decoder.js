@@ -44,9 +44,10 @@
  * @author aappleby@google.com (Austin Appleby)
  */
 
-goog.require('jspb.asserts');
-goog.require('jspb.binary.utf8');
-goog.require('jspb.utils');
+import * as asserts from '../asserts.js';
+
+import * as utf8 from './utf8.js';
+import * as utils from './utils.js';
 
 
 
@@ -192,7 +193,7 @@ BinaryDecoder.prototype.getBuffer = function() {
  * @export
  */
 BinaryDecoder.prototype.setBlock = function(data, opt_start, opt_length) {
-  this.bytes_ = jspb.utils.byteSourceToUint8Array(data);
+  this.bytes_ = utils.byteSourceToUint8Array(data);
   this.start_ = (opt_start !== undefined) ? opt_start : 0;
   this.end_ = (opt_length !== undefined) ? this.start_ + opt_length :
                                            this.bytes_.length;
@@ -339,7 +340,7 @@ BinaryDecoder.prototype.readSplitVarint64 = function(convert) {
   }
 
   // If we did not see the terminator, the encoding was invalid.
-  jspb.asserts.fail('Failed to read varint, encoding is invalid.');
+  asserts.fail('Failed to read varint, encoding is invalid.');
   this.error_ = true;
 };
 
@@ -366,7 +367,7 @@ BinaryDecoder.prototype.readSplitVarint64 = function(convert) {
  */
 BinaryDecoder.prototype.readSplitZigzagVarint64 = function(convert) {
   return this.readSplitVarint64(function(low, high) {
-    return jspb.utils.fromZigzag64(low, high, convert);
+    return utils.fromZigzag64(low, high, convert);
   });
 };
 
@@ -403,7 +404,7 @@ BinaryDecoder.prototype.readSplitFixed64 = function(convert) {
   */
 BinaryDecoder.prototype.checkCursor = function () {
   if (this.cursor_ > this.end_) {
-    jspb.asserts.fail('Read past the end ' + this.cursor_ + ' > ' + this.end_);
+    asserts.fail('Read past the end ' + this.cursor_ + ' > ' + this.end_);
   }
 }
 
@@ -506,7 +507,7 @@ BinaryDecoder.prototype.readUnsignedVarint32 = function() {
       bytes[this.cursor_++] >= 128 && bytes[this.cursor_++] >= 128 &&
       bytes[this.cursor_++] >= 128) {
     // If we get here, the varint is too long.
-    jspb.asserts.assert(false);
+    asserts.assert(false);
   }
 
   this.checkCursor();
@@ -584,7 +585,7 @@ BinaryDecoder.prototype.readZigzagVarint32 = function() {
  * @export
  */
 BinaryDecoder.prototype.readUnsignedVarint64 = function() {
-  return this.readSplitVarint64(jspb.utils.joinUint64);
+  return this.readSplitVarint64(utils.joinUint64);
 };
 
 
@@ -596,7 +597,7 @@ BinaryDecoder.prototype.readUnsignedVarint64 = function() {
  * @export
  */
 BinaryDecoder.prototype.readUnsignedVarint64String = function() {
-  return this.readSplitVarint64(jspb.utils.joinUnsignedDecimalString);
+  return this.readSplitVarint64(utils.joinUnsignedDecimalString);
 };
 
 
@@ -610,7 +611,7 @@ BinaryDecoder.prototype.readUnsignedVarint64String = function() {
  * @export
  */
 BinaryDecoder.prototype.readSignedVarint64 = function() {
-  return this.readSplitVarint64(jspb.utils.joinInt64);
+  return this.readSplitVarint64(utils.joinInt64);
 };
 
 
@@ -622,7 +623,7 @@ BinaryDecoder.prototype.readSignedVarint64 = function() {
  * @export
  */
 BinaryDecoder.prototype.readSignedVarint64String = function() {
-  return this.readSplitVarint64(jspb.utils.joinSignedDecimalString);
+  return this.readSplitVarint64(utils.joinSignedDecimalString);
 };
 
 
@@ -641,7 +642,7 @@ BinaryDecoder.prototype.readSignedVarint64String = function() {
  * @export
  */
 BinaryDecoder.prototype.readZigzagVarint64 = function() {
-  return this.readSplitVarint64(jspb.utils.joinZigzag64);
+  return this.readSplitVarint64(utils.joinZigzag64);
 };
 
 
@@ -658,7 +659,7 @@ BinaryDecoder.prototype.readZigzagVarint64 = function() {
  * @export
  */
 BinaryDecoder.prototype.readZigzagVarintHash64 = function() {
-  return this.readSplitZigzagVarint64(jspb.utils.joinHash64);
+  return this.readSplitZigzagVarint64(utils.joinHash64);
 };
 
 
@@ -675,7 +676,7 @@ BinaryDecoder.prototype.readZigzagVarintHash64 = function() {
  * @export
  */
 BinaryDecoder.prototype.readZigzagVarint64String = function() {
-  return this.readSplitZigzagVarint64(jspb.utils.joinSignedDecimalString);
+  return this.readSplitZigzagVarint64(utils.joinSignedDecimalString);
 };
 
 
@@ -737,7 +738,7 @@ BinaryDecoder.prototype.readUint32 = function() {
 BinaryDecoder.prototype.readUint64 = function() {
   var bitsLow = this.readUint32();
   var bitsHigh = this.readUint32();
-  return jspb.utils.joinUint64(bitsLow, bitsHigh);
+  return utils.joinUint64(bitsLow, bitsHigh);
 };
 
 
@@ -752,7 +753,7 @@ BinaryDecoder.prototype.readUint64 = function() {
 BinaryDecoder.prototype.readUint64String = function() {
   var bitsLow = this.readUint32();
   var bitsHigh = this.readUint32();
-  return jspb.utils.joinUnsignedDecimalString(bitsLow, bitsHigh);
+  return utils.joinUnsignedDecimalString(bitsLow, bitsHigh);
 };
 
 
@@ -814,7 +815,7 @@ BinaryDecoder.prototype.readInt32 = function() {
 BinaryDecoder.prototype.readInt64 = function() {
   var bitsLow = this.readUint32();
   var bitsHigh = this.readUint32();
-  return jspb.utils.joinInt64(bitsLow, bitsHigh);
+  return utils.joinInt64(bitsLow, bitsHigh);
 };
 
 
@@ -829,7 +830,7 @@ BinaryDecoder.prototype.readInt64 = function() {
 BinaryDecoder.prototype.readInt64String = function() {
   var bitsLow = this.readUint32();
   var bitsHigh = this.readUint32();
-  return jspb.utils.joinSignedDecimalString(bitsLow, bitsHigh);
+  return utils.joinSignedDecimalString(bitsLow, bitsHigh);
 };
 
 
@@ -843,7 +844,7 @@ BinaryDecoder.prototype.readInt64String = function() {
 BinaryDecoder.prototype.readFloat = function() {
   var bitsLow = this.readUint32();
   var bitsHigh = 0;
-  return jspb.utils.joinFloat32(bitsLow, bitsHigh);
+  return utils.joinFloat32(bitsLow, bitsHigh);
 };
 
 
@@ -857,7 +858,7 @@ BinaryDecoder.prototype.readFloat = function() {
 BinaryDecoder.prototype.readDouble = function() {
   var bitsLow = this.readUint32();
   var bitsHigh = this.readUint32();
-  return jspb.utils.joinFloat64(bitsLow, bitsHigh);
+  return utils.joinFloat64(bitsLow, bitsHigh);
 };
 
 
@@ -900,7 +901,7 @@ BinaryDecoder.prototype.readString = function (length, requireUtf8) {
   this.cursor_ += length;
   this.checkCursor();
   const result =
-	jspb.binary.utf8.decodeUtf8(jspb.asserts.assert(this.bytes_), cursor, length, requireUtf8);
+	utf8.decodeUtf8(asserts.assert(this.bytes_), cursor, length, requireUtf8);
   return result;
 };
 
@@ -915,7 +916,7 @@ BinaryDecoder.prototype.readString = function (length, requireUtf8) {
 BinaryDecoder.prototype.readBytes = function(length) {
   if (length < 0 || this.cursor_ + length > this.bytes_.length) {
     this.error_ = true;
-    jspb.asserts.fail('Invalid byte length!');
+    asserts.fail('Invalid byte length!');
     return new Uint8Array(0);
   }
 
@@ -935,7 +936,7 @@ BinaryDecoder.prototype.readBytes = function(length) {
  * @export
  */
 BinaryDecoder.prototype.readVarintHash64 = function() {
-  return this.readSplitVarint64(jspb.utils.joinHash64);
+  return this.readSplitVarint64(utils.joinHash64);
 };
 
 

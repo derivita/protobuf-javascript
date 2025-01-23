@@ -32,12 +32,12 @@
  * @fileoverview Utilities to debug JSPB based proto objects.
  */
 
-goog.require('goog.array');
-goog.require('goog.object');
+import '../closure-library/closure/goog/array/array.js';
 
-goog.require('jspb.asserts');
-goog.require('jspb.Map');
-goog.require('jspb.Message');
+import googObject from '../closure-library/closure/goog/object/object.js';
+import * as asserts from './asserts.js';
+import { Map } from './map.js';
+import { Message } from './message.js';
 
 
 /**
@@ -45,9 +45,9 @@ goog.require('jspb.Message');
  * console: `console.log(dump(myProto))`.
  * This function makes a best effort and may not work in all cases. It will not
  * work in obfuscated and or optimized code.
- * Use this in environments where {@see jspb.Message.prototype.toObject} is
+ * Use this in environments where {@see Message.prototype.toObject} is
  * not available for code size reasons.
- * @param {jspb.Message} message A jspb.Message.
+ * @param {Message} message A Message.
  * @return {Object}
  * @export
  */
@@ -55,11 +55,11 @@ export function dump(message) {
   if (!goog.DEBUG) {
     return null;
   }
-  jspb.asserts.assertInstanceof(message, jspb.Message,
+  asserts.assertInstanceof(message, Message,
       'jspb.Message instance expected');
   /** @type {Object} */
   var object = message;
-  jspb.asserts.assert(object['getExtension'],
+  asserts.assert(object['getExtension'],
       'Only unobfuscated and unoptimized compilation modes supported.');
   return /** @type {Object} */ (dump_(message));
 }
@@ -69,7 +69,7 @@ export function dump(message) {
  * Recursively introspects a message and the values its getters return to
  * make a best effort in creating a human readable representation of the
  * message.
- * @param {?} thing A jspb.Message, Array or primitive type to dump.
+ * @param {?} thing A Message, Array or primitive type to dump.
  * @return {*}
  * @private
  */
@@ -88,11 +88,11 @@ function dump_(thing) {
   }
 
   if (type == 'array') {
-    jspb.asserts.assertArray(thing);
+    asserts.assertArray(thing);
     return goog.array.map(thing, dump_);
   }
 
-  if (message instanceof jspb.Map) {
+  if (message instanceof Map) {
     var mapObject = {};
     var entries = message.entries();
     for (var entry = entries.next(); !entry.done; entry = entries.next()) {
@@ -101,7 +101,7 @@ function dump_(thing) {
     return mapObject;
   }
 
-  jspb.asserts.assertInstanceof(message, jspb.Message,
+  asserts.assertInstanceof(message, Message,
       'Only messages expected: ' + thing);
   var ctor = message.constructor;
   var messageName = ctor.name || ctor.displayName;
@@ -130,7 +130,7 @@ function dump_(thing) {
     if (/^\d+$/.test(id)) {
       var ext = ctor['extensions'][id];
       var extVal = thing.getExtension(ext);
-      var fieldName = goog.object.getKeys(ext.fieldName)[0];
+      var fieldName = googObject.getKeys(ext.fieldName)[0];
       if (extVal != null) {
         if (!extensionsObject) {
           extensionsObject = object['$extensions'] = {};

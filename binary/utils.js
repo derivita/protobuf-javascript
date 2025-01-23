@@ -36,12 +36,12 @@
  * @author aappleby@google.com (Austin Appleby)
  */
 
-goog.require('goog.crypt');
-goog.require('goog.crypt.base64');
-goog.require('goog.string');
+import * as crypt from '../../closure-library/closure/goog/crypt/crypt.js';
 
-goog.require('jspb.asserts');
-goog.require('jspb.BinaryConstants');
+import * as base64 from '../../closure-library/closure/goog/crypt/base64.js';
+import * as string from '../../closure-library/closure/goog/string/string.js';
+import * as asserts from '../asserts.js';
+import * as BinaryConstants from './constants.js';
 
 
 /**
@@ -96,7 +96,7 @@ export function splitUint64(value) {
   // Extract low 32 bits and high 32 bits as unsigned integers.
   var lowBits = value >>> 0;
   var highBits =
-      Math.floor((value - lowBits) / jspb.BinaryConstants.TWO_TO_32) >>> 0;
+      Math.floor((value - lowBits) / BinaryConstants.TWO_TO_32) >>> 0;
 
   split64Low = lowBits;
   split64High = highBits;
@@ -116,7 +116,7 @@ export function splitInt64(value) {
 
   // Extract low 32 bits and high 32 bits as unsigned integers.
   var lowBits = value >>> 0;
-  var highBits = Math.floor((value - lowBits) / jspb.BinaryConstants.TWO_TO_32);
+  var highBits = Math.floor((value - lowBits) / BinaryConstants.TWO_TO_32);
   highBits = highBits >>> 0;
 
   // Perform two's complement conversion if the sign bit was set.
@@ -206,14 +206,14 @@ export function splitFloat32(value) {
   }
 
   // Handle infinities.
-  if (value > jspb.BinaryConstants.FLOAT32_MAX) {
+  if (value > BinaryConstants.FLOAT32_MAX) {
     split64High = 0;
     split64Low = ((sign << 31) | (0x7F800000)) >>> 0;
     return;
   }
 
   // Handle denormals.
-  if (value < jspb.BinaryConstants.FLOAT32_MIN) {
+  if (value < BinaryConstants.FLOAT32_MIN) {
     // Number is a denormal.
     mant = Math.round(value / Math.pow(2, -149));
     split64High = 0;
@@ -223,7 +223,7 @@ export function splitFloat32(value) {
 
   exp = Math.floor(Math.log(value) / Math.LN2);
   mant = value * Math.pow(2, -exp);
-  mant = Math.round(mant * jspb.BinaryConstants.TWO_TO_23);
+  mant = Math.round(mant * BinaryConstants.TWO_TO_23);
   if (mant >= 0x1000000) {
     ++exp;
   }
@@ -266,17 +266,17 @@ export function splitFloat64(value) {
   }
 
   // Handle infinities.
-  if (value > jspb.BinaryConstants.FLOAT64_MAX) {
+  if (value > BinaryConstants.FLOAT64_MAX) {
     split64High = ((sign << 31) | (0x7FF00000)) >>> 0;
     split64Low = 0;
     return;
   }
 
   // Handle denormals.
-  if (value < jspb.BinaryConstants.FLOAT64_MIN) {
+  if (value < BinaryConstants.FLOAT64_MIN) {
     // Number is a denormal.
     var mant = value / Math.pow(2, -1074);
-    var mantHigh = (mant / jspb.BinaryConstants.TWO_TO_32);
+    var mantHigh = (mant / BinaryConstants.TWO_TO_32);
     split64High = ((sign << 31) | mantHigh) >>> 0;
     split64Low = (mant >>> 0);
     return;
@@ -303,8 +303,8 @@ export function splitFloat64(value) {
   }
   var mant = value * Math.pow(2, -exp);
 
-  var mantHigh = (mant * jspb.BinaryConstants.TWO_TO_20) & 0xFFFFF;
-  var mantLow = (mant * jspb.BinaryConstants.TWO_TO_52) >>> 0;
+  var mantHigh = (mant * BinaryConstants.TWO_TO_20) & 0xFFFFF;
+  var mantLow = (mant * BinaryConstants.TWO_TO_52) >>> 0;
 
   split64High =
       ((sign << 31) | ((exp + 1023) << 20) | mantHigh) >>> 0;
@@ -342,7 +342,7 @@ export function splitHash64(hash) {
  * @export
  */
 export function joinUint64(bitsLow, bitsHigh) {
-  return bitsHigh * jspb.BinaryConstants.TWO_TO_32 + (bitsLow >>> 0);
+  return bitsHigh * BinaryConstants.TWO_TO_32 + (bitsLow >>> 0);
 }
 
 
@@ -479,7 +479,7 @@ export function joinFloat32(bitsLow, bitsHigh) {
 export function joinFloat64(bitsLow, bitsHigh) {
   var sign = ((bitsHigh >> 31) * 2 + 1);
   var exp = (bitsHigh >>> 20) & 0x7FF;
-  var mant = jspb.BinaryConstants.TWO_TO_32 * (bitsHigh & 0xFFFFF) + bitsLow;
+  var mant = BinaryConstants.TWO_TO_32 * (bitsHigh & 0xFFFFF) + bitsLow;
 
   if (exp == 0x7FF) {
     if (mant) {
@@ -494,7 +494,7 @@ export function joinFloat64(bitsLow, bitsHigh) {
     return sign * Math.pow(2, -1074) * mant;
   } else {
     return sign * Math.pow(2, exp - 1075) *
-        (mant + jspb.BinaryConstants.TWO_TO_52);
+        (mant + BinaryConstants.TWO_TO_52);
   }
 }
 
@@ -667,7 +667,7 @@ export function hash64ArrayToDecimalStrings(hashes, signed) {
  * @export
  */
 export function decimalStringToHash64(dec) {
-  jspb.asserts.assert(dec.length > 0);
+  asserts.assert(dec.length > 0);
 
   // Check for minus sign.
   var minus = false;
@@ -706,7 +706,7 @@ export function decimalStringToHash64(dec) {
     muladd(1, 1);
   }
 
-  return goog.crypt.byteArrayToString(resultBytes);
+  return crypt.byteArrayToString(resultBytes);
 }
 
 
@@ -773,9 +773,9 @@ export function hash64ToHexString(hash) {
  */
 export function hexStringToHash64(hex) {
   hex = hex.toLowerCase();
-  jspb.asserts.assert(hex.length == 18);
-  jspb.asserts.assert(hex[0] == '0');
-  jspb.asserts.assert(hex[1] == 'x');
+  asserts.assert(hex.length == 18);
+  asserts.assert(hex[0] == '0');
+  asserts.assert(hex[1] == 'x');
 
   var result = '';
   for (var i = 0; i < 8; i++) {
@@ -855,7 +855,7 @@ export function countVarints(buffer, start, end) {
 export function countVarintFields(buffer, start, end, field) {
   var count = 0;
   var cursor = start;
-  var tag = field * 8 + jspb.BinaryConstants.WireType.VARINT;
+  var tag = field * 8 + BinaryConstants.WireType.VARINT;
 
   if (tag < 128) {
     // Single-byte field tag, we can use a slightly quicker count.
@@ -956,7 +956,7 @@ function countFixedFields_(buffer, start, end, tag, stride) {
  * @export
  */
 export function countFixed32Fields(buffer, start, end, field) {
-  var tag = field * 8 + jspb.BinaryConstants.WireType.FIXED32;
+  var tag = field * 8 + BinaryConstants.WireType.FIXED32;
   return countFixedFields_(buffer, start, end, tag, 4);
 }
 
@@ -972,7 +972,7 @@ export function countFixed32Fields(buffer, start, end, field) {
  * @export
  */
 export function countFixed64Fields(buffer, start, end, field) {
-  var tag = field * 8 + jspb.BinaryConstants.WireType.FIXED64;
+  var tag = field * 8 + BinaryConstants.WireType.FIXED64;
   return countFixedFields_(buffer, start, end, tag, 8);
 }
 
@@ -990,7 +990,7 @@ export function countFixed64Fields(buffer, start, end, field) {
 export function countDelimitedFields(buffer, start, end, field) {
   var count = 0;
   var cursor = start;
-  var tag = field * 8 + jspb.BinaryConstants.WireType.DELIMITED;
+  var tag = field * 8 + BinaryConstants.WireType.DELIMITED;
 
   while (cursor < end) {
     // Skip the field tag, or exit if we find a non-matching tag.
@@ -1051,7 +1051,7 @@ export function debugBytesToTextFormat(byteSource) {
  */
 export function debugScalarToTextFormat(scalar) {
   if (typeof scalar === 'string') {
-    return goog.string.quote(scalar);
+    return string.quote(scalar);
   } else {
     return scalar.toString();
   }
@@ -1105,7 +1105,7 @@ export function byteSourceToUint8Array(data) {
 
   if (data.constructor === String) {
     data = /** @type {string} */ (data);
-    return goog.crypt.base64.decodeStringToUint8Array(data);
+    return base64.decodeStringToUint8Array(data);
   }
 
   if (data instanceof Uint8Array) {
@@ -1117,6 +1117,6 @@ export function byteSourceToUint8Array(data) {
         new Uint8Array(data.buffer, data.byteOffset, data.byteLength));
   }
 
-  jspb.asserts.fail('Type not convertible to Uint8Array.');
+  asserts.fail('Type not convertible to Uint8Array.');
   return /** @type {!Uint8Array} */ (new Uint8Array(0));
 }

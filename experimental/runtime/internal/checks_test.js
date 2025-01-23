@@ -1,7 +1,9 @@
 /**
  * @fileoverview Tests for checks.js.
  */
-const {CHECK_TYPE, checkDefAndNotNull, checkFunctionExists} = goog.require('protobuf.internal.checks');
+import checks from './checks.js';
+
+const {CHECK_TYPE, checkDefAndNotNull, checkFunctionExists} = checks;
 
 describe('checkDefAndNotNull', () => {
   it('throws if undefined', () => {

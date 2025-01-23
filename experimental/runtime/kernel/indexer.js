@@ -2,12 +2,16 @@
  * @fileoverview Utilities to index a binary proto by fieldnumbers without
  * relying on strutural proto information.
  */
-const BinaryStorage = goog.require('protobuf.runtime.BinaryStorage');
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const WireType = goog.require('protobuf.binary.WireType');
-const {Field} = goog.require('protobuf.binary.field');
-const {checkCriticalState} = goog.require('protobuf.internal.checks');
-const {skipField, tagToFieldNumber, tagToWireType} = goog.require('protobuf.binary.tag');
+import { BinaryStorage } from './binary_storage.js';
+
+import { BufferDecoder } from './buffer_decoder.js';
+import { WireType } from './wire_type.js';
+import binaryField from './field.js';
+const {Field} = binaryField;
+import checks from '../internal/checks.js';
+const {checkCriticalState} = checks;
+import binaryTag from './tag.js';
+const {skipField, tagToFieldNumber, tagToWireType} = binaryTag;
 
 /**
  * Appends a new entry in the index array for the given field number.

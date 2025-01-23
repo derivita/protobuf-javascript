@@ -45,10 +45,11 @@
  * @author aappleby@google.com (Austin Appleby)
  */
 
-goog.require('jspb.asserts');
-goog.require('jspb.BinaryConstants');
-goog.require('jspb.BinaryDecoder');
-goog.require('jspb.utils');
+import * as asserts from '../asserts.js';
+
+import * as BinaryConstants from './constants.js';
+import { BinaryDecoder } from './decoder.js';
+import * as utils from './utils.js';
 
 /**
  * Whether to enforce that string fields are valid utf8.
@@ -65,7 +66,7 @@ goog.require('jspb.utils');
 const ENFORCE_UTF8 = goog.define('jspb.binary.ENFORCE_UTF8', 'ALWAYS');
 
 // Constrain the set of values to only these two.
-jspb.asserts.assert(
+asserts.assert(
   ENFORCE_UTF8 === 'DEPRECATED_PROTO3_ONLY' || ENFORCE_UTF8 === 'ALWAYS');
 
 const /** boolean */ UTF8_PARSING_ERRORS_ARE_FATAL = ENFORCE_UTF8 === 'ALWAYS';
@@ -86,10 +87,10 @@ const /** boolean */ UTF8_PARSING_ERRORS_ARE_FATAL = ENFORCE_UTF8 === 'ALWAYS';
  */
 export function BinaryReader(opt_bytes, opt_start, opt_length) {
   /**
-   * Wire-format decoder.
-   * @private {!jspb.BinaryDecoder}
-   */
-  this.decoder_ = jspb.BinaryDecoder.alloc(opt_bytes, opt_start, opt_length);
+     * Wire-format decoder.
+     * @private {!BinaryDecoder}
+     */
+  this.decoder_ = BinaryDecoder.alloc(opt_bytes, opt_start, opt_length);
 
   /**
    * Cursor immediately before the field tag.
@@ -101,14 +102,14 @@ export function BinaryReader(opt_bytes, opt_start, opt_length) {
    * Field number of the next field in the buffer, filled in by nextField().
    * @private {number}
    */
-  this.nextField_ = jspb.BinaryConstants.INVALID_FIELD_NUMBER;
+  this.nextField_ = BinaryConstants.INVALID_FIELD_NUMBER;
 
   /**
-   * Wire type of the next proto field in the buffer, filled in by
-   * nextField().
-   * @private {jspb.BinaryConstants.WireType}
-   */
-  this.nextWireType_ = jspb.BinaryConstants.WireType.INVALID;
+     * Wire type of the next proto field in the buffer, filled in by
+     * nextField().
+     * @private {BinaryConstants.WireType}
+     */
+  this.nextWireType_ = BinaryConstants.WireType.INVALID;
 
   /**
    * Set to true if this reader encountered an error due to corrupt data.
@@ -188,8 +189,8 @@ BinaryReader.prototype.alloc = BinaryReader.alloc;
  */
 BinaryReader.prototype.free = function() {
   this.decoder_.clear();
-  this.nextField_ = jspb.BinaryConstants.INVALID_FIELD_NUMBER;
-  this.nextWireType_ = jspb.BinaryConstants.WireType.INVALID;
+  this.nextField_ = BinaryConstants.INVALID_FIELD_NUMBER;
+  this.nextWireType_ = BinaryConstants.WireType.INVALID;
   this.error_ = false;
   this.readCallbacks_ = null;
 
@@ -240,7 +241,7 @@ BinaryReader.prototype.getFieldNumber = function() {
 
 
 /**
- * @return {jspb.BinaryConstants.WireType} The wire type of the next field
+ * @return {BinaryConstants.WireType} The wire type of the next field
  *     in the stream, or WireType.INVALID if there is no next field.
  * @export
  */
@@ -255,7 +256,7 @@ BinaryReader.prototype.getWireType = function() {
  * @export
  */
 BinaryReader.prototype.isDelimited = function() {
-  return this.nextWireType_ == jspb.BinaryConstants.WireType.DELIMITED;
+  return this.nextWireType_ == BinaryConstants.WireType.DELIMITED;
 };
 
 
@@ -265,7 +266,7 @@ BinaryReader.prototype.isDelimited = function() {
  * @export
  */
 BinaryReader.prototype.isEndGroup = function() {
-  return this.nextWireType_ == jspb.BinaryConstants.WireType.END_GROUP;
+  return this.nextWireType_ == BinaryConstants.WireType.END_GROUP;
 };
 
 
@@ -288,8 +289,8 @@ BinaryReader.prototype.getError = function() {
  */
 BinaryReader.prototype.setBlock = function(bytes, start, length) {
   this.decoder_.setBlock(bytes, start, length);
-  this.nextField_ = jspb.BinaryConstants.INVALID_FIELD_NUMBER;
-  this.nextWireType_ = jspb.BinaryConstants.WireType.INVALID;
+  this.nextField_ = BinaryConstants.INVALID_FIELD_NUMBER;
+  this.nextWireType_ = BinaryConstants.WireType.INVALID;
 };
 
 
@@ -300,8 +301,8 @@ BinaryReader.prototype.setBlock = function(bytes, start, length) {
  */
 BinaryReader.prototype.reset = function() {
   this.decoder_.reset();
-  this.nextField_ = jspb.BinaryConstants.INVALID_FIELD_NUMBER;
-  this.nextWireType_ = jspb.BinaryConstants.WireType.INVALID;
+  this.nextField_ = BinaryConstants.INVALID_FIELD_NUMBER;
+  this.nextWireType_ = BinaryConstants.WireType.INVALID;
 };
 
 
@@ -331,7 +332,7 @@ BinaryReader.prototype.nextField = function() {
   // If we hit an error decoding the previous field, stop now before we
   // try to decode anything else
   if (this.getError()) {
-    jspb.asserts.fail('Decoder hit an error');
+    asserts.fail('Decoder hit an error');
     return false;
   }
 
@@ -340,17 +341,17 @@ BinaryReader.prototype.nextField = function() {
   var header = this.decoder_.readUnsignedVarint32();
 
   var nextField = header >>> 3;
-  var nextWireType = /** @type {jspb.BinaryConstants.WireType} */
+  var nextWireType = /** @type {BinaryConstants.WireType} */
       (header & 0x7);
 
   // If the wire type isn't one of the valid ones, something's broken.
-  if (nextWireType != jspb.BinaryConstants.WireType.VARINT &&
-      nextWireType != jspb.BinaryConstants.WireType.FIXED32 &&
-      nextWireType != jspb.BinaryConstants.WireType.FIXED64 &&
-      nextWireType != jspb.BinaryConstants.WireType.DELIMITED &&
-      nextWireType != jspb.BinaryConstants.WireType.START_GROUP &&
-      nextWireType != jspb.BinaryConstants.WireType.END_GROUP) {
-    jspb.asserts.fail(
+  if (nextWireType != BinaryConstants.WireType.VARINT &&
+      nextWireType != BinaryConstants.WireType.FIXED32 &&
+      nextWireType != BinaryConstants.WireType.FIXED64 &&
+      nextWireType != BinaryConstants.WireType.DELIMITED &&
+      nextWireType != BinaryConstants.WireType.START_GROUP &&
+      nextWireType != BinaryConstants.WireType.END_GROUP) {
+    asserts.fail(
         'Invalid wire type: %s (at position %s)', nextWireType,
         this.fieldCursor_);
     this.error_ = true;
@@ -396,8 +397,8 @@ BinaryReader.prototype.skipMatchingFields = function() {
  * @export
  */
 BinaryReader.prototype.skipVarintField = function() {
-  if (this.nextWireType_ != jspb.BinaryConstants.WireType.VARINT) {
-    jspb.asserts.fail('Invalid wire type for skipVarintField');
+  if (this.nextWireType_ != BinaryConstants.WireType.VARINT) {
+    asserts.fail('Invalid wire type for skipVarintField');
     this.skipField();
     return;
   }
@@ -411,8 +412,8 @@ BinaryReader.prototype.skipVarintField = function() {
  * @export
  */
 BinaryReader.prototype.skipDelimitedField = function() {
-  if (this.nextWireType_ != jspb.BinaryConstants.WireType.DELIMITED) {
-    jspb.asserts.fail('Invalid wire type for skipDelimitedField');
+  if (this.nextWireType_ != BinaryConstants.WireType.DELIMITED) {
+    asserts.fail('Invalid wire type for skipDelimitedField');
     this.skipField();
     return;
   }
@@ -427,8 +428,8 @@ BinaryReader.prototype.skipDelimitedField = function() {
  * @export
  */
 BinaryReader.prototype.skipFixed32Field = function() {
-  if (this.nextWireType_ != jspb.BinaryConstants.WireType.FIXED32) {
-    jspb.asserts.fail('Invalid wire type for skipFixed32Field');
+  if (this.nextWireType_ != BinaryConstants.WireType.FIXED32) {
+    asserts.fail('Invalid wire type for skipFixed32Field');
     this.skipField();
     return;
   }
@@ -442,8 +443,8 @@ BinaryReader.prototype.skipFixed32Field = function() {
  * @export
  */
 BinaryReader.prototype.skipFixed64Field = function() {
-  if (this.nextWireType_ != jspb.BinaryConstants.WireType.FIXED64) {
-    jspb.asserts.fail('Invalid wire type for skipFixed64Field');
+  if (this.nextWireType_ != BinaryConstants.WireType.FIXED64) {
+    asserts.fail('Invalid wire type for skipFixed64Field');
     this.skipField();
     return;
   }
@@ -460,14 +461,14 @@ BinaryReader.prototype.skipGroup = function() {
   var previousField = this.nextField_;
   do {
     if (!this.nextField()) {
-      jspb.asserts.fail('Unmatched start-group tag: stream EOF');
+      asserts.fail('Unmatched start-group tag: stream EOF');
       this.error_ = true;
       return;
     }
-    if (this.nextWireType_ == jspb.BinaryConstants.WireType.END_GROUP) {
+    if (this.nextWireType_ == BinaryConstants.WireType.END_GROUP) {
       // Group end: check that it matches top-of-stack.
       if (this.nextField_ != previousField) {
-        jspb.asserts.fail('Unmatched end-group tag');
+        asserts.fail('Unmatched end-group tag');
         this.error_ = true;
         return;
       }
@@ -485,23 +486,23 @@ BinaryReader.prototype.skipGroup = function() {
  */
 BinaryReader.prototype.skipField = function() {
   switch (this.nextWireType_) {
-    case jspb.BinaryConstants.WireType.VARINT:
+    case BinaryConstants.WireType.VARINT:
       this.skipVarintField();
       break;
-    case jspb.BinaryConstants.WireType.FIXED64:
+    case BinaryConstants.WireType.FIXED64:
       this.skipFixed64Field();
       break;
-    case jspb.BinaryConstants.WireType.DELIMITED:
+    case BinaryConstants.WireType.DELIMITED:
       this.skipDelimitedField();
       break;
-    case jspb.BinaryConstants.WireType.FIXED32:
+    case BinaryConstants.WireType.FIXED32:
       this.skipFixed32Field();
       break;
-    case jspb.BinaryConstants.WireType.START_GROUP:
+    case BinaryConstants.WireType.START_GROUP:
       this.skipGroup();
       break;
     default:
-      jspb.asserts.fail('Invalid wire encoding for field.');
+      asserts.fail('Invalid wire encoding for field.');
   }
 };
 
@@ -517,7 +518,7 @@ BinaryReader.prototype.registerReadCallback = function(
   if (this.readCallbacks_ === null) {
     this.readCallbacks_ = {};
   }
-  jspb.asserts.assert(!this.readCallbacks_[callbackName]);
+  asserts.assert(!this.readCallbacks_[callbackName]);
   this.readCallbacks_[callbackName] = callback;
 };
 
@@ -529,21 +530,21 @@ BinaryReader.prototype.registerReadCallback = function(
  * @export
  */
 BinaryReader.prototype.runReadCallback = function(callbackName) {
-  jspb.asserts.assert(this.readCallbacks_ !== null);
+  asserts.assert(this.readCallbacks_ !== null);
   var callback = this.readCallbacks_[callbackName];
-  jspb.asserts.assert(callback);
+  asserts.assert(callback);
   return callback(this);
 };
 
 
 /**
  * Reads a field of any valid non-message type from the binary stream.
- * @param {jspb.BinaryConstants.FieldType} fieldType
+ * @param {BinaryConstants.FieldType} fieldType
  * @return {jspb.AnyFieldType}
  */
 BinaryReader.prototype.readAny = function(fieldType) {
-  this.nextWireType_ = jspb.BinaryConstants.FieldTypeToWireType(fieldType);
-  var fieldTypes = jspb.BinaryConstants.FieldType;
+  this.nextWireType_ = BinaryConstants.FieldTypeToWireType(fieldType);
+  var fieldTypes = BinaryConstants.FieldType;
   switch (fieldType) {
     case fieldTypes.DOUBLE:
       return this.readDouble();
@@ -564,9 +565,9 @@ BinaryReader.prototype.readAny = function(fieldType) {
     case fieldTypes.STRING:
       return this.readString();
     case fieldTypes.GROUP:
-      jspb.asserts.fail('Group field type not supported in readAny()');
+      asserts.fail('Group field type not supported in readAny()');
     case fieldTypes.MESSAGE:
-      jspb.asserts.fail('Message field type not supported in readAny()');
+      asserts.fail('Message field type not supported in readAny()');
     case fieldTypes.BYTES:
       return this.readBytes();
     case fieldTypes.UINT32:
@@ -586,7 +587,7 @@ BinaryReader.prototype.readAny = function(fieldType) {
     case fieldTypes.VHASH64:
       return this.readVarintHash64();
     default:
-      jspb.asserts.fail('Invalid field type in readAny()');
+      asserts.fail('Invalid field type in readAny()');
   }
   return 0;
 };
@@ -602,8 +603,8 @@ BinaryReader.prototype.readAny = function(fieldType) {
  * @export
  */
 BinaryReader.prototype.readMessage = function(message, reader) {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.DELIMITED);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.DELIMITED);
 
   // Save the current endpoint of the decoder and move it to the end of the
   // embedded message.
@@ -633,17 +634,17 @@ BinaryReader.prototype.readMessage = function(message, reader) {
  */
 BinaryReader.prototype.readGroup = function(field, message, reader) {
   // Ensure that the wire type is correct.
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.START_GROUP);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.START_GROUP);
   // Ensure that the field number is correct.
-  jspb.asserts.assert(this.nextField_ == field);
+  asserts.assert(this.nextField_ == field);
 
   // Deserialize the message. The deserialization will stop at an END_GROUP tag.
   reader(message, this);
 
   if (!this.error_ &&
-      this.nextWireType_ != jspb.BinaryConstants.WireType.END_GROUP) {
-    jspb.asserts.fail('Group submessage did not end with an END_GROUP tag');
+      this.nextWireType_ != BinaryConstants.WireType.END_GROUP) {
+    asserts.fail('Group submessage did not end with an END_GROUP tag');
     this.error_ = true;
   }
 };
@@ -651,19 +652,19 @@ BinaryReader.prototype.readGroup = function(field, message, reader) {
 
 /**
  * Return a decoder that wraps the current delimited field.
- * @return {!jspb.BinaryDecoder}
+ * @return {!BinaryDecoder}
  * @export
  */
 BinaryReader.prototype.getFieldDecoder = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.DELIMITED);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.DELIMITED);
 
   var length = this.decoder_.readUnsignedVarint32();
   var start = this.decoder_.getCursor();
   var end = start + length;
 
   var innerDecoder =
-      jspb.BinaryDecoder.alloc(this.decoder_.getBuffer(), start, length);
+      BinaryDecoder.alloc(this.decoder_.getBuffer(), start, length);
   this.decoder_.setCursor(end);
   return innerDecoder;
 };
@@ -677,8 +678,8 @@ BinaryReader.prototype.getFieldDecoder = function() {
  * @export
  */
 BinaryReader.prototype.readInt32 = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return this.decoder_.readSignedVarint32();
 };
 
@@ -694,8 +695,8 @@ BinaryReader.prototype.readInt32 = function() {
  * @export
  */
 BinaryReader.prototype.readInt32String = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return this.decoder_.readSignedVarint32String();
 };
 
@@ -708,8 +709,8 @@ BinaryReader.prototype.readInt32String = function() {
  * @export
  */
 BinaryReader.prototype.readInt64 = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return this.decoder_.readSignedVarint64();
 };
 
@@ -725,8 +726,8 @@ BinaryReader.prototype.readInt64 = function() {
  * @export
  */
 BinaryReader.prototype.readInt64String = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return this.decoder_.readSignedVarint64String();
 };
 
@@ -739,8 +740,8 @@ BinaryReader.prototype.readInt64String = function() {
  * @export
  */
 BinaryReader.prototype.readUint32 = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return this.decoder_.readUnsignedVarint32();
 };
 
@@ -756,8 +757,8 @@ BinaryReader.prototype.readUint32 = function() {
  * @export
  */
 BinaryReader.prototype.readUint32String = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return this.decoder_.readUnsignedVarint32String();
 };
 
@@ -770,8 +771,8 @@ BinaryReader.prototype.readUint32String = function() {
  * @export
  */
 BinaryReader.prototype.readUint64 = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return this.decoder_.readUnsignedVarint64();
 };
 
@@ -787,8 +788,8 @@ BinaryReader.prototype.readUint64 = function() {
  * @export
  */
 BinaryReader.prototype.readUint64String = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return this.decoder_.readUnsignedVarint64String();
 };
 
@@ -802,8 +803,8 @@ BinaryReader.prototype.readUint64String = function() {
  * @export
  */
 BinaryReader.prototype.readSint32 = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return this.decoder_.readZigzagVarint32();
 };
 
@@ -817,8 +818,8 @@ BinaryReader.prototype.readSint32 = function() {
  * @export
  */
 BinaryReader.prototype.readSint64 = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return this.decoder_.readZigzagVarint64();
 };
 
@@ -833,8 +834,8 @@ BinaryReader.prototype.readSint64 = function() {
  * @export
  */
 BinaryReader.prototype.readSint64String = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return this.decoder_.readZigzagVarint64String();
 };
 
@@ -848,8 +849,8 @@ BinaryReader.prototype.readSint64String = function() {
  * @export
  */
 BinaryReader.prototype.readFixed32 = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.FIXED32);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.FIXED32);
   return this.decoder_.readUint32();
 };
 
@@ -863,8 +864,8 @@ BinaryReader.prototype.readFixed32 = function() {
  * @export
  */
 BinaryReader.prototype.readFixed64 = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.FIXED64);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.FIXED64);
   return this.decoder_.readUint64();
 };
 
@@ -881,8 +882,8 @@ BinaryReader.prototype.readFixed64 = function() {
  * @export
  */
 BinaryReader.prototype.readFixed64String = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.FIXED64);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.FIXED64);
   return this.decoder_.readUint64String();
 };
 
@@ -896,8 +897,8 @@ BinaryReader.prototype.readFixed64String = function() {
  * @export
  */
 BinaryReader.prototype.readSfixed32 = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.FIXED32);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.FIXED32);
   return this.decoder_.readInt32();
 };
 
@@ -912,8 +913,8 @@ BinaryReader.prototype.readSfixed32 = function() {
  * @export
  */
 BinaryReader.prototype.readSfixed32String = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.FIXED32);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.FIXED32);
   return this.decoder_.readInt32().toString();
 };
 
@@ -927,8 +928,8 @@ BinaryReader.prototype.readSfixed32String = function() {
  * @export
  */
 BinaryReader.prototype.readSfixed64 = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.FIXED64);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.FIXED64);
   return this.decoder_.readInt64();
 };
 
@@ -944,8 +945,8 @@ BinaryReader.prototype.readSfixed64 = function() {
  * @export
  */
 BinaryReader.prototype.readSfixed64String = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.FIXED64);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.FIXED64);
   return this.decoder_.readInt64String();
 };
 
@@ -958,8 +959,8 @@ BinaryReader.prototype.readSfixed64String = function() {
  * @export
  */
 BinaryReader.prototype.readFloat = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.FIXED32);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.FIXED32);
   return this.decoder_.readFloat();
 };
 
@@ -972,8 +973,8 @@ BinaryReader.prototype.readFloat = function() {
  * @export
  */
 BinaryReader.prototype.readDouble = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.FIXED64);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.FIXED64);
   return this.decoder_.readDouble();
 };
 
@@ -986,8 +987,8 @@ BinaryReader.prototype.readDouble = function() {
  * @export
  */
 BinaryReader.prototype.readBool = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return !!this.decoder_.readUnsignedVarint32();
 };
 
@@ -1000,8 +1001,8 @@ BinaryReader.prototype.readBool = function() {
  * @export
  */
 BinaryReader.prototype.readEnum = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return this.decoder_.readSignedVarint64();
 };
 
@@ -1020,8 +1021,8 @@ BinaryReader.prototype.readString = function() {
     return this.readStringRequireUtf8();
   }
 
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.DELIMITED);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.DELIMITED);
   var length = this.decoder_.readUnsignedVarint32();
   return this.decoder_.readString(length, /*requireUtf8=*/ false);
 };
@@ -1034,7 +1035,7 @@ BinaryReader.prototype.readString = function() {
  * @return {string} The value of the string field.
  */
 BinaryReader.prototype.readStringRequireUtf8 = function () {
-  jspb.asserts.assert(this.nextWireType_ == jspb.BinaryConstants.WireType.DELIMITED);
+  asserts.assert(this.nextWireType_ == BinaryConstants.WireType.DELIMITED);
   const length = this.decoder_.readUnsignedVarint32();
   return this.decoder_.readString(length, /*requireUtf8=*/ true);
 };
@@ -1048,8 +1049,8 @@ BinaryReader.prototype.readStringRequireUtf8 = function () {
  * @export
  */
 BinaryReader.prototype.readBytes = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.DELIMITED);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.DELIMITED);
   var length = this.decoder_.readUnsignedVarint32();
   return this.decoder_.readBytes(length);
 };
@@ -1064,8 +1065,8 @@ BinaryReader.prototype.readBytes = function() {
  * @export
  */
 BinaryReader.prototype.readVarintHash64 = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return this.decoder_.readVarintHash64();
 };
 
@@ -1079,8 +1080,8 @@ BinaryReader.prototype.readVarintHash64 = function() {
  * @export
  */
 BinaryReader.prototype.readSintHash64 = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return this.decoder_.readZigzagVarintHash64();
 };
 
@@ -1097,8 +1098,8 @@ BinaryReader.prototype.readSintHash64 = function() {
  * @export
  */
 BinaryReader.prototype.readSplitVarint64 = function(convert) {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return this.decoder_.readSplitVarint64(convert);
 };
 
@@ -1115,10 +1116,10 @@ BinaryReader.prototype.readSplitVarint64 = function(convert) {
  * @export
  */
 BinaryReader.prototype.readSplitZigzagVarint64 = function(convert) {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.VARINT);
   return this.decoder_.readSplitVarint64(function(lowBits, highBits) {
-    return jspb.utils.fromZigzag64(lowBits, highBits, convert);
+    return utils.fromZigzag64(lowBits, highBits, convert);
   });
 };
 
@@ -1132,8 +1133,8 @@ BinaryReader.prototype.readSplitZigzagVarint64 = function(convert) {
  * @export
  */
 BinaryReader.prototype.readFixedHash64 = function() {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.FIXED64);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.FIXED64);
   return this.decoder_.readFixedHash64();
 };
 
@@ -1150,21 +1151,21 @@ BinaryReader.prototype.readFixedHash64 = function() {
  * @export
  */
 BinaryReader.prototype.readSplitFixed64 = function(convert) {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.FIXED64);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.FIXED64);
   return this.decoder_.readSplitFixed64(convert);
 };
 
 
 /**
  * Reads a packed scalar field using the supplied raw reader function.
- * @param {function(this:jspb.BinaryDecoder)} decodeMethod
+ * @param {function(this:BinaryDecoder)} decodeMethod
  * @return {!Array}
  * @private
  */
 BinaryReader.prototype.readPackedField_ = function(decodeMethod) {
-  jspb.asserts.assert(
-      this.nextWireType_ == jspb.BinaryConstants.WireType.DELIMITED);
+  asserts.assert(
+      this.nextWireType_ == BinaryConstants.WireType.DELIMITED);
   var length = this.decoder_.readUnsignedVarint32();
   var end = this.decoder_.getCursor() + length;
   var result = [];

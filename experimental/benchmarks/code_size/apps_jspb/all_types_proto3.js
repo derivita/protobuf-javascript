@@ -5,7 +5,7 @@
 const ForeignMessage = goog.require('proto.proto3_unittest.ForeignMessage');
 const TestAllTypes = goog.require('proto.proto3_unittest.TestAllTypes');
 const TestPackedTypes = goog.require('proto.proto3_unittest.TestPackedTypes');
-const {ensureCommonBaseLine} = goog.require('protobuf.benchmark.codeSize.codeSizeBase');
+import { ensureCommonBaseLine } from '../code_size_base.js';
 
 ensureCommonBaseLine();
 

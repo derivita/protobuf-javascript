@@ -1,6 +1,7 @@
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const Int64 = goog.require('protobuf.Int64');
-const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
+import { BufferDecoder } from './buffer_decoder.js';
+import { Int64 } from '../int64.js';
+import bufferDecoderHelper from './buffer_decoder_helper.js';
+const {createBufferDecoder} = bufferDecoderHelper;
 
 /**
  * An array of Pairs of packed sfixed64 values and their bit representation.

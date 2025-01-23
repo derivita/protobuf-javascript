@@ -56,14 +56,13 @@
  * @author aappleby@google.com (Austin Appleby)
  */
 
-goog.require('goog.crypt.base64');
+import * as base64 from '../../closure-library/closure/goog/crypt/base64.js';
 
-goog.require('jspb.asserts');
-goog.require('jspb.BinaryConstants');
-goog.require('jspb.BinaryEncoder');
-goog.require('jspb.arith.Int64');
-goog.require('jspb.arith.UInt64');
-goog.require('jspb.utils');
+import * as asserts from '../asserts.js';
+import * as BinaryConstants from './constants.js';
+import { BinaryEncoder } from './encoder.js';
+import { Int64, UInt64 } from './arith.js';
+import * as utils from './utils.js';
 
 
 
@@ -91,13 +90,13 @@ export function BinaryWriter() {
   this.totalLength_ = 0;
 
   /**
-   * Binary encoder holding pieces of a message that we're still serializing.
-   * When we get to a stopping point (either the start of a new submessage, or
-   * when we need to append a raw Uint8Array), the encoder's buffer will be
-   * added to the block array above and the encoder will be reset.
-   * @private {!jspb.BinaryEncoder}
-   */
-  this.encoder_ = new jspb.BinaryEncoder();
+     * Binary encoder holding pieces of a message that we're still serializing.
+     * When we get to a stopping point (either the start of a new submessage, or
+     * when we need to append a raw Uint8Array), the encoder's buffer will be
+     * added to the block array above and the encoder will be reset.
+     * @private {!BinaryEncoder}
+     */
+  this.encoder_ = new BinaryEncoder();
 
   /**
    * A stack of bookmarks containing the parent blocks for each message started
@@ -131,7 +130,7 @@ BinaryWriter.prototype.appendUint8Array_ = function(arr) {
  * @private
  */
 BinaryWriter.prototype.beginDelimited_ = function(field) {
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.DELIMITED);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.DELIMITED);
   var bookmark = this.encoder_.end();
   this.blocks_.push(bookmark);
   this.totalLength_ += bookmark.length;
@@ -150,7 +149,7 @@ BinaryWriter.prototype.beginDelimited_ = function(field) {
 BinaryWriter.prototype.endDelimited_ = function(bookmark) {
   var oldLength = bookmark.pop();
   var messageLength = this.totalLength_ + this.encoder_.length() - oldLength;
-  jspb.asserts.assert(messageLength >= 0);
+  asserts.assert(messageLength >= 0);
 
   while (messageLength > 127) {
     bookmark.push((messageLength & 0x7f) | 0x80);
@@ -210,7 +209,7 @@ BinaryWriter.prototype.reset = function() {
  * @export
  */
 BinaryWriter.prototype.getResultBuffer = function() {
-  jspb.asserts.assert(this.bookmarks_.length == 0);
+  asserts.assert(this.bookmarks_.length == 0);
 
   var flat = new Uint8Array(this.totalLength_ + this.encoder_.length());
 
@@ -229,7 +228,7 @@ BinaryWriter.prototype.getResultBuffer = function() {
   offset += tail.length;
 
   // Post condition: `flattened` must have had every byte written.
-  jspb.asserts.assert(offset == flat.length);
+  asserts.assert(offset == flat.length);
 
   // Replace our block list with the flattened block, which lets GC reclaim
   // the temp blocks sooner.
@@ -241,12 +240,12 @@ BinaryWriter.prototype.getResultBuffer = function() {
 
 /**
  * Converts the encoded data into a base64-encoded string.
- * @param {!goog.crypt.base64.Alphabet=} alphabet Which flavor of base64 to use.
+ * @param {!base64.Alphabet=} alphabet Which flavor of base64 to use.
  * @return {string}
  * @export
  */
 BinaryWriter.prototype.getResultBase64String = function(alphabet) {
-  return goog.crypt.base64.encodeByteArray(this.getResultBuffer(), alphabet);
+  return base64.encodeByteArray(this.getResultBuffer(), alphabet);
 };
 
 
@@ -268,7 +267,7 @@ BinaryWriter.prototype.beginSubMessage = function(field) {
  * @export
  */
 BinaryWriter.prototype.endSubMessage = function() {
-  jspb.asserts.assert(this.bookmarks_.length >= 0);
+  asserts.assert(this.bookmarks_.length >= 0);
   this.endDelimited_(this.bookmarks_.pop());
 };
 
@@ -282,7 +281,7 @@ BinaryWriter.prototype.endSubMessage = function() {
  * @private
  */
 BinaryWriter.prototype.writeFieldHeader_ = function(field, wireType) {
-  jspb.asserts.assert(field >= 1 && field == Math.floor(field));
+  asserts.assert(field >= 1 && field == Math.floor(field));
   var x = field * 8 + wireType;
   this.encoder_.writeUnsignedVarint32(x);
 };
@@ -290,13 +289,13 @@ BinaryWriter.prototype.writeFieldHeader_ = function(field, wireType) {
 
 /**
  * Writes a field of any valid scalar type to the binary stream.
- * @param {jspb.BinaryConstants.FieldType} fieldType
+ * @param {BinaryConstants.FieldType} fieldType
  * @param {number} field
  * @param {jspb.AnyFieldType} value
  * @export
  */
 BinaryWriter.prototype.writeAny = function(fieldType, field, value) {
-  var fieldTypes = jspb.BinaryConstants.FieldType;
+  var fieldTypes = BinaryConstants.FieldType;
   switch (fieldType) {
     case fieldTypes.DOUBLE:
       this.writeDouble(field, /** @type {number} */ (value));
@@ -326,10 +325,10 @@ BinaryWriter.prototype.writeAny = function(fieldType, field, value) {
       this.writeString(field, /** @type {string} */ (value));
       return;
     case fieldTypes.GROUP:
-      jspb.asserts.fail('Group field type not supported in writeAny()');
+      asserts.fail('Group field type not supported in writeAny()');
       return;
     case fieldTypes.MESSAGE:
-      jspb.asserts.fail('Message field type not supported in writeAny()');
+      asserts.fail('Message field type not supported in writeAny()');
       return;
     case fieldTypes.BYTES:
       this.writeBytes(field, /** @type {?Uint8Array} */ (value));
@@ -359,7 +358,7 @@ BinaryWriter.prototype.writeAny = function(fieldType, field, value) {
       this.writeVarintHash64(field, /** @type {string} */ (value));
       return;
     default:
-      jspb.asserts.fail('Invalid field type in writeAny()');
+      asserts.fail('Invalid field type in writeAny()');
       return;
   }
 };
@@ -373,7 +372,7 @@ BinaryWriter.prototype.writeAny = function(fieldType, field, value) {
  */
 BinaryWriter.prototype.writeUnsignedVarint32_ = function(field, value) {
   if (value == null) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.VARINT);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.VARINT);
   this.encoder_.writeUnsignedVarint32(value);
 };
 
@@ -386,7 +385,7 @@ BinaryWriter.prototype.writeUnsignedVarint32_ = function(field, value) {
  */
 BinaryWriter.prototype.writeSignedVarint32_ = function(field, value) {
   if (value == null) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.VARINT);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.VARINT);
   this.encoder_.writeSignedVarint32(value);
 };
 
@@ -399,7 +398,7 @@ BinaryWriter.prototype.writeSignedVarint32_ = function(field, value) {
  */
 BinaryWriter.prototype.writeUnsignedVarint64_ = function(field, value) {
   if (value == null) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.VARINT);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.VARINT);
   this.encoder_.writeUnsignedVarint64(value);
 };
 
@@ -412,7 +411,7 @@ BinaryWriter.prototype.writeUnsignedVarint64_ = function(field, value) {
  */
 BinaryWriter.prototype.writeSignedVarint64_ = function(field, value) {
   if (value == null) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.VARINT);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.VARINT);
   this.encoder_.writeSignedVarint64(value);
 };
 
@@ -425,7 +424,7 @@ BinaryWriter.prototype.writeSignedVarint64_ = function(field, value) {
  */
 BinaryWriter.prototype.writeZigzagVarint32_ = function(field, value) {
   if (value == null) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.VARINT);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.VARINT);
   this.encoder_.writeZigzagVarint32(value);
 };
 
@@ -438,7 +437,7 @@ BinaryWriter.prototype.writeZigzagVarint32_ = function(field, value) {
  */
 BinaryWriter.prototype.writeZigzagVarint64_ = function(field, value) {
   if (value == null) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.VARINT);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.VARINT);
   this.encoder_.writeZigzagVarint64(value);
 };
 
@@ -452,7 +451,7 @@ BinaryWriter.prototype.writeZigzagVarint64_ = function(field, value) {
 BinaryWriter.prototype.writeZigzagVarint64String_ = function(
     field, value) {
   if (value == null) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.VARINT);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.VARINT);
   this.encoder_.writeZigzagVarint64String(value);
 };
 
@@ -465,7 +464,7 @@ BinaryWriter.prototype.writeZigzagVarint64String_ = function(
  */
 BinaryWriter.prototype.writeZigzagVarintHash64_ = function(field, value) {
   if (value == null) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.VARINT);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.VARINT);
   this.encoder_.writeZigzagVarintHash64(value);
 };
 
@@ -479,9 +478,9 @@ BinaryWriter.prototype.writeZigzagVarintHash64_ = function(field, value) {
  */
 BinaryWriter.prototype.writeInt32 = function(field, value) {
   if (value == null) return;
-  jspb.asserts.assert(
-      (value >= -jspb.BinaryConstants.TWO_TO_31) &&
-      (value < jspb.BinaryConstants.TWO_TO_31));
+  asserts.assert(
+      (value >= -BinaryConstants.TWO_TO_31) &&
+      (value < BinaryConstants.TWO_TO_31));
   this.writeSignedVarint32_(field, value);
 };
 
@@ -496,9 +495,9 @@ BinaryWriter.prototype.writeInt32 = function(field, value) {
 BinaryWriter.prototype.writeInt32String = function(field, value) {
   if (value == null) return;
   var intValue = /** {number} */ parseInt(value, 10);
-  jspb.asserts.assert(
-      (intValue >= -jspb.BinaryConstants.TWO_TO_31) &&
-      (intValue < jspb.BinaryConstants.TWO_TO_31));
+  asserts.assert(
+      (intValue >= -BinaryConstants.TWO_TO_31) &&
+      (intValue < BinaryConstants.TWO_TO_31));
   this.writeSignedVarint32_(field, intValue);
 };
 
@@ -512,9 +511,9 @@ BinaryWriter.prototype.writeInt32String = function(field, value) {
  */
 BinaryWriter.prototype.writeInt64 = function(field, value) {
   if (value == null) return;
-  jspb.asserts.assert(
-      (value >= -jspb.BinaryConstants.TWO_TO_63) &&
-      (value < jspb.BinaryConstants.TWO_TO_63));
+  asserts.assert(
+      (value >= -BinaryConstants.TWO_TO_63) &&
+      (value < BinaryConstants.TWO_TO_63));
   this.writeSignedVarint64_(field, value);
 };
 
@@ -527,8 +526,8 @@ BinaryWriter.prototype.writeInt64 = function(field, value) {
  */
 BinaryWriter.prototype.writeInt64String = function(field, value) {
   if (value == null) return;
-  var num = jspb.arith.Int64.fromString(value);
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.VARINT);
+  var num = Int64.fromString(value);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.VARINT);
   this.encoder_.writeSplitVarint64(num.lo, num.hi);
 };
 
@@ -542,8 +541,8 @@ BinaryWriter.prototype.writeInt64String = function(field, value) {
  */
 BinaryWriter.prototype.writeUint32 = function(field, value) {
   if (value == null) return;
-  jspb.asserts.assert(
-      (value >= 0) && (value < jspb.BinaryConstants.TWO_TO_32));
+  asserts.assert(
+      (value >= 0) && (value < BinaryConstants.TWO_TO_32));
   this.writeUnsignedVarint32_(field, value);
 };
 
@@ -558,8 +557,8 @@ BinaryWriter.prototype.writeUint32 = function(field, value) {
 BinaryWriter.prototype.writeUint32String = function(field, value) {
   if (value == null) return;
   var intValue = /** {number} */ parseInt(value, 10);
-  jspb.asserts.assert(
-      (intValue >= 0) && (intValue < jspb.BinaryConstants.TWO_TO_32));
+  asserts.assert(
+      (intValue >= 0) && (intValue < BinaryConstants.TWO_TO_32));
   this.writeUnsignedVarint32_(field, intValue);
 };
 
@@ -573,8 +572,8 @@ BinaryWriter.prototype.writeUint32String = function(field, value) {
  */
 BinaryWriter.prototype.writeUint64 = function(field, value) {
   if (value == null) return;
-  jspb.asserts.assert(
-      (value >= 0) && (value < jspb.BinaryConstants.TWO_TO_64));
+  asserts.assert(
+      (value >= 0) && (value < BinaryConstants.TWO_TO_64));
   this.writeUnsignedVarint64_(field, value);
 };
 
@@ -587,8 +586,8 @@ BinaryWriter.prototype.writeUint64 = function(field, value) {
  */
 BinaryWriter.prototype.writeUint64String = function(field, value) {
   if (value == null) return;
-  var num = jspb.arith.UInt64.fromString(value);
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.VARINT);
+  var num = UInt64.fromString(value);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.VARINT);
   this.encoder_.writeSplitVarint64(num.lo, num.hi);
 };
 
@@ -602,9 +601,9 @@ BinaryWriter.prototype.writeUint64String = function(field, value) {
  */
 BinaryWriter.prototype.writeSint32 = function(field, value) {
   if (value == null) return;
-  jspb.asserts.assert(
-      (value >= -jspb.BinaryConstants.TWO_TO_31) &&
-      (value < jspb.BinaryConstants.TWO_TO_31));
+  asserts.assert(
+      (value >= -BinaryConstants.TWO_TO_31) &&
+      (value < BinaryConstants.TWO_TO_31));
   this.writeZigzagVarint32_(field, value);
 };
 
@@ -618,9 +617,9 @@ BinaryWriter.prototype.writeSint32 = function(field, value) {
  */
 BinaryWriter.prototype.writeSint64 = function(field, value) {
   if (value == null) return;
-  jspb.asserts.assert(
-      (value >= -jspb.BinaryConstants.TWO_TO_63) &&
-      (value < jspb.BinaryConstants.TWO_TO_63));
+  asserts.assert(
+      (value >= -BinaryConstants.TWO_TO_63) &&
+      (value < BinaryConstants.TWO_TO_63));
   this.writeZigzagVarint64_(field, value);
 };
 
@@ -660,9 +659,9 @@ BinaryWriter.prototype.writeSint64String = function(field, value) {
  */
 BinaryWriter.prototype.writeFixed32 = function(field, value) {
   if (value == null) return;
-  jspb.asserts.assert(
-      (value >= 0) && (value < jspb.BinaryConstants.TWO_TO_32));
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.FIXED32);
+  asserts.assert(
+      (value >= 0) && (value < BinaryConstants.TWO_TO_32));
+  this.writeFieldHeader_(field, BinaryConstants.WireType.FIXED32);
   this.encoder_.writeUint32(value);
 };
 
@@ -676,9 +675,9 @@ BinaryWriter.prototype.writeFixed32 = function(field, value) {
  */
 BinaryWriter.prototype.writeFixed64 = function(field, value) {
   if (value == null) return;
-  jspb.asserts.assert(
-      (value >= 0) && (value < jspb.BinaryConstants.TWO_TO_64));
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.FIXED64);
+  asserts.assert(
+      (value >= 0) && (value < BinaryConstants.TWO_TO_64));
+  this.writeFieldHeader_(field, BinaryConstants.WireType.FIXED64);
   this.encoder_.writeUint64(value);
 };
 
@@ -691,8 +690,8 @@ BinaryWriter.prototype.writeFixed64 = function(field, value) {
  */
 BinaryWriter.prototype.writeFixed64String = function(field, value) {
   if (value == null) return;
-  var num = jspb.arith.UInt64.fromString(value);
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.FIXED64);
+  var num = UInt64.fromString(value);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.FIXED64);
   this.encoder_.writeSplitFixed64(num.lo, num.hi);
 };
 
@@ -706,10 +705,10 @@ BinaryWriter.prototype.writeFixed64String = function(field, value) {
  */
 BinaryWriter.prototype.writeSfixed32 = function(field, value) {
   if (value == null) return;
-  jspb.asserts.assert(
-      (value >= -jspb.BinaryConstants.TWO_TO_31) &&
-      (value < jspb.BinaryConstants.TWO_TO_31));
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.FIXED32);
+  asserts.assert(
+      (value >= -BinaryConstants.TWO_TO_31) &&
+      (value < BinaryConstants.TWO_TO_31));
+  this.writeFieldHeader_(field, BinaryConstants.WireType.FIXED32);
   this.encoder_.writeInt32(value);
 };
 
@@ -723,10 +722,10 @@ BinaryWriter.prototype.writeSfixed32 = function(field, value) {
  */
 BinaryWriter.prototype.writeSfixed64 = function(field, value) {
   if (value == null) return;
-  jspb.asserts.assert(
-      (value >= -jspb.BinaryConstants.TWO_TO_63) &&
-      (value < jspb.BinaryConstants.TWO_TO_63));
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.FIXED64);
+  asserts.assert(
+      (value >= -BinaryConstants.TWO_TO_63) &&
+      (value < BinaryConstants.TWO_TO_63));
+  this.writeFieldHeader_(field, BinaryConstants.WireType.FIXED64);
   this.encoder_.writeInt64(value);
 };
 
@@ -740,8 +739,8 @@ BinaryWriter.prototype.writeSfixed64 = function(field, value) {
  */
 BinaryWriter.prototype.writeSfixed64String = function(field, value) {
   if (value == null) return;
-  var num = jspb.arith.Int64.fromString(value);
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.FIXED64);
+  var num = Int64.fromString(value);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.FIXED64);
   this.encoder_.writeSplitFixed64(num.lo, num.hi);
 };
 
@@ -755,7 +754,7 @@ BinaryWriter.prototype.writeSfixed64String = function(field, value) {
  */
 BinaryWriter.prototype.writeFloat = function(field, value) {
   if (value == null) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.FIXED32);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.FIXED32);
   this.encoder_.writeFloat(value);
 };
 
@@ -769,7 +768,7 @@ BinaryWriter.prototype.writeFloat = function(field, value) {
  */
 BinaryWriter.prototype.writeDouble = function(field, value) {
   if (value == null) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.FIXED64);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.FIXED64);
   this.encoder_.writeDouble(value);
 };
 
@@ -784,9 +783,9 @@ BinaryWriter.prototype.writeDouble = function(field, value) {
  */
 BinaryWriter.prototype.writeBool = function(field, value) {
   if (value == null) return;
-  jspb.asserts.assert(
+  asserts.assert(
       typeof value === 'boolean' || typeof value === 'number');
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.VARINT);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.VARINT);
   this.encoder_.writeBool(value);
 };
 
@@ -799,10 +798,10 @@ BinaryWriter.prototype.writeBool = function(field, value) {
  */
 BinaryWriter.prototype.writeEnum = function(field, value) {
   if (value == null) return;
-  jspb.asserts.assert(
-      (value >= -jspb.BinaryConstants.TWO_TO_31) &&
-      (value < jspb.BinaryConstants.TWO_TO_31));
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(
+      (value >= -BinaryConstants.TWO_TO_31) &&
+      (value < BinaryConstants.TWO_TO_31));
+  this.writeFieldHeader_(field, BinaryConstants.WireType.VARINT);
   this.encoder_.writeSignedVarint32(value);
 };
 
@@ -830,8 +829,8 @@ BinaryWriter.prototype.writeString = function(field, value) {
  */
 BinaryWriter.prototype.writeBytes = function(field, value) {
   if (value == null) return;
-  var bytes = jspb.utils.byteSourceToUint8Array(value);
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.DELIMITED);
+  var bytes = utils.byteSourceToUint8Array(value);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.DELIMITED);
   this.encoder_.writeUnsignedVarint32(bytes.length);
   this.appendUint8Array_(bytes);
 };
@@ -886,13 +885,13 @@ BinaryWriter.prototype.writeMessageSet = function(
   if (value == null) return;
   // The wire format for a message set is defined by
   // google3/net/proto/message_set.proto
-  this.writeFieldHeader_(1, jspb.BinaryConstants.WireType.START_GROUP);
-  this.writeFieldHeader_(2, jspb.BinaryConstants.WireType.VARINT);
+  this.writeFieldHeader_(1, BinaryConstants.WireType.START_GROUP);
+  this.writeFieldHeader_(2, BinaryConstants.WireType.VARINT);
   this.encoder_.writeSignedVarint32(field);
   var bookmark = this.beginDelimited_(3);
   writerCallback(value, this);
   this.endDelimited_(bookmark);
-  this.writeFieldHeader_(1, jspb.BinaryConstants.WireType.END_GROUP);
+  this.writeFieldHeader_(1, BinaryConstants.WireType.END_GROUP);
 };
 
 
@@ -918,9 +917,9 @@ BinaryWriter.prototype.writeMessageSet = function(
 BinaryWriter.prototype.writeGroup = function(
     field, value, writerCallback) {
   if (value == null) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.START_GROUP);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.START_GROUP);
   writerCallback(value, this);
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.END_GROUP);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.END_GROUP);
 };
 
 
@@ -933,8 +932,8 @@ BinaryWriter.prototype.writeGroup = function(
  */
 BinaryWriter.prototype.writeFixedHash64 = function(field, value) {
   if (value == null) return;
-  jspb.asserts.assert(value.length == 8);
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.FIXED64);
+  asserts.assert(value.length == 8);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.FIXED64);
   this.encoder_.writeFixedHash64(value);
 };
 
@@ -948,8 +947,8 @@ BinaryWriter.prototype.writeFixedHash64 = function(field, value) {
  */
 BinaryWriter.prototype.writeVarintHash64 = function(field, value) {
   if (value == null) return;
-  jspb.asserts.assert(value.length == 8);
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.VARINT);
+  asserts.assert(value.length == 8);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.VARINT);
   this.encoder_.writeVarintHash64(value);
 };
 
@@ -963,7 +962,7 @@ BinaryWriter.prototype.writeVarintHash64 = function(field, value) {
  */
 BinaryWriter.prototype.writeSplitFixed64 = function(
     field, lowBits, highBits) {
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.FIXED64);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.FIXED64);
   this.encoder_.writeSplitFixed64(lowBits, highBits);
 };
 
@@ -977,7 +976,7 @@ BinaryWriter.prototype.writeSplitFixed64 = function(
  */
 BinaryWriter.prototype.writeSplitVarint64 = function(
     field, lowBits, highBits) {
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.VARINT);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.VARINT);
   this.encoder_.writeSplitVarint64(lowBits, highBits);
 };
 
@@ -991,9 +990,9 @@ BinaryWriter.prototype.writeSplitVarint64 = function(
  */
 BinaryWriter.prototype.writeSplitZigzagVarint64 = function(
     field, lowBits, highBits) {
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.VARINT);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.VARINT);
   var encoder = this.encoder_;
-  jspb.utils.toZigzag64(lowBits, highBits, function(lowBits, highBits) {
+  utils.toZigzag64(lowBits, highBits, function(lowBits, highBits) {
     encoder.writeSplitVarint64(lowBits >>> 0, highBits >>> 0);
   });
 };
@@ -1438,9 +1437,9 @@ BinaryWriter.prototype.writeRepeatedGroup = function(
     field, value, writerCallback) {
   if (value == null) return;
   for (var i = 0; i < value.length; i++) {
-    this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.START_GROUP);
+    this.writeFieldHeader_(field, BinaryConstants.WireType.START_GROUP);
     writerCallback(value[i], this);
-    this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.END_GROUP);
+    this.writeFieldHeader_(field, BinaryConstants.WireType.END_GROUP);
   }
 };
 
@@ -1579,7 +1578,7 @@ BinaryWriter.prototype.writePackedSplitZigzagVarint64 = function(
   var bookmark = this.beginDelimited_(field);
   var encoder = this.encoder_;
   for (var i = 0; i < value.length; i++) {
-    jspb.utils.toZigzag64(
+    utils.toZigzag64(
         lo(value[i]), hi(value[i]), function(bitsLow, bitsHigh) {
           encoder.writeSplitVarint64(bitsLow >>> 0, bitsHigh >>> 0);
         });
@@ -1599,7 +1598,7 @@ BinaryWriter.prototype.writePackedInt64String = function(field, value) {
   if (value == null || !value.length) return;
   var bookmark = this.beginDelimited_(field);
   for (var i = 0; i < value.length; i++) {
-    var num = jspb.arith.Int64.fromString(value[i]);
+    var num = Int64.fromString(value[i]);
     this.encoder_.writeSplitVarint64(num.lo, num.hi);
   }
   this.endDelimited_(bookmark);
@@ -1666,7 +1665,7 @@ BinaryWriter.prototype.writePackedUint64String = function(field, value) {
   if (value == null || !value.length) return;
   var bookmark = this.beginDelimited_(field);
   for (var i = 0; i < value.length; i++) {
-    var num = jspb.arith.UInt64.fromString(value[i]);
+    var num = UInt64.fromString(value[i]);
     this.encoder_.writeSplitVarint64(num.lo, num.hi);
   }
   this.endDelimited_(bookmark);
@@ -1717,7 +1716,7 @@ BinaryWriter.prototype.writePackedSint64String = function(field, value) {
   var bookmark = this.beginDelimited_(field);
   for (var i = 0; i < value.length; i++) {
     this.encoder_.writeZigzagVarintHash64(
-        jspb.utils.decimalStringToHash64(value[i]));
+        utils.decimalStringToHash64(value[i]));
   }
   this.endDelimited_(bookmark);
 };
@@ -1748,7 +1747,7 @@ BinaryWriter.prototype.writePackedSintHash64 = function(field, value) {
  */
 BinaryWriter.prototype.writePackedFixed32 = function(field, value) {
   if (value == null || !value.length) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.DELIMITED);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.DELIMITED);
   this.encoder_.writeUnsignedVarint32(value.length * 4);
   for (var i = 0; i < value.length; i++) {
     this.encoder_.writeUint32(value[i]);
@@ -1764,7 +1763,7 @@ BinaryWriter.prototype.writePackedFixed32 = function(field, value) {
  */
 BinaryWriter.prototype.writePackedFixed64 = function(field, value) {
   if (value == null || !value.length) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.DELIMITED);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.DELIMITED);
   this.encoder_.writeUnsignedVarint32(value.length * 8);
   for (var i = 0; i < value.length; i++) {
     this.encoder_.writeUint64(value[i]);
@@ -1781,10 +1780,10 @@ BinaryWriter.prototype.writePackedFixed64 = function(field, value) {
  */
 BinaryWriter.prototype.writePackedFixed64String = function(field, value) {
   if (value == null || !value.length) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.DELIMITED);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.DELIMITED);
   this.encoder_.writeUnsignedVarint32(value.length * 8);
   for (var i = 0; i < value.length; i++) {
-    var num = jspb.arith.UInt64.fromString(value[i]);
+    var num = UInt64.fromString(value[i]);
     this.encoder_.writeSplitFixed64(num.lo, num.hi);
   }
 };
@@ -1798,7 +1797,7 @@ BinaryWriter.prototype.writePackedFixed64String = function(field, value) {
  */
 BinaryWriter.prototype.writePackedSfixed32 = function(field, value) {
   if (value == null || !value.length) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.DELIMITED);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.DELIMITED);
   this.encoder_.writeUnsignedVarint32(value.length * 4);
   for (var i = 0; i < value.length; i++) {
     this.encoder_.writeInt32(value[i]);
@@ -1814,7 +1813,7 @@ BinaryWriter.prototype.writePackedSfixed32 = function(field, value) {
  */
 BinaryWriter.prototype.writePackedSfixed64 = function(field, value) {
   if (value == null || !value.length) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.DELIMITED);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.DELIMITED);
   this.encoder_.writeUnsignedVarint32(value.length * 8);
   for (var i = 0; i < value.length; i++) {
     this.encoder_.writeInt64(value[i]);
@@ -1830,7 +1829,7 @@ BinaryWriter.prototype.writePackedSfixed64 = function(field, value) {
  */
 BinaryWriter.prototype.writePackedSfixed64String = function(field, value) {
   if (value == null || !value.length) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.DELIMITED);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.DELIMITED);
   this.encoder_.writeUnsignedVarint32(value.length * 8);
   for (var i = 0; i < value.length; i++) {
     this.encoder_.writeInt64String(value[i]);
@@ -1846,7 +1845,7 @@ BinaryWriter.prototype.writePackedSfixed64String = function(field, value) {
  */
 BinaryWriter.prototype.writePackedFloat = function(field, value) {
   if (value == null || !value.length) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.DELIMITED);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.DELIMITED);
   this.encoder_.writeUnsignedVarint32(value.length * 4);
   for (var i = 0; i < value.length; i++) {
     this.encoder_.writeFloat(value[i]);
@@ -1862,7 +1861,7 @@ BinaryWriter.prototype.writePackedFloat = function(field, value) {
  */
 BinaryWriter.prototype.writePackedDouble = function(field, value) {
   if (value == null || !value.length) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.DELIMITED);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.DELIMITED);
   this.encoder_.writeUnsignedVarint32(value.length * 8);
   for (var i = 0; i < value.length; i++) {
     this.encoder_.writeDouble(value[i]);
@@ -1878,7 +1877,7 @@ BinaryWriter.prototype.writePackedDouble = function(field, value) {
  */
 BinaryWriter.prototype.writePackedBool = function(field, value) {
   if (value == null || !value.length) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.DELIMITED);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.DELIMITED);
   this.encoder_.writeUnsignedVarint32(value.length);
   for (var i = 0; i < value.length; i++) {
     this.encoder_.writeBool(value[i]);
@@ -1911,7 +1910,7 @@ BinaryWriter.prototype.writePackedEnum = function(field, value) {
  */
 BinaryWriter.prototype.writePackedFixedHash64 = function(field, value) {
   if (value == null || !value.length) return;
-  this.writeFieldHeader_(field, jspb.BinaryConstants.WireType.DELIMITED);
+  this.writeFieldHeader_(field, BinaryConstants.WireType.DELIMITED);
   this.encoder_.writeUnsignedVarint32(value.length * 8);
   for (var i = 0; i < value.length; i++) {
     this.encoder_.writeFixedHash64(value[i]);

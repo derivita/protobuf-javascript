@@ -1,9 +1,11 @@
 /**
  * @fileoverview Installs our custom equality matchers in Jasmine.
  */
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const ByteString = goog.require('protobuf.ByteString');
-const {arrayBufferEqual} = goog.require('protobuf.binary.typedArrays');
+import { BufferDecoder } from '../kernel/buffer_decoder.js';
+
+import { ByteString } from '../bytestring.js';
+import typedArrays from '../kernel/typed_arrays.js';
+const {arrayBufferEqual} = typedArrays;
 
 /**
  * A function that ensures custom equality for ByteStrings.

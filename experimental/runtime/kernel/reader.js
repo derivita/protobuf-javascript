@@ -1,10 +1,12 @@
 /**
  * @fileoverview Helper methods for reading data from the binary wire format.
  */
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const ByteString = goog.require('protobuf.ByteString');
-const Int64 = goog.require('protobuf.Int64');
-const {checkState} = goog.require('protobuf.internal.checks');
+import { BufferDecoder } from './buffer_decoder.js';
+
+import { ByteString } from '../bytestring.js';
+import { Int64 } from '../int64.js';
+import checks from '../internal/checks.js';
+const {checkState} = checks;
 
 
 /******************************************************************************

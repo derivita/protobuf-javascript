@@ -33,11 +33,10 @@
  * @fileoverview
  * @suppress {missingRequire} TODO(b/152540451): this shouldn't be needed
  */
-goog.require('jspb.asserts');
+import * as asserts from './asserts.js';
 
-goog.requireType('jspb.BinaryReader');
-goog.requireType('jspb.BinaryWriter');
-
+import {BinaryReader} from './binary/reader.js';
+import {BinaryWriter} from './binary/writer.js';
 
 
 /**
@@ -155,7 +154,7 @@ Map.prototype.toObject = function(includeInstance, valueToObject) {
     this.wrapEntry_(entry);
     var valueWrapper = /** @type {V|undefined} */ (entry.valueWrapper);
     if (valueWrapper) {
-      jspb.asserts.assert(valueToObject);
+      asserts.assert(valueToObject);
       entries.push([entry.key, valueToObject(includeInstance, valueWrapper)]);
     } else {
       entries.push([entry.key, entry.value]);
@@ -428,14 +427,14 @@ Map.prototype.has = function(key) {
  * Write this Map field in wire format to a BinaryWriter, using the given field
  * number.
  * @param {number} fieldNumber
- * @param {!jspb.BinaryWriter} writer
- * @param {function(this:jspb.BinaryWriter,number,K)} keyWriterFn
+ * @param {!BinaryWriter} writer
+ * @param {function(this:BinaryWriter,number,K)} keyWriterFn
  *     The method on BinaryWriter that writes type K to the stream.
- * @param {function(this:jspb.BinaryWriter,number,V,?=)|
- *          function(this:jspb.BinaryWriter,number,V,?)} valueWriterFn
+ * @param {function(this:BinaryWriter,number,V,?=)|
+ *          function(this:BinaryWriter,number,V,?)} valueWriterFn
  *     The method on BinaryWriter that writes type V to the stream.  May be
  *     writeMessage, in which case the second callback arg form is used.
- * @param {function(V,!jspb.BinaryWriter)=} opt_valueWriterCallback
+ * @param {function(V,!BinaryWriter)=} opt_valueWriterCallback
  *    The BinaryWriter serialization callback for type V, if V is a message
  *    type.
  * @export
@@ -452,7 +451,7 @@ Map.prototype.serializeBinary = function(
       valueWriterFn.call(writer, 2, this.wrapEntry_(entry),
                          opt_valueWriterCallback);
     } else {
-      /** @type {function(this:jspb.BinaryWriter,number,?)} */ (valueWriterFn)
+      /** @type {function(this:BinaryWriter,number,?)} */ (valueWriterFn)
           .call(writer, 2, entry.value);
     }
     writer.endSubMessage();
@@ -462,22 +461,22 @@ Map.prototype.serializeBinary = function(
 
 /**
  * Read one key/value message from the given BinaryReader. Compatible as the
- * `reader` callback parameter to jspb.BinaryReader.readMessage, to be called
+ * `reader` callback parameter to BinaryReader.readMessage, to be called
  * when a key/value pair submessage is encountered. If the Key is undefined,
  * we should default it to 0.
  * @template K, V
  * @param {!Map} map
- * @param {!jspb.BinaryReader} reader
- * @param {function(this:jspb.BinaryReader):K} keyReaderFn
+ * @param {!BinaryReader} reader
+ * @param {function(this:BinaryReader):K} keyReaderFn
  *     The method on BinaryReader that reads type K from the stream.
  *
- * @param {function(this:jspb.BinaryReader):V|
- *          function(this:jspb.BinaryReader,V,
- *                  function(V,!jspb.BinaryReader))} valueReaderFn
+ * @param {function(this:BinaryReader):V|
+ *          function(this:BinaryReader,V,
+ *                  function(V,!BinaryReader))} valueReaderFn
  *    The method on BinaryReader that reads type V from the stream. May be
  *    readMessage, in which case the second callback arg form is used.
  *
- * @param {?function(V,!jspb.BinaryReader)=} opt_valueReaderCallback
+ * @param {?function(V,!BinaryReader)=} opt_valueReaderCallback
  *    The BinaryReader parsing callback for type V, if V is a message type
  *
  * @param {K=} opt_defaultKey
@@ -510,7 +509,7 @@ Map.deserializeBinary = function(map, reader, keyReaderFn, valueReaderFn,
     } else if (field == 2) {
       // Value.
       if (map.valueCtor_) {
-        jspb.asserts.assert(opt_valueReaderCallback);
+        asserts.assert(opt_valueReaderCallback);
         if (!value) {
           // Old generator still doesn't provide default value message.
           // Need this for backward compatibility.
@@ -519,14 +518,14 @@ Map.deserializeBinary = function(map, reader, keyReaderFn, valueReaderFn,
         valueReaderFn.call(reader, value, opt_valueReaderCallback);
       } else {
         value =
-            (/** @type {function(this:jspb.BinaryReader):?} */ (valueReaderFn))
+            (/** @type {function(this:BinaryReader):?} */ (valueReaderFn))
                 .call(reader);
       }
     }
   }
 
-  jspb.asserts.assert(key != undefined);
-  jspb.asserts.assert(value != undefined);
+  asserts.assert(key != undefined);
+  asserts.assert(value != undefined);
   map.set(key, value);
 };
 

@@ -1,6 +1,7 @@
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const WireType = goog.require('protobuf.binary.WireType');
-const {checkCriticalElementIndex, checkCriticalState} = goog.require('protobuf.internal.checks');
+import { BufferDecoder } from './buffer_decoder.js';
+import { WireType } from './wire_type.js';
+import checks from '../internal/checks.js';
+const {checkCriticalElementIndex, checkCriticalState} = checks;
 
 /**
  * Returns wire type stored in a tag.

@@ -1,8 +1,10 @@
 /**
  * @fileoverview Provides ByteString as a basic data type for protos.
  */
-const base64 = goog.require('goog.crypt.base64');
-const {arrayBufferSlice, cloneArrayBufferView, hashUint8Array, uint8ArrayEqual} = goog.require('protobuf.binary.typedArrays');
+import * as base64 from '../../../closure-library/closure/goog/crypt/base64.js';
+
+import typedArrays from './kernel/typed_arrays.js';
+const {arrayBufferSlice, cloneArrayBufferView, hashUint8Array, uint8ArrayEqual} = typedArrays;
 
 /**
  * Immutable sequence of bytes.

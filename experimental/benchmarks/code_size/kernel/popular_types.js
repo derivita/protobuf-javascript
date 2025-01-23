@@ -17,10 +17,11 @@
  * ('STRING__LABEL_REQUIRED', '1.0785%')
  *
  */
-const Int64 = goog.require('protobuf.Int64');
-const Kernel = goog.require('protobuf.runtime.Kernel');
-const TestMessage = goog.require('protobuf.testing.binary.TestMessage');
-const {ensureCommonBaseLine} = goog.require('protobuf.benchmark.codeSize.codeSizeBase');
+import { Int64 } from '../../../runtime/int64.js';
+
+import { Kernel } from '../../../runtime/kernel/kernel.js';
+import { TestMessage } from '../../../runtime/testing/binary/test_message.js';
+import { ensureCommonBaseLine } from '../code_size_base.js';
 
 ensureCommonBaseLine();
 

@@ -4,7 +4,7 @@
 // const ForeignEnum = goog.require('proto.proto3_unittest.ForeignEnum');
 const ForeignMessage = goog.require('proto.proto3_unittest.ForeignMessage');
 const TestAllTypes = goog.require('proto.proto3_unittest.TestAllTypes');
-const {ensureCommonBaseLine} = goog.require('protobuf.benchmark.codeSize.codeSizeBase');
+import { ensureCommonBaseLine } from '../code_size_base.js';
 
 ensureCommonBaseLine();
 

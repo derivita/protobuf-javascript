@@ -1,10 +1,13 @@
 /**
  * @fileoverview Tests for tag.js.
  */
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const WireType = goog.require('protobuf.binary.WireType');
-const {CHECK_CRITICAL_STATE} = goog.require('protobuf.internal.checks');
-const {createTag, get32BitVarintLength, skipField, tagToFieldNumber, tagToWireType} = goog.require('protobuf.binary.tag');
+import { BufferDecoder } from './buffer_decoder.js';
+
+import { WireType } from './wire_type.js';
+import checks from '../internal/checks.js';
+const {CHECK_CRITICAL_STATE} = checks;
+import tag from './tag.js';
+const {createTag, get32BitVarintLength, skipField, tagToFieldNumber, tagToWireType} = tag;
 
 
 goog.setTestOnly();

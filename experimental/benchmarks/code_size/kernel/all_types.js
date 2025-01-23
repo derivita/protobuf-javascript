@@ -2,11 +2,12 @@
  * @fileoverview The code size benchmark of binary kernel for accessing all
  * types setter and getter.
  */
-const ByteString = goog.require('protobuf.ByteString');
-const Int64 = goog.require('protobuf.Int64');
-const Kernel = goog.require('protobuf.runtime.Kernel');
-const TestMessage = goog.require('protobuf.testing.binary.TestMessage');
-const {ensureCommonBaseLine} = goog.require('protobuf.benchmark.codeSize.codeSizeBase');
+import { ByteString } from '../../../runtime/bytestring.js';
+
+import { Int64 } from '../../../runtime/int64.js';
+import { Kernel } from '../../../runtime/kernel/kernel.js';
+import { TestMessage } from '../../../runtime/testing/binary/test_message.js';
+import { ensureCommonBaseLine } from '../code_size_base.js';
 
 ensureCommonBaseLine();
 

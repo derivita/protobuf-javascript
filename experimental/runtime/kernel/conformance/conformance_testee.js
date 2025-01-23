@@ -1,9 +1,9 @@
-const ConformanceRequest = goog.require('proto.conformance.ConformanceRequest');
-const ConformanceResponse = goog.require('proto.conformance.ConformanceResponse');
-const TestAllTypesProto2 = goog.require('proto.conformance.TestAllTypesProto2');
-const TestAllTypesProto3 = goog.require('proto.conformance.TestAllTypesProto3');
-const WireFormat = goog.require('proto.conformance.WireFormat');
-const base64 = goog.require('goog.crypt.base64');
+import { ConformanceRequest } from './conformance_request.js';
+import { ConformanceResponse } from './conformance_response.js';
+import { TestAllTypesProto2 } from './test_all_types_proto2.js';
+import { TestAllTypesProto3 } from './test_all_types_proto3.js';
+import { WireFormat } from './wire_format.js';
+import * as base64 from '../../../../../closure-library/closure/goog/crypt/base64.js';
 
 /**
  * Creates a `proto.conformance.ConformanceResponse` response according to the

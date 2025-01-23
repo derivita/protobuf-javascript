@@ -14,8 +14,9 @@
 # exists to make proto code generation easier.           #
 ##########################################################
 */
-const InternalMessage = goog.require('protobuf.binary.InternalMessage');
-const Kernel = goog.require('protobuf.runtime.Kernel');
+import { InternalMessage } from './internal_message.js';
+
+import { Kernel } from './kernel.js';
 
 // These are the tags for the old MessageSet format, which was defined as:
 //   message MessageSet {

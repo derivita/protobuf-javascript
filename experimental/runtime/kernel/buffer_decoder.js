@@ -2,12 +2,16 @@
  * @fileoverview A buffer implementation that can decode data for protobufs.
  */
 
-const ByteString = goog.require('protobuf.ByteString');
-const functions = goog.require('goog.functions');
-const {POLYFILL_TEXT_ENCODING, checkCriticalPositionIndex, checkCriticalState, checkState} = goog.require('protobuf.internal.checks');
-const {byteStringFromUint8ArrayUnsafe} = goog.require('protobuf.byteStringInternal');
-const {concatenateByteArrays} = goog.require('protobuf.binary.uint8arrays');
-const {decode} = goog.require('protobuf.binary.textencoding');
+import { ByteString } from '../bytestring.js';
+
+import * as functions from '../../../../closure-library/closure/goog/functions/functions.js';
+import checks from '../internal/checks.js';
+const {POLYFILL_TEXT_ENCODING, checkCriticalPositionIndex, checkCriticalState, checkState} = checks;
+import { byteStringFromUint8ArrayUnsafe } from '../bytestring_internal.js';
+import uint8arrays from './uint8arrays.js';
+const {concatenateByteArrays} = uint8arrays;
+import textencoding from './textencoding.js';
+const {decode} = textencoding;
 
 /**
  * Returns a valid utf-8 decoder function based on TextDecoder if available or

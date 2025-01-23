@@ -1,7 +1,7 @@
 /**
  * @fileoverview Helper methods for typed arrays.
  */
-const {assert} = goog.require('goog.asserts');
+import { assert } from '../../../../closure-library/closure/goog/asserts/asserts.js';
 
 /**
  * @param {!ArrayBuffer} buffer1

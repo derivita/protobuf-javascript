@@ -1,8 +1,9 @@
 /**
  * @fileoverview Handwritten code of ConformanceRequest.
  */
-const Kernel = goog.require('protobuf.runtime.Kernel');
-const WireFormat = goog.require('proto.conformance.WireFormat');
+import { Kernel } from '../kernel.js';
+
+import { WireFormat } from './wire_format.js';
 
 /**
  * Handwritten code of conformance.ConformanceRequest.

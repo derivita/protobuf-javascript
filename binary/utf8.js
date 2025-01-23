@@ -1,7 +1,7 @@
 /**
  * @fileoverview UTF8 encoding and decoding routines
  */
-goog.require('jspb.asserts');
+import * as asserts from '../asserts.js';
 
 
 /**
@@ -113,7 +113,7 @@ export function polyfillDecodeUtf8(
           const codeUnit = ((c1 & 0x1F) << 6) | (c2 & 0x3F);
           // Consistency check that the computed code is in range for a 2 byte
           // sequence.
-          jspb.asserts.assert(codeUnit >= 0x80 && codeUnit <= 0x07FF);
+          asserts.assert(codeUnit >= 0x80 && codeUnit <= 0x07FF);
           codeUnits.push(codeUnit);
         }
       }
@@ -141,9 +141,9 @@ export function polyfillDecodeUtf8(
           const codeUnit =
             ((c1 & 0xF) << 12) | ((c2 & 0x3F) << 6) | (c3 & 0x3F);
           // Consistency check, this is the valid range for a 3 byte character
-          jspb.asserts.assert(codeUnit >= 0x800 && codeUnit <= 0xFFFF);
+          asserts.assert(codeUnit >= 0x800 && codeUnit <= 0xFFFF);
           // And that Utf16 surrogates are disallowed
-          jspb.asserts.assert(codeUnit < MIN_SURROGATE || codeUnit > MAX_SURROGATE);
+          asserts.assert(codeUnit < MIN_SURROGATE || codeUnit > MAX_SURROGATE);
           codeUnits.push(codeUnit);
         }
       }
@@ -180,7 +180,7 @@ export function polyfillDecodeUtf8(
           let codepoint = ((c1 & 0x7) << 18) | ((c2 & 0x3F) << 12) |
             ((c3 & 0x3F) << 6) | (c4 & 0x3F);
           // Consistency check, this is the valid range for a 4 byte character.
-          jspb.asserts.assert(codepoint >= 0x10000 && codepoint <= 0x10FFFF);
+          asserts.assert(codepoint >= 0x10000 && codepoint <= 0x10FFFF);
           // Surrogates formula from wikipedia.
           // 1. Subtract 0x10000 from codepoint
           codepoint -= 0x10000;
@@ -204,7 +204,7 @@ export function polyfillDecodeUtf8(
     }
   }
   // ensure we don't overflow or underflow
-  jspb.asserts.assert(cursor === end, `expected ${cursor} === ${end}`);
+  asserts.assert(cursor === end, `expected ${cursor} === ${end}`);
   return codeUnitsToString(result, codeUnits);
 }
 
@@ -351,9 +351,9 @@ checkWellFormed = function (/** string */ text) {
   if (HAS_WELL_FORMED_METHOD ?
     // Externs don't contain the definition of this function yet.
     // http://go/mdn/JavaScript/Reference/Global_Objects/String/isWellFormed
-    !(/** @type{{isWellFormed:function():boolean}}*/ (
+    !(/** @type{{isWellFormed:function():boolean}}*/ ((
                 /** @type {?} */ (text))
-      .isWellFormed()) :
+      .isWellFormed())) :
     /(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])/
       .test(text)) {
     throw new Error('Found an unpaired surrogate');
@@ -376,7 +376,7 @@ export function polyfillEncode(/** string */ s, /** boolean */ rejectUnpairedSur
       buffer[bi++] = (c >> 6) | 0xC0;
       buffer[bi++] = (c & 63) | 0x80;
     } else {
-      jspb.asserts.assert(c < 65536);
+      asserts.assert(c < 65536);
       // Look for surrogates
       // First check if it is surrogate range
       if (c >= MIN_SURROGATE && c <= MAX_SURROGATE) {
@@ -422,7 +422,7 @@ const useTextEncoderEncode =
  * @return {!Uint8Array}
  */
 export function encodeUtf8(/**string*/ string, /** boolean=*/ rejectUnpairedSurrogates = false) {
-  jspb.asserts.assertString(string);
+  asserts.assertString(string);
   return useTextEncoderEncode ?
     textEncoderEncode(string, rejectUnpairedSurrogates) :
     polyfillEncode(string, rejectUnpairedSurrogates);

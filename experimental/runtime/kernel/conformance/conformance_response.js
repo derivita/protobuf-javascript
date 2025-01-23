@@ -1,8 +1,9 @@
 /**
  * @fileoverview Handwritten code of ConformanceResponse.
  */
-const ByteString = goog.require('protobuf.ByteString');
-const Kernel = goog.require('protobuf.runtime.Kernel');
+import { ByteString } from '../../bytestring.js';
+
+import { Kernel } from '../kernel.js';
 
 /**
  * Handwritten code of conformance.ConformanceResponse.

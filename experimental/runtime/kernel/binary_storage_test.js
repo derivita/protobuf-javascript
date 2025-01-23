@@ -3,8 +3,9 @@
  */
 goog.setTestOnly();
 
-const BinaryStorage = goog.require('protobuf.runtime.BinaryStorage');
-const {Field} = goog.require('protobuf.binary.field');
+import { BinaryStorage } from './binary_storage.js';
+import binaryField from './field.js';
+const {Field} = binaryField;
 
 /**
  * @type {number}

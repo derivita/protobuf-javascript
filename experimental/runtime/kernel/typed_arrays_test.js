@@ -1,7 +1,9 @@
 /**
  * @fileoverview Tests for typed_arrays.js.
  */
-const {arrayBufferEqual, arrayBufferSlice, cloneArrayBufferView, hashUint8Array, uint8ArrayEqual} = goog.require('protobuf.binary.typedArrays');
+import typedArrays from './typed_arrays.js';
+
+const {arrayBufferEqual, arrayBufferSlice, cloneArrayBufferView, hashUint8Array, uint8ArrayEqual} = typedArrays;
 
 describe('arrayBufferEqual', () => {
   it('returns true for empty buffers', () => {

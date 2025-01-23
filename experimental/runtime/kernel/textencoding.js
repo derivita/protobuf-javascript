@@ -1,7 +1,9 @@
 /**
  * @fileoverview A UTF8 decoder.
  */
-const {checkElementIndex} = goog.require('protobuf.internal.checks');
+import checks from '../internal/checks.js';
+
+const {checkElementIndex} = checks;
 
 /**
  * Combines an array of codePoints into a string.

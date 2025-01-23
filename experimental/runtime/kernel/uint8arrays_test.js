@@ -3,7 +3,8 @@
  */
 goog.setTestOnly();
 
-const {concatenateByteArrays} = goog.require('protobuf.binary.uint8arrays');
+import uint8arrays from './uint8arrays.js';
+const {concatenateByteArrays} = uint8arrays;
 
 describe('concatenateByteArrays does', () => {
   it('concatenate empty array', () => {

@@ -1,7 +1,7 @@
 /**
  * @fileoverview Helper methods to create BufferDecoders.
  */
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
+import { BufferDecoder } from './buffer_decoder.js';
 
 /**
  * @param {...number} bytes

@@ -15,9 +15,10 @@
  *       Checks that relate to type errors (e.g. code receives a number instead
  *       of a string).
  */
-const ByteString = goog.require('protobuf.ByteString');
-const Int64 = goog.require('protobuf.Int64');
-const WireType = goog.require('protobuf.binary.WireType');
+import { ByteString } from '../bytestring.js';
+
+import { Int64 } from '../int64.js';
+import { WireType } from '../kernel/wire_type.js';
 
 //
 // See

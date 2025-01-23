@@ -1,8 +1,9 @@
 /**
  * @fileoverview Protobufs Int64 representation.
  */
-const Long = goog.require('goog.math.Long');
-const {assert} = goog.require('goog.asserts');
+import { Long } from '../../../closure-library/closure/goog/math/long.js';
+
+import { assert } from '../../../closure-library/closure/goog/asserts/asserts.js';
 
 /**
  * A container for protobufs Int64/Uint64 data type.

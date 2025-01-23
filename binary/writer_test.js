@@ -38,16 +38,13 @@
  * @author aappleby@google.com (Austin Appleby)
  */
 
-goog.require('goog.crypt');
-goog.require('goog.crypt.base64');
+import * as crypt from '../../closure-library/closure/goog/crypt/crypt.js';
 
-goog.require('jspb.BinaryConstants');
-goog.require('jspb.BinaryReader');
-goog.require('jspb.BinaryWriter');
-goog.require('jspb.utils');
-
-goog.requireType('jspb.BinaryMessage');
-
+import * as base64 from '../../closure-library/closure/goog/crypt/base64.js';
+import * as BinaryConstants from './constants.js';
+import { BinaryReader } from './reader.js';
+import { BinaryWriter } from './writer.js';
+import * as utils from './utils.js';
 
 describe('binaryWriterTest', () => {
   /**
@@ -55,21 +52,21 @@ describe('binaryWriterTest', () => {
    */
   it('testWriteErrors', () => {
     // Submessages with invalid field indices should assert.
-    let writer = new jspb.BinaryWriter();
-    const dummyMessage = /** @type {!jspb.BinaryMessage} */ ({});
+    let writer = new BinaryWriter();
+    const dummyMessage = /** @type {!BinaryConstants.BinaryMessage} */ ({});
 
     expect(() => {
       writer.writeMessage(-1, dummyMessage, () => {});
     }).toThrow();
 
     // Writing invalid field indices should assert.
-    writer = new jspb.BinaryWriter();
+    writer = new BinaryWriter();
     expect(() => {
       writer.writeUint64(-1, 1);
     }).toThrow();
 
     // Writing out-of-range field values should assert.
-    writer = new jspb.BinaryWriter();
+    writer = new BinaryWriter();
 
     expect(() => {
       writer.writeInt32(1, -Infinity);
@@ -149,14 +146,14 @@ describe('binaryWriterTest', () => {
   it('testGetResultBuffer', () => {
     const expected = '0864120b48656c6c6f20776f726c641a0301020320c801';
 
-    const writer = new jspb.BinaryWriter();
+    const writer = new BinaryWriter();
     writer.writeUint32(1, 100);
     writer.writeString(2, 'Hello world');
     writer.writeBytes(3, new Uint8Array([1, 2, 3]));
     writer.writeUint32(4, 200);
 
     const buffer = writer.getResultBuffer();
-    expect(goog.crypt.byteArrayToHex(buffer)).toEqual(expected);
+    expect(crypt.byteArrayToHex(buffer)).toEqual(expected);
   });
 
 
@@ -164,17 +161,17 @@ describe('binaryWriterTest', () => {
    * Tests websafe encodings for base64 strings.
    */
   it('testWebSafeOption', () => {
-    const writer = new jspb.BinaryWriter();
+    const writer = new BinaryWriter();
     writer.writeBytes(1, new Uint8Array([127]));
     expect('CgF/').toEqual(writer.getResultBase64String());
     expect('CgF/').toEqual(
-        writer.getResultBase64String(/* goog.crypt.base64.Alphabet.DEFAULT = */ 0));
+        writer.getResultBase64String(/* base64.Alphabet.DEFAULT = */ 0));
     expect('CgF_').toEqual(writer.getResultBase64String(
-        /* goog.crypt.base64.Alphabet.WEBSAFE_NO_PADDING = */ 4));
+        /* base64.Alphabet.WEBSAFE_NO_PADDING = */ 4));
   });
 
   it('writes split 64 fields', () => {
-    const writer = new jspb.BinaryWriter();
+    const writer = new BinaryWriter();
     writer.writeSplitVarint64(1, 0x1, 0x2);
     writer.writeSplitVarint64(1, 0xFFFFFFFF, 0xFFFFFFFF);
     writer.writeSplitFixed64(2, 0x1, 0x2);
@@ -193,7 +190,7 @@ describe('binaryWriterTest', () => {
     function bitsAsArray(lowBits, highBits) {
       return [lowBits >>> 0, highBits >>> 0];
     }
-    const reader = jspb.BinaryReader.alloc(writer.getResultBuffer());
+    const reader = BinaryReader.alloc(writer.getResultBuffer());
     reader.nextField();
     expect(reader.getFieldNumber()).toEqual(1);
     expect(reader.readSplitVarint64(bitsAsArray)).toEqual([0x1, 0x2]);
@@ -258,21 +255,21 @@ describe('binaryWriterTest', () => {
       {original: '-9223372036854775808', zigzag: '18446744073709551615'},
     ];
     function decimalToLowBits(v) {
-      jspb.utils.splitDecimalString(v);
-      return jspb.utils.getSplit64Low() >>> 0;
+      utils.splitDecimalString(v);
+      return utils.getSplit64Low() >>> 0;
     }
     function decimalToHighBits(v) {
-      jspb.utils.splitDecimalString(v);
-      return jspb.utils.getSplit64High() >>> 0;
+      utils.splitDecimalString(v);
+      return utils.getSplit64High() >>> 0;
     }
 
-    const writer = new jspb.BinaryWriter();
+    const writer = new BinaryWriter();
     testCases.forEach(function(c) {
       writer.writeSint64String(1, c.original);
-      writer.writeSintHash64(1, jspb.utils.decimalStringToHash64(c.original));
-      jspb.utils.splitDecimalString(c.original);
+      writer.writeSintHash64(1, utils.decimalStringToHash64(c.original));
+      utils.splitDecimalString(c.original);
       writer.writeSplitZigzagVarint64(
-          1, jspb.utils.getSplit64Low(), jspb.utils.getSplit64High());
+          1, utils.getSplit64Low(), utils.getSplit64High());
     });
 
     writer.writeRepeatedSint64String(2, testCases.map(function(c) {
@@ -280,7 +277,7 @@ describe('binaryWriterTest', () => {
     }));
 
     writer.writeRepeatedSintHash64(3, testCases.map(function(c) {
-      return jspb.utils.decimalStringToHash64(c.original);
+      return utils.decimalStringToHash64(c.original);
     }));
 
     writer.writeRepeatedSplitZigzagVarint64(
@@ -294,7 +291,7 @@ describe('binaryWriterTest', () => {
     }));
 
     writer.writePackedSintHash64(6, testCases.map(function(c) {
-      return jspb.utils.decimalStringToHash64(c.original);
+      return utils.decimalStringToHash64(c.original);
     }));
 
     writer.writePackedSplitZigzagVarint64(
@@ -305,7 +302,7 @@ describe('binaryWriterTest', () => {
 
     // Verify by reading the stream as normal int64 fields and checking with
     // the canonical zigzag encoding of each value.
-    const reader = jspb.BinaryReader.alloc(writer.getResultBuffer());
+    const reader = BinaryReader.alloc(writer.getResultBuffer());
     testCases.forEach(function(c) {
       reader.nextField();
       expect(reader.getFieldNumber()).toEqual(1);
@@ -357,16 +354,16 @@ describe('binaryWriterTest', () => {
 
   it('writes float32 fields', () => {
     const testCases = [
-      0, 1, -1, jspb.BinaryConstants.FLOAT32_MIN,
-      -jspb.BinaryConstants.FLOAT32_MIN, jspb.BinaryConstants.FLOAT32_MAX,
-      -jspb.BinaryConstants.FLOAT32_MAX, 3.1415927410125732, Infinity,
+      0, 1, -1, BinaryConstants.FLOAT32_MIN,
+      -BinaryConstants.FLOAT32_MIN, BinaryConstants.FLOAT32_MAX,
+      -BinaryConstants.FLOAT32_MAX, 3.1415927410125732, Infinity,
       -Infinity, NaN
     ];
-    const writer = new jspb.BinaryWriter();
+    const writer = new BinaryWriter();
     testCases.forEach(function(f) {
       writer.writeFloat(1, f);
     });
-    const reader = jspb.BinaryReader.alloc(writer.getResultBuffer());
+    const reader = BinaryReader.alloc(writer.getResultBuffer());
     testCases.forEach(function(f) {
       reader.nextField();
       expect(reader.getFieldNumber()).toEqual(1);
@@ -381,15 +378,15 @@ describe('binaryWriterTest', () => {
   it('writes double fields', () => {
     const testCases = [
       0, 1, -1, Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER,
-      Number.MAX_VALUE, Number.MIN_VALUE, jspb.BinaryConstants.FLOAT32_MIN,
-      -jspb.BinaryConstants.FLOAT32_MIN, jspb.BinaryConstants.FLOAT32_MAX,
-      -jspb.BinaryConstants.FLOAT32_MAX, Math.PI, Infinity, -Infinity, NaN
+      Number.MAX_VALUE, Number.MIN_VALUE, BinaryConstants.FLOAT32_MIN,
+      -BinaryConstants.FLOAT32_MIN, BinaryConstants.FLOAT32_MAX,
+      -BinaryConstants.FLOAT32_MAX, Math.PI, Infinity, -Infinity, NaN
     ];
-    const writer = new jspb.BinaryWriter();
+    const writer = new BinaryWriter();
     testCases.forEach(function(f) {
       writer.writeDouble(1, f);
     });
-    const reader = jspb.BinaryReader.alloc(writer.getResultBuffer());
+    const reader = BinaryReader.alloc(writer.getResultBuffer());
     testCases.forEach(function(f) {
       reader.nextField();
       expect(reader.getFieldNumber()).toEqual(1);

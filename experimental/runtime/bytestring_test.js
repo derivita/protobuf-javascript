@@ -1,7 +1,8 @@
 goog.setTestOnly();
 
-const ByteString = goog.require('protobuf.ByteString');
-const {arrayBufferSlice} = goog.require('protobuf.binary.typedArrays');
+import { ByteString } from './bytestring.js';
+import typedArrays from './kernel/typed_arrays.js';
+const {arrayBufferSlice} = typedArrays;
 
 const /** !ArrayBuffer */ TEST_BYTES = new Uint8Array([1, 2, 3, 4]).buffer;
 const /** !ByteString */ TEST_STRING = ByteString.fromArrayBuffer(TEST_BYTES);

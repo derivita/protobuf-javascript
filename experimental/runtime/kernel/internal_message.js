@@ -2,7 +2,7 @@
  * @fileoverview Internal interface for messages implemented with the binary
  * kernel.
  */
-const Kernel = goog.requireType('protobuf.runtime.Kernel');
+import { Kernel } from '../kernel/kernel.js';
 
 /**
  * Interface that needs to be implemented by messages implemented with the
