@@ -36,12 +36,9 @@
  * @author aappleby@google.com (Austin Appleby)
  */
 
-goog.forwardDeclare('jspb.BinaryMessage');
-goog.forwardDeclare('jspb.BinaryReader');
-goog.forwardDeclare('jspb.BinaryWriter');
-goog.forwardDeclare('jspb.Message');
-goog.forwardDeclare('jsprotolib.BinaryExtension');
-
+const { BinaryReader } = goog.requireType('jspb.binary.reader');
+const { BinaryWriter } = goog.requireType('jspb.binary.writer');
+const { Message } = goog.requireType('jspb.message');
 
 
 /**
@@ -112,8 +109,7 @@ export var RepeatedFieldType;
              RepeatedFieldType|
              !Uint8Array|
              !ConstBinaryMessage|
-             !BinaryMessage|
-             !jsprotolib.BinaryExtension}
+             !BinaryMessage}
  * @export
  */
 export var AnyFieldType;
@@ -145,7 +141,7 @@ export var RecyclerFunction;
 
 /**
  * A reader function initializes a message using data from a BinaryReader.
- * @typedef {function(!BinaryMessage, !jspb.BinaryReader):void}
+ * @typedef {function(!BinaryMessage, !BinaryReader):void}
  * @export
  */
 export var ReaderFunction;
@@ -153,8 +149,8 @@ export var ReaderFunction;
 
 /**
  * A writer function serializes a message to a BinaryWriter.
- * @typedef {function((!jspb.Message|!ConstBinaryMessage),
- *                    !jspb.BinaryWriter):void}
+ * @typedef {function((!Message|!ConstBinaryMessage),
+ *                    !BinaryWriter):void}
  * @export
  */
 export var WriterFunction;

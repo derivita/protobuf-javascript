@@ -23,7 +23,7 @@ const WIRE_TYPE_EXTRACTOR = (1 << WIRE_TYPE_LENGTH_BITS) - 1;
  * Field.getStartIndex() methods.
  * @typedef {number}
  */
-let IndexEntry;
+export let IndexEntry;
 
 /**
  * An entry containing the index into the binary data and/or the corresponding
@@ -32,7 +32,7 @@ let IndexEntry;
  * @final
  * @package
  */
-class Field {
+export class Field {
   /**
    * Creates a field and inserts the wireType and position of the first
    * occurrence of a field.
@@ -189,7 +189,3 @@ class Field {
   }
 }
 
-export default {
-  IndexEntry,
-  Field,
-};

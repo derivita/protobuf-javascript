@@ -40,8 +40,11 @@ import '../closure-library/closure/goog/array/array.js';
 import * as base64 from '../closure-library/closure/goog/crypt/base64.js';
 import * as asserts from './asserts.js';
 import { BinaryReader } from './binary/reader.js';
+import { BinaryWriter } from './binary/writer.js';
 import { Map } from './map.js';
 
+
+goog.declareModuleId('jspb.message');
 
 /**
  * Stores information for a single extension field.
@@ -101,8 +104,8 @@ export function ExtensionFieldInfo(fieldNumber, fieldName, ctor, toObjectFn, isR
  * Stores binary-related information for a single extension field.
  * @param {!ExtensionFieldInfo<T>} fieldInfo
  * @param {function(this:BinaryReader,number,?,?)} binaryReaderFn
- * @param {function(this:jspb.BinaryWriter,number,?)
- *        |function(this:jspb.BinaryWriter,number,?,?,?,?,?)} binaryWriterFn
+ * @param {function(this:BinaryWriter,number,?)
+ *        |function(this:BinaryWriter,number,?,?,?,?,?)} binaryWriterFn
  * @param {function(?,?)=} opt_binaryMessageSerializeFn
  * @param {function(?,?)=} opt_binaryMessageDeserializeFn
  * @param {boolean=} opt_isPacked

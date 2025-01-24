@@ -4,8 +4,7 @@
 goog.setTestOnly();
 
 import { BinaryStorage } from './binary_storage.js';
-import binaryField from './field.js';
-const {Field} = binaryField;
+import { Field } from './field.js';
 
 /**
  * @type {number}

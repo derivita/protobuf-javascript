@@ -64,7 +64,7 @@ import { BinaryEncoder } from './encoder.js';
 import { Int64, UInt64 } from './arith.js';
 import * as utils from './utils.js';
 
-
+goog.declareModuleId('jspb.binary.writer');
 
 /**
  * BinaryWriter implements encoders for all the wire types specified in
@@ -291,7 +291,7 @@ BinaryWriter.prototype.writeFieldHeader_ = function(field, wireType) {
  * Writes a field of any valid scalar type to the binary stream.
  * @param {BinaryConstants.FieldType} fieldType
  * @param {number} field
- * @param {jspb.AnyFieldType} value
+ * @param {BinaryConstants.AnyFieldType} value
  * @export
  */
 BinaryWriter.prototype.writeAny = function(fieldType, field, value) {
@@ -824,7 +824,7 @@ BinaryWriter.prototype.writeString = function(field, value) {
  * Writes an arbitrary byte field to the buffer. Note - to match the behavior
  * of the C++ implementation, empty byte arrays _are_ serialized.
  * @param {number} field The field number.
- * @param {?jspb.ByteSource} value The array of bytes to write.
+ * @param {?BinaryConstants.ByteSource} value The array of bytes to write.
  * @export
  */
 BinaryWriter.prototype.writeBytes = function(field, value) {
@@ -1390,7 +1390,7 @@ BinaryWriter.prototype.writeRepeatedString = function(field, value) {
 /**
  * Writes an array of arbitrary byte fields to the buffer.
  * @param {number} field The field number.
- * @param {?Array<!jspb.ByteSource>} value The arrays of arrays of bytes to
+ * @param {?Array<!BinaryConstants.ByteSource>} value The arrays of arrays of bytes to
  *     write.
  * @export
  */

@@ -51,6 +51,8 @@ import * as BinaryConstants from './constants.js';
 import { BinaryDecoder } from './decoder.js';
 import * as utils from './utils.js';
 
+goog.declareModuleId('jspb.binary.reader');
+
 /**
  * Whether to enforce that string fields are valid utf8.
  *
@@ -77,7 +79,7 @@ const /** boolean */ UTF8_PARSING_ERRORS_ARE_FATAL = ENFORCE_UTF8 === 'ALWAYS';
  * BinaryReader implements the decoders for all the wire types specified in
  * https://protobuf.dev/programming-guides/encoding/.
  *
- * @param {jspb.ByteSource=} opt_bytes The bytes we're reading from.
+ * @param {BinaryConstants.ByteSource=} opt_bytes The bytes we're reading from.
  * @param {number=} opt_start The optional offset to start reading at.
  * @param {number=} opt_length The optional length of the block to read -
  *     we'll throw an assertion if we go off the end of the block.
@@ -151,7 +153,7 @@ BinaryReader.getInstanceCacheLength = function() {
 /**
  * Pops an instance off the instance cache, or creates one if the cache is
  * empty.
- * @param {jspb.ByteSource=} opt_bytes The bytes we're reading from.
+ * @param {BinaryConstants.ByteSource=} opt_bytes The bytes we're reading from.
  * @param {number=} opt_start The optional offset to start reading at.
  * @param {number=} opt_length The optional length of the block to read -
  *     we'll throw an assertion if we go off the end of the block.
@@ -173,7 +175,7 @@ BinaryReader.alloc = function(opt_bytes, opt_start, opt_length) {
 
 /**
  * Alias for the above method.
- * @param {jspb.ByteSource=} opt_bytes The bytes we're reading from.
+ * @param {BinaryConstants.ByteSource=} opt_bytes The bytes we're reading from.
  * @param {number=} opt_start The optional offset to start reading at.
  * @param {number=} opt_length The optional length of the block to read -
  *     we'll throw an assertion if we go off the end of the block.
@@ -540,7 +542,7 @@ BinaryReader.prototype.runReadCallback = function(callbackName) {
 /**
  * Reads a field of any valid non-message type from the binary stream.
  * @param {BinaryConstants.FieldType} fieldType
- * @return {jspb.AnyFieldType}
+ * @return {BinaryConstants.AnyFieldType}
  */
 BinaryReader.prototype.readAny = function(fieldType) {
   this.nextWireType_ = BinaryConstants.FieldTypeToWireType(fieldType);

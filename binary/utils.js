@@ -1025,7 +1025,7 @@ export function countDelimitedFields(buffer, start, end, field) {
  * String-ify bytes for text format. Should be optimized away in non-debug.
  * The returned string uses \xXX escapes for all values and is itself quoted.
  * [1, 31] serializes to '"\x01\x1f"'.
- * @param {jspb.ByteSource} byteSource The bytes to serialize.
+ * @param {BinaryConstants.ByteSource} byteSource The bytes to serialize.
  * @return {string} Stringified bytes for text format.
  * @export
  */
@@ -1083,7 +1083,7 @@ export function stringToByteArray(str) {
 
 /**
  * Converts any type defined in jspb.ByteSource into a Uint8Array.
- * @param {!jspb.ByteSource} data
+ * @param {!BinaryConstants.ByteSource} data
  * @return {!Uint8Array}
  * @suppress {invalidCasts}
  * @export

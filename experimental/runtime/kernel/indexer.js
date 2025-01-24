@@ -6,8 +6,7 @@ import { BinaryStorage } from './binary_storage.js';
 
 import { BufferDecoder } from './buffer_decoder.js';
 import { WireType } from './wire_type.js';
-import binaryField from './field.js';
-const {Field} = binaryField;
+import { Field } from './field.js';
 import checks from '../internal/checks.js';
 const {checkCriticalState} = checks;
 import binaryTag from './tag.js';

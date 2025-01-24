@@ -48,6 +48,7 @@ import * as asserts from '../asserts.js';
 
 import * as utf8 from './utf8.js';
 import * as utils from './utils.js';
+import { ByteSource } from './constants.js';
 
 
 
@@ -55,7 +56,7 @@ import * as utils from './utils.js';
  * BinaryDecoder implements the decoders for all the wire types specified in
  * https://protobuf.dev/programming-guides/encoding/.
  *
- * @param {jspb.ByteSource=} opt_bytes The bytes we're reading from.
+ * @param {ByteSource=} opt_bytes The bytes we're reading from.
  * @param {number=} opt_start The optional offset to start reading at.
  * @param {number=} opt_length The optional length of the block to read -
  *     we'll throw an assertion if we go off the end of the block.
@@ -118,7 +119,7 @@ BinaryDecoder.getInstanceCacheLength = function() {
 /**
  * Pops an instance off the instance cache, or creates one if the cache is
  * empty.
- * @param {jspb.ByteSource=} opt_bytes The bytes we're reading from.
+ * @param {ByteSource=} opt_bytes The bytes we're reading from.
  * @param {number=} opt_start The optional offset to start reading at.
  * @param {number=} opt_length The optional length of the block to read -
  *     we'll throw an assertion if we go off the end of the block.
@@ -186,7 +187,7 @@ BinaryDecoder.prototype.getBuffer = function() {
 
 /**
  * Changes the block of bytes we're decoding.
- * @param {!jspb.ByteSource} data The bytes we're reading from.
+ * @param {!ByteSource} data The bytes we're reading from.
  * @param {number=} opt_start The optional offset to start reading at.
  * @param {number=} opt_length The optional length of the block to read -
  *     we'll throw an assertion if we go off the end of the block.
