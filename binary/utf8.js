@@ -351,9 +351,9 @@ checkWellFormed = function (/** string */ text) {
   if (HAS_WELL_FORMED_METHOD ?
     // Externs don't contain the definition of this function yet.
     // http://go/mdn/JavaScript/Reference/Global_Objects/String/isWellFormed
-    !(/** @type{{isWellFormed:function():boolean}}*/ ((
+    !(/** @type{{isWellFormed:function():boolean}}*/ (
                 /** @type {?} */ (text))
-      .isWellFormed())) :
+      .isWellFormed()) :
     /(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])/
       .test(text)) {
     throw new Error('Found an unpaired surrogate');
