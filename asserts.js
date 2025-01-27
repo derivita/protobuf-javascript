@@ -43,6 +43,7 @@ export function doAssertFailure(defaultMessage, defaultArgs, givenMessage, given
  * @param {...*} args The items to substitute into the failure message.
  * @return {T} The value of the condition.
  * @throws {Error} When the condition evaluates to false.
+ * @closurePrimitive {asserts.truthy}
  */
 
 export function assert(condition, opt_message, ...args) {

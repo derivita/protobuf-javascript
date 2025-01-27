@@ -34,6 +34,7 @@
 
 import '../closure-library/closure/goog/array/array.js';
 
+import * as googArray from '../closure-library/closure/goog/array/array.js';
 import googObject from '../closure-library/closure/goog/object/object.js';
 import * as asserts from './asserts.js';
 import { Map } from './map.js';
@@ -89,7 +90,7 @@ function dump_(thing) {
 
   if (type == 'array') {
     asserts.assertArray(thing);
-    return goog.array.map(thing, dump_);
+    return googArray.map(thing, dump_);
   }
 
   if (message instanceof Map) {

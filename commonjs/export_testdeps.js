@@ -7,52 +7,53 @@
  * export_asserts.js.
  */
 
-goog.provide('jspb.ExportTestDeps');
+import { byteArrayToString, byteArrayToHex } from '../../closure-library/closure/goog/crypt/crypt.js';
+import * as base64 from '../../closure-library/closure/goog/crypt/base64.js';
+import { PropertyReplacer } from '../../closure-library/closure/goog/testing/propertyreplacer.js';
+import * as userAgent from '../../closure-library/closure/goog/useragent/useragent.js';
+import * as googArray from '../../closure-library/closure/goog/array/array.js';
+import googObject from '../../closure-library/closure/goog/object/object.js';
 
-goog.require('goog.crypt.base64');
-goog.require('goog.testing.PropertyReplacer');
+import * as debug from '../debug.js'
+import { BinaryReader } from '../binary/reader.js';
+import { BinaryWriter } from '../binary/writer.js';
+import { ExtensionFieldBinaryInfo, ExtensionFieldInfo, Message } from '../message.js';
+import { Map } from '../map.js';
 
-goog.require('jspb.debug');
-goog.require('jspb.BinaryReader');
-goog.require('jspb.BinaryWriter');
-goog.require('jspb.ExtensionFieldBinaryInfo');
-goog.require('jspb.ExtensionFieldInfo');
-goog.require('jspb.Message');
-goog.require('jspb.Map');
 
 if (typeof exports === 'object') {
   exports['goog'] = {
     'crypt': {
-      'byteArrayToString': goog.crypt.byteArrayToString,
-      'byteArrayToHex': goog.crypt.byteArrayToHex,
+      'byteArrayToString': byteArrayToString,
+      'byteArrayToHex': byteArrayToHex,
       'base64': {
-	'Alphabet': goog.crypt.base64.Alphabet,
-	'encodeByteArray': goog.crypt.base64.encodeByteArray,
-	'encodeString': goog.crypt.base64.encodeString,
-	'decodeStringToUint8Array': goog.crypt.base64.decodeStringToUint8Array
+	'Alphabet': base64.Alphabet,
+	'encodeByteArray': base64.encodeByteArray,
+	'encodeString': base64.encodeString,
+	'decodeStringToUint8Array': base64.decodeStringToUint8Array
       }
     },
 
     'testing': {
-      'PropertyReplacer': goog.testing.PropertyReplacer,
+      'PropertyReplacer': PropertyReplacer,
     },
 
-    'userAgent': goog.userAgent,
+    'userAgent': userAgent,
 
     'exportSymbol': goog.exportSymbol,
-    'array': goog.array,
-    'object': goog.object,
+    'array': googArray,
+    'object': googObject,
     'requireType': goog.requireType,
   };
 
   exports['jspb'] = {
-    'debug': jspb.debug,
-    'BinaryReader': jspb.BinaryReader,
-    'BinaryWriter': jspb.BinaryWriter,
-    'ExtensionFieldBinaryInfo': jspb.ExtensionFieldBinaryInfo,
-    'ExtensionFieldInfo': jspb.ExtensionFieldInfo,
-    'Message': jspb.Message,
-    'Map': jspb.Map,
+    'debug': debug,
+    'BinaryReader': BinaryReader,
+    'BinaryWriter': BinaryWriter,
+    'ExtensionFieldBinaryInfo': ExtensionFieldBinaryInfo,
+    'ExtensionFieldInfo': ExtensionFieldInfo,
+    'Message': Message,
+    'Map': Map,
   };
   // exports['exportSymbol'] = goog.exportSymbol;
   // exports['inherits'] = goog.inherits;

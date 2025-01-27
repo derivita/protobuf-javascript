@@ -38,6 +38,8 @@ import * as asserts from './asserts.js';
 import {BinaryReader} from './binary/reader.js';
 import {BinaryWriter} from './binary/writer.js';
 
+const { Message } = goog.requireType('jspb.message');
+
 
 /**
  * Constructs a new Map. A Map is a container that is used to implement map
@@ -108,7 +110,7 @@ Map.prototype.toArray = function() {
       var m = this.map_;
       for (var p in m) {
         if (Object.prototype.hasOwnProperty.call(m, p)) {
-          var valueWrapper = /** @type {?jspb.Message} */ (m[p].valueWrapper);
+          var valueWrapper = /** @type {?Message} */ (m[p].valueWrapper);
           if (valueWrapper) {
             valueWrapper.toArray();
           }
@@ -123,7 +125,7 @@ Map.prototype.toArray = function() {
     strKeys.sort();
     for (var i = 0; i < strKeys.length; i++) {
       var entry = this.map_[strKeys[i]];
-      var valueWrapper = /** @type {?jspb.Message} */ (entry.valueWrapper);
+      var valueWrapper = /** @type {?Message} */ (entry.valueWrapper);
       if (valueWrapper) {
         valueWrapper.toArray();
       }

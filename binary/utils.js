@@ -39,7 +39,7 @@
 import * as crypt from '../../closure-library/closure/goog/crypt/crypt.js';
 
 import * as base64 from '../../closure-library/closure/goog/crypt/base64.js';
-import * as string from '../../closure-library/closure/goog/string/string.js';
+import * as googString from '../../closure-library/closure/goog/string/string.js';
 import * as asserts from '../asserts.js';
 import * as BinaryConstants from './constants.js';
 
@@ -1051,7 +1051,7 @@ export function debugBytesToTextFormat(byteSource) {
  */
 export function debugScalarToTextFormat(scalar) {
   if (typeof scalar === 'string') {
-    return string.quote(scalar);
+    return googString.quote(scalar);
   } else {
     return scalar.toString();
   }

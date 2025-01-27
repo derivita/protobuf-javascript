@@ -347,7 +347,7 @@ export function textEncoderEncode(/** string */ s, /** boolean */ rejectUnpaired
 const /** boolean */ HAS_WELL_FORMED_METHOD = goog.FEATURESET_YEAR > 2023 ||
   typeof String.prototype.isWellFormed === 'function';
 
-checkWellFormed = function (/** string */ text) {
+export function checkWellFormed(/** string */ text) {
   if (HAS_WELL_FORMED_METHOD ?
     // Externs don't contain the definition of this function yet.
     // http://go/mdn/JavaScript/Reference/Global_Objects/String/isWellFormed
@@ -427,4 +427,3 @@ export function encodeUtf8(/**string*/ string, /** boolean=*/ rejectUnpairedSurr
     textEncoderEncode(string, rejectUnpairedSurrogates) :
     polyfillEncode(string, rejectUnpairedSurrogates);
 }
-export var checkWellFormed;

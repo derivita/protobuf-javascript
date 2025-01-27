@@ -35,7 +35,7 @@
  * @author mwr@google.com (Mark Rawling)
  */
 
-import '../closure-library/closure/goog/array/array.js';
+import * as googArray from '../closure-library/closure/goog/array/array.js';
 
 import * as base64 from '../closure-library/closure/goog/crypt/base64.js';
 import * as asserts from './asserts.js';
@@ -562,11 +562,11 @@ Message.toObjectExtension = function(
       } else {
         if (fieldInfo.isRepeated) {
           obj[name] = Message.toObjectList(
-              /** @type {!Array<!jspb.Message>} */ (value),
+              /** @type {!Array<!Message>} */ (value),
               fieldInfo.toObjectFn, opt_includeInstance);
         } else {
           obj[name] = fieldInfo.toObjectFn(
-              opt_includeInstance, /** @type {!jspb.Message} */ (value));
+              opt_includeInstance, /** @type {!Message} */ (value));
         }
       }
     }
@@ -842,7 +842,7 @@ Message.bytesListAsB64 = function(value) {
   if (!value.length || typeof value[0] === 'string') {
     return /** @type {!Array<string>} */ (value);
   }
-  return goog.array.map(value, Message.bytesAsB64);
+  return googArray.map(value, Message.bytesAsB64);
 };
 
 
@@ -860,7 +860,7 @@ Message.bytesListAsU8 = function(value) {
   if (!value.length || value[0] instanceof Uint8Array) {
     return /** @type {!Array<!Uint8Array>} */ (value);
   }
-  return goog.array.map(value, Message.bytesAsU8);
+  return googArray.map(value, Message.bytesAsU8);
 };
 
 
@@ -872,7 +872,7 @@ Message.bytesListAsU8 = function(value) {
 Message.assertConsistentTypes_ = function(array) {
   if (goog.DEBUG && array && array.length > 1) {
     var expected = goog.typeOf(array[0]);
-    goog.array.forEach(array, function(e) {
+    googArray.forEach(array, function(e) {
       if (goog.typeOf(e) != expected) {
         asserts.fail(
             'Inconsistent type in JSPB repeated field array. ' +
@@ -1277,7 +1277,7 @@ Message.getRepeatedWrapperField = function(msg, ctor, fieldNumber) {
   if (val == Message.EMPTY_LIST_SENTINEL_) {
     val = msg.wrappers_[fieldNumber] = [];
   }
-  return /** @type {!Array<!jspb.Message>} */ (val);
+  return /** @type {!Array<!Message>} */ (val);
 };
 
 
@@ -1524,7 +1524,7 @@ Message.prototype.getExtension = function(fieldInfo) {
   if (fieldInfo.isRepeated) {
     if (fieldInfo.isMessageType()) {
       if (!this.wrappers_[fieldNumber]) {
-        this.wrappers_[fieldNumber] = goog.array.map(
+        this.wrappers_[fieldNumber] = googArray.map(
             this.extensionObject_[fieldNumber] || [], function(arr) {
               return new fieldInfo.ctor(arr);
             });
@@ -1561,7 +1561,7 @@ Message.prototype.getExtension = function(fieldInfo) {
 Message.prototype.setExtension = function(fieldInfo, value) {
   // Cast self, since the inferred THIS is unknown inside the function body.
   // https://github.com/google/closure-compiler/issues/1411#issuecomment-232442220
-  var self = /** @type {!jspb.Message} */ (this);
+  var self = /** @type {!Message} */ (this);
   if (!self.wrappers_) {
     self.wrappers_ = {};
   }
@@ -1571,8 +1571,8 @@ Message.prototype.setExtension = function(fieldInfo, value) {
     value = value || [];
     if (fieldInfo.isMessageType()) {
       self.wrappers_[fieldNumber] = value;
-      self.extensionObject_[fieldNumber] = goog.array.map(
-          /** @type {!Array<!jspb.Message>} */ (value), function(msg) {
+      self.extensionObject_[fieldNumber] = googArray.map(
+          /** @type {!Array<!Message>} */ (value), function(msg) {
             return msg.toArray();
           });
     } else {

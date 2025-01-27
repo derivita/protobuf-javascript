@@ -69,7 +69,6 @@ ConstBinaryMessage.prototype.toDebugStringInternal;
  * doing so on a widely-used interface defeats dead-code elimination.
  * @interface
  * @extends {ConstBinaryMessage}
- * @export
  */
 export function BinaryMessage() {}
 
@@ -78,7 +77,6 @@ export function BinaryMessage() {}
  * The types convertible to Uint8Arrays. Strings are assumed to be
  * base64-encoded.
  * @typedef {ArrayBuffer|Uint8Array|Array<number>|string}
- * @export
  */
 export var ByteSource;
 
@@ -86,7 +84,6 @@ export var ByteSource;
 /**
  * A scalar field in jspb can be a boolean, number, or string.
  * @typedef {boolean|number|string}
- * @export
  */
 export var ScalarFieldType;
 
@@ -97,7 +94,6 @@ export var ScalarFieldType;
              !Array<!Uint8Array>|
              !Array<!ConstBinaryMessage>|
              !Array<!BinaryMessage>}
-* @export
  */
 export var RepeatedFieldType;
 
@@ -110,7 +106,6 @@ export var RepeatedFieldType;
              !Uint8Array|
              !ConstBinaryMessage|
              !BinaryMessage}
- * @export
  */
 export var AnyFieldType;
 
@@ -118,7 +113,6 @@ export var AnyFieldType;
 /**
  * A builder function creates an instance of a message object.
  * @typedef {function():!BinaryMessage}
- * @export
  */
 export var BuilderFunction;
 
@@ -126,7 +120,6 @@ export var BuilderFunction;
 /**
  * A cloner function creates a deep copy of a message object.
  * @typedef {function(ConstBinaryMessage):BinaryMessage}
- * @export
  */
 export var ClonerFunction;
 
@@ -134,7 +127,6 @@ export var ClonerFunction;
 /**
  * A recycler function destroys an instance of a message object.
  * @typedef {function(!BinaryMessage):void}
- * @export
  */
 export var RecyclerFunction;
 
@@ -142,7 +134,6 @@ export var RecyclerFunction;
 /**
  * A reader function initializes a message using data from a BinaryReader.
  * @typedef {function(!BinaryMessage, !BinaryReader):void}
- * @export
  */
 export var ReaderFunction;
 
@@ -151,7 +142,6 @@ export var ReaderFunction;
  * A writer function serializes a message to a BinaryWriter.
  * @typedef {function((!Message|!ConstBinaryMessage),
  *                    !BinaryWriter):void}
- * @export
  */
 export var WriterFunction;
 
@@ -161,7 +151,6 @@ export var WriterFunction;
  * message and returns either the pruned message or null if the entire message
  * was pruned away.
  * @typedef {function(?BinaryMessage):?BinaryMessage}
- * @export
  */
 export var PrunerFunction;
 
@@ -170,7 +159,6 @@ export var PrunerFunction;
  * A comparer function returns true if two protos are equal.
  * @typedef {function(?ConstBinaryMessage,
  *                     ?ConstBinaryMessage):boolean}
- * @export
  */
 export var ComparerFunction;
 
@@ -178,7 +166,6 @@ export var ComparerFunction;
 /**
  * Field type codes, taken from proto2/public/wire_format_lite.h.
  * @enum {number}
- * @export
  */
 export var FieldType = {
   INVALID: -1,
@@ -211,7 +198,6 @@ export var FieldType = {
 /**
  * Wire-format type codes, taken from proto2/public/wire_format_lite.h.
  * @enum {number}
- * @export
  */
 export var WireType = {
   INVALID: -1,
@@ -228,7 +214,6 @@ export var WireType = {
  * Translates field type to wire type.
  * @param {FieldType} fieldType
  * @return {WireType}
- * @export
  */
 export function FieldTypeToWireType(fieldType) {
   var fieldTypes = FieldType;
@@ -272,7 +257,6 @@ export function FieldTypeToWireType(fieldType) {
 /**
  * Flag to indicate a missing field.
  * @const {number}
- * @export
  */
 export var INVALID_FIELD_NUMBER = -1;
 
@@ -280,7 +264,6 @@ export var INVALID_FIELD_NUMBER = -1;
 /**
  * The smallest denormal float32 value.
  * @const {number}
- * @export
  */
 export var FLOAT32_EPS = 1.401298464324817e-45;
 
@@ -288,7 +271,6 @@ export var FLOAT32_EPS = 1.401298464324817e-45;
 /**
  * The smallest normal float64 value.
  * @const {number}
- * @export
  */
 export var FLOAT32_MIN = 1.1754943508222875e-38;
 
@@ -296,7 +278,6 @@ export var FLOAT32_MIN = 1.1754943508222875e-38;
 /**
  * The largest finite float32 value.
  * @const {number}
- * @export
  */
 export var FLOAT32_MAX = 3.4028234663852886e+38;
 
@@ -304,7 +285,6 @@ export var FLOAT32_MAX = 3.4028234663852886e+38;
 /**
  * The smallest denormal float64 value.
  * @const {number}
- * @export
  */
 export var FLOAT64_EPS = 5e-324;
 
@@ -312,7 +292,6 @@ export var FLOAT64_EPS = 5e-324;
 /**
  * The smallest normal float64 value.
  * @const {number}
- * @export
  */
 export var FLOAT64_MIN = 2.2250738585072014e-308;
 
@@ -320,7 +299,6 @@ export var FLOAT64_MIN = 2.2250738585072014e-308;
 /**
  * The largest finite float64 value.
  * @const {number}
- * @export
  */
 export var FLOAT64_MAX = 1.7976931348623157e+308;
 
@@ -328,7 +306,6 @@ export var FLOAT64_MAX = 1.7976931348623157e+308;
 /**
  * Convenience constant equal to 2^20.
  * @const {number}
- * @export
  */
 export var TWO_TO_20 = 1048576;
 
@@ -336,7 +313,6 @@ export var TWO_TO_20 = 1048576;
 /**
  * Convenience constant equal to 2^23.
  * @const {number}
- * @export
  */
 export var TWO_TO_23 = 8388608;
 
@@ -344,7 +320,6 @@ export var TWO_TO_23 = 8388608;
 /**
  * Convenience constant equal to 2^31.
  * @const {number}
- * @export
  */
 export var TWO_TO_31 = 2147483648;
 
@@ -352,7 +327,6 @@ export var TWO_TO_31 = 2147483648;
 /**
  * Convenience constant equal to 2^32.
  * @const {number}
- * @export
  */
 export var TWO_TO_32 = 4294967296;
 
@@ -360,7 +334,6 @@ export var TWO_TO_32 = 4294967296;
 /**
  * Convenience constant equal to 2^52.
  * @const {number}
- * @export
  */
 export var TWO_TO_52 = 4503599627370496;
 
@@ -368,7 +341,6 @@ export var TWO_TO_52 = 4503599627370496;
 /**
  * Convenience constant equal to 2^63.
  * @const {number}
- * @export
  */
 export var TWO_TO_63 = 9223372036854775808;
 
@@ -376,7 +348,6 @@ export var TWO_TO_63 = 9223372036854775808;
 /**
  * Convenience constant equal to 2^64.
  * @const {number}
- * @export
  */
 export var TWO_TO_64 = 18446744073709551616;
 
@@ -384,6 +355,5 @@ export var TWO_TO_64 = 18446744073709551616;
 /**
  * Eight-character string of zeros, used as the default 64-bit hash value.
  * @const {string}
- * @export
  */
 export var ZERO_HASH = '\0\0\0\0\0\0\0\0';
