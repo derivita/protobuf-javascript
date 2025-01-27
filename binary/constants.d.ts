@@ -50,7 +50,7 @@ export type BuilderFunction = () => BinaryMessage;
 /**
  * A cloner function creates a deep copy of a message object.
  */
-export type ClonerFunction = () => (BinaryMessage | null);
+export type ClonerFunction = (m:ConstBinaryMessage|null) => (BinaryMessage | null);
 /**
  * A recycler function destroys an instance of a message object.
  */
@@ -68,11 +68,11 @@ export type WriterFunction = (m: Message|ConstBinaryMessage, w: BinaryWriter) =>
  * message and returns either the pruned message or null if the entire message
  * was pruned away.
  */
-export type PrunerFunction = () => (BinaryMessage | null);
+export type PrunerFunction = (m: BinaryMessage | null) => (BinaryMessage | null);
 /**
  * A comparer function returns true if two protos are equal.
  */
-export type ComparerFunction = () => boolean;
+export type ComparerFunction = (a:ConstBinaryMessage | null, b:ConstBinaryMessage | null) => boolean;
 export /**
  * Field type codes, taken from proto2/public/wire_format_lite.h.
  */ type FieldType = number;

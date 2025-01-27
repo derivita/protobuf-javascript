@@ -67,14 +67,16 @@ export declare class ExtensionFieldInfo<T = any> {
      * @param fieldName This has the extension field name as a property.
      */
     constructor(fieldNumber: number, fieldName: object | null, ctor: {
-        new (): Message | null;
-    }, toObjectFn: (() => object) | null, isRepeated: number);
+        new (): Message ;
+    } | null, toObjectFn: (() => object) | null, isRepeated: number);
     private noStructuralTyping____protobuf_javascript_message_ExtensionFieldInfo;
-    fieldIndex: any;
-    fieldName: any;
-    ctor: any;
-    toObjectFn: any;
-    isRepeated: any;
+    fieldIndex: number;
+    fieldName: object;
+    ctor: {
+        new (): Message;
+    }|null;
+    toObjectFn: (() => object) | null;
+    isRepeated: number;
     isMessageType(): boolean;
 }
 /**
@@ -184,7 +186,7 @@ export declare class Message {
      * @param msg A jspb proto.
      * @param extensions The extensions object.
      */
-    static readBinaryExtension(msg: Message, reader: BinaryReader, extensions: object, getExtensionFn: (this: Message | null) => any, setExtensionFn: (this: Message | null) => any): void;
+    static readBinaryExtension(msg: Message, reader: BinaryReader, extensions: object, getExtensionFn: (this: Message ) => any, setExtensionFn: (this: Message | null) => any): void;
     /**
      * Gets the value of a non-extension field.
      * @param msg A jspb proto.

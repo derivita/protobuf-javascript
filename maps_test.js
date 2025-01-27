@@ -416,7 +416,7 @@ describe('mapsTest', () => {
     testbinary_pb.MapValueMessage, '_Binary');
   makeTests(
     {
-      constructor: testbinary_pb.TestMapFieldsNoBinary,
+      constructor: TestMapFieldsNoBinary,
       deserializeBinary: null
     },
     MapValueMessageNoBinary, '_NoBinary');

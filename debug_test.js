@@ -45,10 +45,10 @@ describe('debugTest', function () {
     if (COMPILED) {
       return;
     }
-    const message = new test.TestAllTypes();
+    const message = new test.Simple1();
     message.setAString('foo');
     expect(debug.dump(message)).toEqual({
-      $name: 'proto.jspb.test.TestAllTypes',
+      $name: 'proto.jspb.test.Simple1',
       'aString': 'foo',
       'aRepeatedStringList': []
     });
