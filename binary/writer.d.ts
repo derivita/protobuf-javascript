@@ -225,21 +225,21 @@ export declare class BinaryWriter {
      * @param value The message to write.
      * @param writerCallback Will be invoked with the value to write and the writer to write it with.
      */
-    writeMessage<MessageType = any, MessageTypeNonNull = any>(field: number, value: MessageType | null, writerCallback: () => any): void;
+    writeMessage<MessageType = any>(field: number, value: MessageType | null, writerCallback: (m:Exclude<MessageType, null>, w:BinaryWriter) => void): void;
     /**
      * Writes a message set extension to the buffer.
      * @param field The field number for the extension.
      * @param value The extension message object to write. Note that message set can only have extensions with type of optional message.
      * @param writerCallback Will be invoked with the value to write and the writer to write it with.
      */
-    writeMessageSet<MessageType = any, MessageTypeNonNull = any>(field: number, value: MessageType | null, writerCallback: () => any): void;
+    writeMessageSet<MessageType = any>(field: number, value: MessageType | null, writerCallback: (m:Exclude<MessageType, null>, w:BinaryWriter) => void): void;
     /**
      * Writes a group message to the buffer.
      * @param field The field number.
      * @param value The message to write, wrapped with START_GROUP / END_GROUP tags. Will be a no-op if 'value' is null.
      * @param writerCallback Will be invoked with the value to write and the writer to write it with.
      */
-    writeGroup<MessageType = any, MessageTypeNonNull = any>(field: number, value: MessageType | null, writerCallback: () => any): void;
+    writeGroup<MessageType = any>(field: number, value: MessageType | null, writerCallback: (m:Exclude<MessageType, null>, w:BinaryWriter) => void): void;
     /**
      * Writes a 64-bit hash string field (8 characters @ 8 bits of data each) to
      * the buffer.

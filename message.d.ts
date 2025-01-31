@@ -162,7 +162,7 @@ export declare class Message {
      * @param opt_includeInstance Whether to include the JSPB instance for transitional soy proto support: http://goto/soy-param-migration
      * @return An array of converted message objects.
      */
-    static toObjectList<T = any>(field: (T | null)[], toObjectFn: ((() => (object | null)) | null) | (() => (object | null)) | null, opt_includeInstance?: boolean): (object | null)[];
+    static toObjectList<T = any>(field: T[], toObjectFn: (x?: boolean) => object | null, opt_includeInstance?: boolean): object[];
     /**
      * Adds a proto's extension data to a Soy rendering object.
      * @param proto The proto whose extensions to convert.
