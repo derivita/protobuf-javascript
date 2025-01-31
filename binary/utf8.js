@@ -1,9 +1,7 @@
 /**
  * @fileoverview UTF8 encoding and decoding routines
  */
-goog.provide('jspb.binary.utf8');
-
-goog.require('jspb.asserts');
+import * as asserts from '../asserts.js';
 
 
 /**
@@ -75,9 +73,12 @@ function codeUnitsToString(
  *
  * @return {string}
  */
-jspb.binary.utf8.polyfillDecodeUtf8 = function (
-    /** !Uint8Array */ bytes, /** number */ offset, /** number */ length,
-    /** boolean */ parsingErrorsAreFatal) {
+export function polyfillDecodeUtf8(
+  /** !Uint8Array */ bytes,
+  /** number */ offset,
+  /** number */ length,
+  /** boolean */ parsingErrorsAreFatal
+) {
   let cursor = offset;
   const end = cursor + length;
   const codeUnits = [];
@@ -112,7 +113,7 @@ jspb.binary.utf8.polyfillDecodeUtf8 = function (
           const codeUnit = ((c1 & 0x1F) << 6) | (c2 & 0x3F);
           // Consistency check that the computed code is in range for a 2 byte
           // sequence.
-          jspb.asserts.assert(codeUnit >= 0x80 && codeUnit <= 0x07FF);
+          asserts.assert(codeUnit >= 0x80 && codeUnit <= 0x07FF);
           codeUnits.push(codeUnit);
         }
       }
@@ -140,9 +141,9 @@ jspb.binary.utf8.polyfillDecodeUtf8 = function (
           const codeUnit =
             ((c1 & 0xF) << 12) | ((c2 & 0x3F) << 6) | (c3 & 0x3F);
           // Consistency check, this is the valid range for a 3 byte character
-          jspb.asserts.assert(codeUnit >= 0x800 && codeUnit <= 0xFFFF);
+          asserts.assert(codeUnit >= 0x800 && codeUnit <= 0xFFFF);
           // And that Utf16 surrogates are disallowed
-          jspb.asserts.assert(codeUnit < MIN_SURROGATE || codeUnit > MAX_SURROGATE);
+          asserts.assert(codeUnit < MIN_SURROGATE || codeUnit > MAX_SURROGATE);
           codeUnits.push(codeUnit);
         }
       }
@@ -179,7 +180,7 @@ jspb.binary.utf8.polyfillDecodeUtf8 = function (
           let codepoint = ((c1 & 0x7) << 18) | ((c2 & 0x3F) << 12) |
             ((c3 & 0x3F) << 6) | (c4 & 0x3F);
           // Consistency check, this is the valid range for a 4 byte character.
-          jspb.asserts.assert(codepoint >= 0x10000 && codepoint <= 0x10FFFF);
+          asserts.assert(codepoint >= 0x10000 && codepoint <= 0x10FFFF);
           // Surrogates formula from wikipedia.
           // 1. Subtract 0x10000 from codepoint
           codepoint -= 0x10000;
@@ -203,7 +204,7 @@ jspb.binary.utf8.polyfillDecodeUtf8 = function (
     }
   }
   // ensure we don't overflow or underflow
-  jspb.asserts.assert(cursor === end, `expected ${cursor} === ${end}`);
+  asserts.assert(cursor === end, `expected ${cursor} === ${end}`);
   return codeUnitsToString(result, codeUnits);
 }
 
@@ -283,9 +284,12 @@ function subarray(
 /**
  * @return {string}
  */
-jspb.binary.utf8.textDecoderDecodeUtf8 = function (
-    /** !Uint8Array*/ bytes, /** number */ offset, /** number */ length,
-    /** boolean*/ parsingErrorsAreFatal) {
+export function textDecoderDecodeUtf8(
+  /** !Uint8Array*/ bytes,
+  /** number */ offset,
+  /** number */ length,
+  /** boolean*/ parsingErrorsAreFatal
+) {
   const /** !TextDecoder */ decoder = parsingErrorsAreFatal ?
     getFatalDecoderInstance() :
     getNonFatalDecoderInstance();
@@ -311,22 +315,24 @@ const useTextDecoderDecode =
  * our polyfill implementation
  * @return {string}
  */
-jspb.binary.utf8.decodeUtf8 = function (
-    /** !Uint8Array*/ bytes, /** number */ offset, /** number */ length,
-    /** boolean*/ parsingErrorsAreFatal) {
+export function decodeUtf8(
+  /** !Uint8Array*/ bytes,
+  /** number */ offset,
+  /** number */ length,
+  /** boolean*/ parsingErrorsAreFatal
+) {
   return useTextDecoderDecode ?
-    jspb.binary.utf8.textDecoderDecodeUtf8(bytes, offset, length, parsingErrorsAreFatal) :
-    jspb.binary.utf8.polyfillDecodeUtf8(bytes, offset, length, parsingErrorsAreFatal);
+    textDecoderDecodeUtf8(bytes, offset, length, parsingErrorsAreFatal) :
+    polyfillDecodeUtf8(bytes, offset, length, parsingErrorsAreFatal);
 }
 
 /** @type {!TextEncoder|undefined} */
 let textEncoderInstance;
 
 /** @return {!Uint8Array} */
-jspb.binary.utf8.textEncoderEncode = function (
-    /** string */ s, /** boolean */ rejectUnpairedSurrogates) {
+export function textEncoderEncode(/** string */ s, /** boolean */ rejectUnpairedSurrogates) {
   if (rejectUnpairedSurrogates) {
-    jspb.binary.utf8.checkWellFormed(s);
+    checkWellFormed(s);
   }
 
   if (!textEncoderInstance) {
@@ -341,7 +347,7 @@ jspb.binary.utf8.textEncoderEncode = function (
 const /** boolean */ HAS_WELL_FORMED_METHOD = goog.FEATURESET_YEAR > 2023 ||
   typeof String.prototype.isWellFormed === 'function';
 
-jspb.binary.utf8.checkWellFormed = function (/** string */ text) {
+export function checkWellFormed(/** string */ text) {
   if (HAS_WELL_FORMED_METHOD ?
     // Externs don't contain the definition of this function yet.
     // http://go/mdn/JavaScript/Reference/Global_Objects/String/isWellFormed
@@ -356,8 +362,7 @@ jspb.binary.utf8.checkWellFormed = function (/** string */ text) {
 
 
 /** @return {!Uint8Array} */
-jspb.binary.utf8.polyfillEncode = function (
-    /** string */ s, /** boolean */ rejectUnpairedSurrogates) {
+export function polyfillEncode(/** string */ s, /** boolean */ rejectUnpairedSurrogates) {
   let bi = 0;
   // The worse case is that every character requires 3 output bytes, so we
   // allocate for this.  This assumes that the buffer will be short lived.
@@ -371,7 +376,7 @@ jspb.binary.utf8.polyfillEncode = function (
       buffer[bi++] = (c >> 6) | 0xC0;
       buffer[bi++] = (c & 63) | 0x80;
     } else {
-      jspb.asserts.assert(c < 65536);
+      asserts.assert(c < 65536);
       // Look for surrogates
       // First check if it is surrogate range
       if (c >= MIN_SURROGATE && c <= MAX_SURROGATE) {
@@ -416,10 +421,9 @@ const useTextEncoderEncode =
  * our polyfill implementation
  * @return {!Uint8Array}
  */
-jspb.binary.utf8.encodeUtf8 = function (
-    /**string*/ string, /** boolean=*/ rejectUnpairedSurrogates = false) {
-  jspb.asserts.assertString(string);
+export function encodeUtf8(/**string*/ string, /** boolean=*/ rejectUnpairedSurrogates = false) {
+  asserts.assertString(string);
   return useTextEncoderEncode ?
-    jspb.binary.utf8.textEncoderEncode(string, rejectUnpairedSurrogates) :
-    jspb.binary.utf8.polyfillEncode(string, rejectUnpairedSurrogates);
+    textEncoderEncode(string, rejectUnpairedSurrogates) :
+    polyfillEncode(string, rejectUnpairedSurrogates);
 }

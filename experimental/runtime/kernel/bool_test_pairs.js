@@ -1,10 +1,10 @@
 /**
  * @fileoverview Test data for bool encoding and decoding.
  */
-goog.module('protobuf.binary.boolTestPairs');
+import { BufferDecoder } from './buffer_decoder.js';
 
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
+import bufferDecoderHelper from './buffer_decoder_helper.js';
+const {createBufferDecoder} = bufferDecoderHelper;
 
 /**
  * An array of Pairs of boolean values and their bit representation.
@@ -76,4 +76,4 @@ function getBoolPairs() {
   return [...boolPairs];
 }
 
-exports = {getBoolPairs};
+export default {getBoolPairs};

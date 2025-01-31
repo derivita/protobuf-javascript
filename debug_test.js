@@ -31,27 +31,23 @@
 goog.setTestOnly();
 
 // CommonJS-LoadFromFile: google-protobuf
-goog.require('jspb.debug');
+import * as debug from './debug.js';
 
 // CommonJS-LoadFromFile: protos/test_pb proto.jspb.test
-goog.require('proto.jspb.test.HasExtensions');
-goog.require('proto.jspb.test.IsExtension');
-goog.require('proto.jspb.test.MapValueMessageNoBinary');
-goog.require('proto.jspb.test.Simple1');
-goog.require('proto.jspb.test.TestMapFieldsNoBinary');
+import * as test from './protos/test_pb.js';
 
 
 // CommonJS-LoadFromFile: protos/testbinary_pb proto.jspb.test
-goog.require('proto.jspb.test.TestAllTypes');
+import { TestAllTypes } from './protos/testbinary_pb.js';
 
 describe('debugTest', function () {
   it('testSimple1', function () {
     if (COMPILED) {
       return;
     }
-    const message = new proto.jspb.test.Simple1();
+    const message = new test.Simple1();
     message.setAString('foo');
-    expect(jspb.debug.dump(message)).toEqual({
+    expect(debug.dump(message)).toEqual({
       $name: 'proto.jspb.test.Simple1',
       'aString': 'foo',
       'aRepeatedStringList': []
@@ -60,7 +56,7 @@ describe('debugTest', function () {
     message.setABoolean(true);
     message.setARepeatedStringList(['1', '2']);
 
-    expect(jspb.debug.dump(message)).toEqual({
+    expect(debug.dump(message)).toEqual({
       $name: 'proto.jspb.test.Simple1',
       'aString': 'foo',
       'aRepeatedStringList': ['1', '2'],
@@ -69,7 +65,7 @@ describe('debugTest', function () {
 
     message.clearAString();
 
-    expect(jspb.debug.dump(message)).toEqual({
+    expect(debug.dump(message)).toEqual({
       $name: 'proto.jspb.test.Simple1',
       'aRepeatedStringList': ['1', '2'],
       'aBoolean': true
@@ -80,25 +76,25 @@ describe('debugTest', function () {
     if (COMPILED || typeof Uint8Array == 'undefined') {
       return;
     }
-    const message = new proto.jspb.test.TestAllTypes();
+    const message = new TestAllTypes();
     const bytes = new Uint8Array(4);
     message.setOptionalBytes(bytes);
-    expect(bytes).toEqual(jspb.debug.dump(message)['optionalBytes']);
+    expect(bytes).toEqual(debug.dump(message)['optionalBytes']);
   });
 
   it('testExtensions', function () {
     if (COMPILED) {
       return;
     }
-    const extension = new proto.jspb.test.IsExtension();
+    const extension = new test.IsExtension();
     extension.setExt1('ext1field');
-    const extendable = new proto.jspb.test.HasExtensions();
+    const extendable = new test.HasExtensions();
     extendable.setStr1('v1');
     extendable.setStr2('v2');
     extendable.setStr3('v3');
-    extendable.setExtension(proto.jspb.test.IsExtension.extField, extension);
+    extendable.setExtension(test.IsExtension.extField, extension);
 
-    expect(jspb.debug.dump(extendable)).toEqual({
+    expect(debug.dump(extendable)).toEqual({
       '$name': 'proto.jspb.test.HasExtensions',
       'str1': 'v1',
       'str2': 'v2',
@@ -118,12 +114,12 @@ describe('debugTest', function () {
       return;
     }
 
-    const message = new proto.jspb.test.TestMapFieldsNoBinary();
+    const message = new test.TestMapFieldsNoBinary();
     message.getMapBoolStringMap().set(true, 'bool_string_value1');
     message.getMapBoolStringMap().set(false, 'bool_string_value2');
     message.getMapStringInt32Map().set('key', 111);
 
-    expect(jspb.debug.dump(message)).toEqual({
+    expect(debug.dump(message)).toEqual({
       '$name': 'proto.jspb.test.TestMapFieldsNoBinary',
       'mapBoolStringMap': {
         true: 'bool_string_value1',
@@ -149,16 +145,16 @@ describe('debugTest', function () {
       return;
     }
 
-    const value1 = new proto.jspb.test.MapValueMessageNoBinary();
+    const value1 = new test.MapValueMessageNoBinary();
     value1.setFoo(1111);
-    const value2 = new proto.jspb.test.MapValueMessageNoBinary();
+    const value2 = new test.MapValueMessageNoBinary();
     value2.setFoo(2222);
 
-    const message = new proto.jspb.test.TestMapFieldsNoBinary();
+    const message = new test.TestMapFieldsNoBinary();
     message.getMapStringMsgMap().set('key1', value1);
     message.getMapStringMsgMap().set('key2', value2);
 
-    expect(jspb.debug.dump(message)).toEqual({
+    expect(debug.dump(message)).toEqual({
       '$name': 'proto.jspb.test.TestMapFieldsNoBinary',
       'mapBoolStringMap': {},
       'mapInt32StringMap': {},

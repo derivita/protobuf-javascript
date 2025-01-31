@@ -32,50 +32,49 @@
  * @fileoverview Utilities to debug JSPB based proto objects.
  */
 
-goog.provide('jspb.debug');
+import '../closure-library/closure/goog/array/array.js';
 
-goog.require('goog.array');
-goog.require('goog.object');
-
-goog.require('jspb.asserts');
-goog.require('jspb.Map');
-goog.require('jspb.Message');
+import * as googArray from '../closure-library/closure/goog/array/array.js';
+import googObject from '../closure-library/closure/goog/object/object.js';
+import * as asserts from './asserts.js';
+import { Map } from './map.js';
+import { Message } from './message.js';
 
 
 /**
  * Turns a proto into a human readable object that can i.e. be written to the
- * console: `console.log(jspb.debug.dump(myProto))`.
+ * console: `console.log(dump(myProto))`.
  * This function makes a best effort and may not work in all cases. It will not
  * work in obfuscated and or optimized code.
- * Use this in environments where {@see jspb.Message.prototype.toObject} is
+ * Use this in environments where {@see Message.prototype.toObject} is
  * not available for code size reasons.
- * @param {jspb.Message} message A jspb.Message.
+ * @param {Message} message A Message.
  * @return {Object}
  * @export
  */
-jspb.debug.dump = function(message) {
+export function dump(message) {
   if (!goog.DEBUG) {
     return null;
   }
-  jspb.asserts.assertInstanceof(message, jspb.Message,
+  asserts.assertInstanceof(message, Message,
       'jspb.Message instance expected');
   /** @type {Object} */
   var object = message;
-  jspb.asserts.assert(object['getExtension'],
+  asserts.assert(object['getExtension'],
       'Only unobfuscated and unoptimized compilation modes supported.');
-  return /** @type {Object} */ (jspb.debug.dump_(message));
-};
+  return /** @type {Object} */ (dump_(message));
+}
 
 
 /**
  * Recursively introspects a message and the values its getters return to
  * make a best effort in creating a human readable representation of the
  * message.
- * @param {?} thing A jspb.Message, Array or primitive type to dump.
+ * @param {?} thing A Message, Array or primitive type to dump.
  * @return {*}
  * @private
  */
-jspb.debug.dump_ = function(thing) {
+function dump_(thing) {
   var type = goog.typeOf(thing);
   var message = thing;  // Copy because we don't want type inference on thing.
   if (type == 'number' || type == 'string' || type == 'boolean' ||
@@ -90,20 +89,20 @@ jspb.debug.dump_ = function(thing) {
   }
 
   if (type == 'array') {
-    jspb.asserts.assertArray(thing);
-    return goog.array.map(thing, jspb.debug.dump_);
+    asserts.assertArray(thing);
+    return googArray.map(thing, dump_);
   }
 
-  if (message instanceof jspb.Map) {
+  if (message instanceof Map) {
     var mapObject = {};
     var entries = message.entries();
     for (var entry = entries.next(); !entry.done; entry = entries.next()) {
-      mapObject[entry.value[0]] = jspb.debug.dump_(entry.value[1]);
+      mapObject[entry.value[0]] = dump_(entry.value[1]);
     }
     return mapObject;
   }
 
-  jspb.asserts.assertInstanceof(message, jspb.Message,
+  asserts.assertInstanceof(message, Message,
       'Only messages expected: ' + thing);
   var ctor = message.constructor;
   var messageName = ctor.name || ctor.displayName;
@@ -117,7 +116,7 @@ jspb.debug.dump_ = function(thing) {
       var has = 'has' + match[1];
       if (!thing[has] || thing[has]()) {
         var val = thing[name]();
-        object[jspb.debug.formatFieldName_(match[1])] = jspb.debug.dump_(val);
+        object[formatFieldName_(match[1])] = dump_(val);
       }
     }
   }
@@ -132,18 +131,18 @@ jspb.debug.dump_ = function(thing) {
     if (/^\d+$/.test(id)) {
       var ext = ctor['extensions'][id];
       var extVal = thing.getExtension(ext);
-      var fieldName = goog.object.getKeys(ext.fieldName)[0];
+      var fieldName = googObject.getKeys(ext.fieldName)[0];
       if (extVal != null) {
         if (!extensionsObject) {
           extensionsObject = object['$extensions'] = {};
         }
-        extensionsObject[jspb.debug.formatFieldName_(fieldName)] =
-            jspb.debug.dump_(extVal);
+        extensionsObject[formatFieldName_(fieldName)] =
+            dump_(extVal);
       }
     }
   }
   return object;
-};
+}
 
 
 /**
@@ -153,9 +152,9 @@ jspb.debug.dump_ = function(thing) {
  * @return {string}
  * @private
  */
-jspb.debug.formatFieldName_ = function(name) {
+function formatFieldName_(name) {
   // Name may be in TitleCase.
   return name.replace(/^[A-Z]/, function(c) {
     return c.toLowerCase();
   });
-};
+}

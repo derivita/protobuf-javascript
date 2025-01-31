@@ -10,15 +10,14 @@
  * by binary_json_conformance_suite. Ultimately all of the tests in this file
  * should be moved to binary_json_conformance_suite.
  */
-goog.module('protobuf.runtime.KernelCompatibilityTest');
-
 goog.setTestOnly();
 
-const ByteString = goog.require('protobuf.ByteString');
-const Int64 = goog.require('protobuf.Int64');
-const Kernel = goog.require('protobuf.runtime.Kernel');
-const TestMessage = goog.require('protobuf.testing.binary.TestMessage');
-const {CHECK_CRITICAL_STATE} = goog.require('protobuf.internal.checks');
+import { ByteString } from '../bytestring.js';
+import { Int64 } from '../int64.js';
+import { Kernel } from './kernel.js';
+import { TestMessage } from '../testing/binary/test_message.js';
+import checks from '../internal/checks.js';
+const {CHECK_CRITICAL_STATE} = checks;
 
 /**
  * @param {...number} bytes

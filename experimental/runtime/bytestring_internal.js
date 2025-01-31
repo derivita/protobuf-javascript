@@ -3,9 +3,7 @@
  * corresponding BUILD rule restricts access to this file to only the binary
  * kernel and APIs directly using the binary kernel.
  */
-goog.module('protobuf.byteStringInternal');
-
-const ByteString = goog.require('protobuf.ByteString');
+import { ByteString } from './bytestring.js';
 
 /**
  * Constructs a ByteString from an Uint8Array. DON'T MODIFY the underlying
@@ -27,7 +25,7 @@ function byteStringToUint8ArrayUnsafe(bytes) {
   return bytes.toUint8ArrayUnsafe();
 }
 
-exports = {
+export {
   byteStringFromUint8ArrayUnsafe,
   byteStringToUint8ArrayUnsafe,
 };

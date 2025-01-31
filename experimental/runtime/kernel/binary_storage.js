@@ -1,7 +1,6 @@
-goog.module('protobuf.runtime.BinaryStorage');
-
-const Storage = goog.require('protobuf.runtime.Storage');
-const {checkDefAndNotNull} = goog.require('protobuf.internal.checks');
+import { Storage } from './storage.js';
+import checks from '../internal/checks.js';
+const {checkDefAndNotNull} = checks;
 
 /**
  * Class storing all the fields of a binary protobuf message.
@@ -127,4 +126,4 @@ class BinaryStorage {
   }
 }
 
-exports = BinaryStorage;
+export { BinaryStorage };

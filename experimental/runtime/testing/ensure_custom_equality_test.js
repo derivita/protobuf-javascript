@@ -4,10 +4,9 @@
  * see b/131864652
  */
 
-goog.module('protobuf.testing.ensureCustomEqualityTest');
+import { BufferDecoder } from '../kernel/buffer_decoder.js';
 
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const ByteString = goog.require('protobuf.ByteString');
+import { ByteString } from '../bytestring.js';
 
 describe('Custom equality', () => {
   it('ensure that custom equality for ArrayBuffer is installed', () => {

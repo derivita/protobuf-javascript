@@ -7,9 +7,6 @@
  * of our benchmarks, but note that this size in a regular app would be
  * attributes to other places.
  */
-goog.module('protobuf.benchmark.codeSize.codeSizeBase');
-
-
 /**
  * Ensures that the array iterator polyfill is live.
  * @return {string}
@@ -54,4 +51,4 @@ function ensureCommonBaseLine() {
 }
 
 
-exports = {ensureCommonBaseLine};
+export {ensureCommonBaseLine};

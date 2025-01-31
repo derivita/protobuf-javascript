@@ -28,23 +28,22 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-goog.require('goog.crypt.base64');
-// CommonJS-LoadFromFile: protos/testbinary_pb proto.jspb.test
-goog.require('proto.jspb.test.ForeignMessage');
-// CommonJS-LoadFromFile: protos/proto3_test_pb proto.jspb.test
-goog.require('proto.jspb.test.Proto3Enum');
-goog.require('proto.jspb.test.TestProto3');
-// CommonJS-LoadFromFile: google/protobuf/any_pb proto.google.protobuf
-goog.require('proto.google.protobuf.Any');
-// CommonJS-LoadFromFile: google/protobuf/timestamp_pb proto.google.protobuf
-goog.require('proto.google.protobuf.Timestamp');
-// CommonJS-LoadFromFile: google/protobuf/struct_pb proto.google.protobuf
-goog.require('proto.google.protobuf.Struct');
-goog.require('jspb.Message');
+import * as base64 from '../closure-library/closure/goog/crypt/base64.js';
 
+import { Message } from './message.js';
+// CommonJS-LoadFromFile: protos/testbinary_pb proto.jspb.test
+import { ForeignMessage } from './protos/testbinary_pb.js';
+// CommonJS-LoadFromFile: protos/proto3_test_pb proto.jspb.test
+import { Proto3Enum, TestProto3 } from './protos/proto3_test_pb.js';
+// CommonJS-LoadFromFile: google/protobuf/any_pb proto.google.protobuf
+import { Any } from './google/protobuf/any_pb.js';
+// CommonJS-LoadFromFile: google/protobuf/timestamp_pb proto.google.protobuf
+import { Timestamp } from './google/protobuf/timestamp_pb.js';
+// CommonJS-LoadFromFile: google/protobuf/struct_pb proto.google.protobuf
+import { Struct } from './google/protobuf/struct_pb.js';
 
 const BYTES = new Uint8Array([1, 2, 8, 9]);
-const BYTES_B64 = goog.crypt.base64.encodeByteArray(BYTES);
+const BYTES_B64 = base64.encodeByteArray(BYTES);
 
 /**
  * Helper: compare a bytes field to an expected value
@@ -54,7 +53,7 @@ const BYTES_B64 = goog.crypt.base64.encodeByteArray(BYTES);
  */
 function bytesCompare(arr, expected) {
   if (typeof arr === 'string') {
-    arr = goog.crypt.base64.decodeStringToUint8Array(arr);
+    arr = base64.decodeStringToUint8Array(arr);
   }
   if (arr.length != expected.length) {
     return false;
@@ -73,11 +72,11 @@ describe('proto3Test', () => {
    * Test default values don't affect equality test.
    */
   it('testEqualsProto3', () => {
-    const msg1 = new proto.jspb.test.TestProto3();
-    const msg2 = new proto.jspb.test.TestProto3();
+    const msg1 = new TestProto3();
+    const msg2 = new TestProto3();
     msg2.setSingularString('');
 
-    expect(jspb.Message.equals(msg1, msg2)).toBeTrue();
+    expect(Message.equals(msg1, msg2)).toBeTrue();
   });
 
 
@@ -85,7 +84,7 @@ describe('proto3Test', () => {
    * Test setting when a field has default semantics.
    */
   it('testSetProto3ToValueAndBackToDefault', () => {
-    const msg = new proto.jspb.test.TestProto3();
+    const msg = new TestProto3();
 
     // Setting should work normally.
     msg.setSingularString('optionalString');
@@ -96,7 +95,7 @@ describe('proto3Test', () => {
     expect(msg.getSingularString()).toEqual('');
 
     // ... and shouldn't affect the equality with a brand new message.
-    expect(jspb.Message.equals(msg, new proto.jspb.test.TestProto3()))
+    expect(Message.equals(msg, new TestProto3()))
         .toBeTrue();
   });
 
@@ -104,7 +103,7 @@ describe('proto3Test', () => {
    * Test defaults for proto3 message fields.
    */
   it('testProto3FieldDefaults', () => {
-    const msg = new proto.jspb.test.TestProto3();
+    const msg = new TestProto3();
 
     expect(msg.getSingularInt32()).toEqual(0);
     expect(msg.getSingularInt64()).toEqual(0);
@@ -129,7 +128,7 @@ describe('proto3Test', () => {
     expect(msg.getSingularBytes_asB64()).toEqual('');
 
     expect(msg.getSingularForeignEnum())
-        .toEqual(proto.jspb.test.Proto3Enum.PROTO3_FOO);
+        .toEqual(Proto3Enum.PROTO3_FOO);
     expect(msg.getSingularForeignMessage()).toBeUndefined();
     expect(msg.getSingularForeignMessage()).toBeUndefined();
 
@@ -155,7 +154,7 @@ describe('proto3Test', () => {
    * Test presence for proto3 optional fields.
    */
   it('testProto3Optional', () => {
-    const msg = new proto.jspb.test.TestProto3();
+    const msg = new TestProto3();
 
     expect(msg.getOptionalInt32()).toEqual(0);
     expect(msg.getOptionalInt64()).toEqual(0);
@@ -180,7 +179,7 @@ describe('proto3Test', () => {
     expect(msg.getOptionalBytes_asB64()).toEqual('');
 
     expect(msg.getOptionalForeignEnum())
-        .toEqual(proto.jspb.test.Proto3Enum.PROTO3_FOO);
+        .toEqual(Proto3Enum.PROTO3_FOO);
     expect(msg.getOptionalForeignMessage()).toBeUndefined();
     expect(msg.getOptionalForeignMessage()).toBeUndefined();
 
@@ -205,7 +204,7 @@ describe('proto3Test', () => {
     const serialized = msg.serializeBinary();
     expect(serialized.length).not.toEqual(0);
 
-    const msg2 = proto.jspb.test.TestProto3.deserializeBinary(serialized);
+    const msg2 = TestProto3.deserializeBinary(serialized);
     expect(msg2.hasOptionalInt32()).toBeTrue();
     expect(msg2.hasOptionalInt64()).toBeTrue();
     expect(msg2.hasOptionalString()).toBeTrue();
@@ -222,7 +221,7 @@ describe('proto3Test', () => {
    * Test that all fields can be set ,and read via a serialization roundtrip.
    */
   it('testProto3FieldSetGet', () => {
-    let msg = new proto.jspb.test.TestProto3();
+    let msg = new TestProto3();
 
     msg.setSingularInt32(-42);
     msg.setSingularInt64(-0x7fffffff00000000);
@@ -239,10 +238,10 @@ describe('proto3Test', () => {
     msg.setSingularBool(true);
     msg.setSingularString('hello world');
     msg.setSingularBytes(BYTES);
-    let submsg = new proto.jspb.test.ForeignMessage();
+    let submsg = new ForeignMessage();
     submsg.setC(16);
     msg.setSingularForeignMessage(submsg);
-    msg.setSingularForeignEnum(proto.jspb.test.Proto3Enum.PROTO3_BAR);
+    msg.setSingularForeignEnum(Proto3Enum.PROTO3_BAR);
 
     msg.setRepeatedInt32List([-42]);
     msg.setRepeatedInt64List([-0x7fffffff00000000]);
@@ -259,15 +258,15 @@ describe('proto3Test', () => {
     msg.setRepeatedBoolList([true]);
     msg.setRepeatedStringList(['hello world']);
     msg.setRepeatedBytesList([BYTES]);
-    submsg = new proto.jspb.test.ForeignMessage();
+    submsg = new ForeignMessage();
     submsg.setC(1000);
     msg.setRepeatedForeignMessageList([submsg]);
-    msg.setRepeatedForeignEnumList([proto.jspb.test.Proto3Enum.PROTO3_BAR]);
+    msg.setRepeatedForeignEnumList([Proto3Enum.PROTO3_BAR]);
 
     msg.setOneofString('asdf');
 
     const serialized = msg.serializeBinary();
-    msg = proto.jspb.test.TestProto3.deserializeBinary(serialized);
+    msg = TestProto3.deserializeBinary(serialized);
 
     expect(msg.getSingularInt32()).toEqual(-42);
     expect(msg.getSingularInt64()).toEqual(-0x7fffffff00000000);
@@ -286,7 +285,7 @@ describe('proto3Test', () => {
     expect(bytesCompare(msg.getSingularBytes(), BYTES)).toEqual(true);
     expect(msg.getSingularForeignMessage().getC()).toEqual(16);
     expect(msg.getSingularForeignEnum())
-        .toEqual(proto.jspb.test.Proto3Enum.PROTO3_BAR);
+        .toEqual(Proto3Enum.PROTO3_BAR);
 
     expect(msg.getRepeatedInt32List()).toEqual([-42]);
     expect(msg.getRepeatedInt64List()).toEqual([-0x7fffffff00000000]);
@@ -307,7 +306,7 @@ describe('proto3Test', () => {
     expect(msg.getRepeatedForeignMessageList().length).toEqual(1);
     expect(msg.getRepeatedForeignMessageList()[0].getC()).toEqual(1000);
     expect(msg.getRepeatedForeignEnumList()).toEqual([
-      proto.jspb.test.Proto3Enum.PROTO3_BAR
+      Proto3Enum.PROTO3_BAR
     ]);
 
     expect(msg.getOneofString()).toEqual('asdf');
@@ -319,7 +318,7 @@ describe('proto3Test', () => {
    */
   it('testOneofs', () => {
     // Default instance.
-    const msg = new proto.jspb.test.TestProto3();
+    const msg = new TestProto3();
     expect(msg.getOneofUint32()).toEqual(0);
     expect(msg.getOneofForeignMessage()).toBeUndefined();
     expect(msg.getOneofString()).toEqual('');
@@ -343,7 +342,7 @@ describe('proto3Test', () => {
     expect(msg.hasOneofBytes()).toBeFalse();
 
     // Sub-message field.
-    const submsg = new proto.jspb.test.ForeignMessage();
+    const submsg = new ForeignMessage();
     msg.setOneofForeignMessage(submsg);
     expect(msg.getOneofUint32()).toEqual(0);
     expect(submsg).toEqual(msg.getOneofForeignMessage());
@@ -368,12 +367,12 @@ describe('proto3Test', () => {
     expect(msg.hasOneofBytes()).toBeFalse();
 
     // Bytes field.
-    msg.setOneofBytes(goog.crypt.base64.encodeString('\u00FF\u00FF'));
+    msg.setOneofBytes(base64.encodeString('\u00FF\u00FF'));
     expect(msg.getOneofUint32()).toEqual(0);
     expect(msg.getOneofForeignMessage()).toBeUndefined();
     expect(msg.getOneofString()).toEqual('');
     expect(msg.getOneofBytes_asB64())
-        .toEqual(goog.crypt.base64.encodeString('\u00FF\u00FF'));
+        .toEqual(base64.encodeString('\u00FF\u00FF'));
 
     expect(msg.hasOneofUint32()).toBeFalse();
     expect(msg.hasOneofForeignMessage()).toBeFalse();
@@ -386,7 +385,7 @@ describe('proto3Test', () => {
    * Test that "default"-valued primitive fields are not emitted on the wire.
    */
   it('testNoSerializeDefaults', () => {
-    const msg = new proto.jspb.test.TestProto3();
+    const msg = new TestProto3();
 
     // Set each primitive to a non-default value, then back to its default, to
     // ensure that the serialization is actually checking the value and not just
@@ -399,12 +398,12 @@ describe('proto3Test', () => {
     msg.setSingularBool(false);
     msg.setSingularString('hello world');
     msg.setSingularString('');
-    msg.setSingularBytes(goog.crypt.base64.encodeString('\u00FF\u00FF'));
+    msg.setSingularBytes(base64.encodeString('\u00FF\u00FF'));
     msg.setSingularBytes('');
-    msg.setSingularForeignMessage(new proto.jspb.test.ForeignMessage());
+    msg.setSingularForeignMessage(new ForeignMessage());
     msg.setSingularForeignMessage(null);
-    msg.setSingularForeignEnum(proto.jspb.test.Proto3Enum.PROTO3_BAR);
-    msg.setSingularForeignEnum(proto.jspb.test.Proto3Enum.PROTO3_FOO);
+    msg.setSingularForeignEnum(Proto3Enum.PROTO3_BAR);
+    msg.setSingularForeignEnum(Proto3Enum.PROTO3_FOO);
     msg.setOneofUint32(32);
     msg.clearOneofUint32();
 
@@ -417,7 +416,7 @@ describe('proto3Test', () => {
    * Test that base64 string and Uint8Array are interchangeable in bytes fields.
    */
   it('testBytesFieldsInterop', () => {
-    let msg = new proto.jspb.test.TestProto3();
+    let msg = new TestProto3();
     // Set as a base64 string and check all the getters work.
     msg.setSingularBytes(BYTES_B64);
     expect(bytesCompare(msg.getSingularBytes_asU8(), BYTES)).toBeTrue();
@@ -425,12 +424,12 @@ describe('proto3Test', () => {
     expect(bytesCompare(msg.getSingularBytes(), BYTES)).toBeTrue();
 
     // Test binary serialize round trip doesn't break it.
-    msg = proto.jspb.test.TestProto3.deserializeBinary(msg.serializeBinary());
+    msg = TestProto3.deserializeBinary(msg.serializeBinary());
     expect(bytesCompare(msg.getSingularBytes_asU8(), BYTES)).toBeTrue();
     expect(bytesCompare(msg.getSingularBytes_asB64(), BYTES)).toBeTrue();
     expect(bytesCompare(msg.getSingularBytes(), BYTES)).toBeTrue();
 
-    msg = new proto.jspb.test.TestProto3();
+    msg = new TestProto3();
     // Set as a Uint8Array and check all the getters work.
     msg.setSingularBytes(BYTES);
     expect(bytesCompare(msg.getSingularBytes_asU8(), BYTES)).toBeTrue();
@@ -439,13 +438,13 @@ describe('proto3Test', () => {
   });
 
   it('testTimestampWellKnownType', () => {
-    const msg = new proto.google.protobuf.Timestamp();
+    const msg = new Timestamp();
     msg.fromDate(new Date(123456789));
     expect(msg.getSeconds()).toEqual(123456);
     expect(msg.getNanos()).toEqual(789000000);
     const date = msg.toDate();
     expect(date.getTime()).toEqual(123456789);
-    const anotherMsg = proto.google.protobuf.Timestamp.fromDate(date);
+    const anotherMsg = Timestamp.fromDate(date);
     expect(anotherMsg.getSeconds()).toEqual(msg.getSeconds());
     expect(anotherMsg.getNanos()).toEqual(msg.getNanos());
   });
@@ -461,7 +460,7 @@ describe('proto3Test', () => {
       complicatedKey: [{xyz: {abc: [3, 4, null, false]}}, 'zzz']
     };
 
-    const struct = proto.google.protobuf.Struct.fromJavaScript(jsObj);
+    const struct = Struct.fromJavaScript(jsObj);
     const jsObj2 = struct.toJavaScript();
 
     expect('def').toEqual(jsObj2.abc);

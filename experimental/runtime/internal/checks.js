@@ -15,11 +15,10 @@
  *       Checks that relate to type errors (e.g. code receives a number instead
  *       of a string).
  */
-goog.module('protobuf.internal.checks');
+import { ByteString } from '../bytestring.js';
 
-const ByteString = goog.require('protobuf.ByteString');
-const Int64 = goog.require('protobuf.Int64');
-const WireType = goog.require('protobuf.binary.WireType');
+import { Int64 } from '../int64.js';
+import { WireType } from '../kernel/wire_type.js';
 
 //
 // See
@@ -659,7 +658,7 @@ function checkCriticalTypeMessageArray(values) {
   }
 }
 
-exports = {
+export default {
   checkDefAndNotNull,
   checkCriticalElementIndex,
   checkCriticalFieldNumber,

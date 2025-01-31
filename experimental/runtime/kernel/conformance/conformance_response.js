@@ -1,10 +1,9 @@
 /**
  * @fileoverview Handwritten code of ConformanceResponse.
  */
-goog.module('proto.conformance.ConformanceResponse');
+import { ByteString } from '../../bytestring.js';
 
-const ByteString = goog.require('protobuf.ByteString');
-const Kernel = goog.require('protobuf.runtime.Kernel');
+import { Kernel } from '../kernel.js';
 
 /**
  * Handwritten code of conformance.ConformanceResponse.
@@ -73,4 +72,4 @@ class ConformanceResponse {
   }
 }
 
-exports = ConformanceResponse;
+export { ConformanceResponse };

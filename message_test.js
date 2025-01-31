@@ -32,15 +32,14 @@
 
 goog.setTestOnly();
 
-goog.require('goog.testing.PropertyReplacer');
-
-goog.require('goog.userAgent');
+import { PropertyReplacer } from '../closure-library/closure/goog/testing/propertyreplacer.js';
+import * as userAgent from '../closure-library/closure/goog/useragent/useragent.js';
 
 // CommonJS-LoadFromFile: protos/google-protobuf jspb
-goog.require('jspb.Message');
+import { Message } from './message.js';
 
 // CommonJS-LoadFromFile: protos/google-protobuf jspb.asserts
-goog.require('jspb.asserts');
+import * as asserts from './asserts.js';
 
 // CommonJS-LoadFromFile: protos/test15_pb proto.jspb.filenametest.package1
 goog.require('proto.jspb.filenametest.package1.b');
@@ -127,10 +126,10 @@ goog.require('proto.jspb.test.MessageWithLargeFieldNumbers');
 goog.require('proto.jspb.test.simple1');
 
 describe('Message test suite', () => {
-  const stubs = new goog.testing.PropertyReplacer();
+  const stubs = new PropertyReplacer();
 
   beforeEach(() => {
-    stubs.set(jspb.Message, 'SERIALIZE_EMPTY_TRAILING_FIELDS', false);
+    stubs.set(Message, 'SERIALIZE_EMPTY_TRAILING_FIELDS', false);
   });
 
   afterEach(() => {
@@ -320,32 +319,32 @@ describe('Message test suite', () => {
 
   it('testEqualsSimple', () => {
     const s1 = new proto.jspb.test.Simple1(['hi']);
-    expect(jspb.Message.equals(s1, new proto.jspb.test.Simple1(['hi'])))
+    expect(Message.equals(s1, new proto.jspb.test.Simple1(['hi'])))
         .toEqual(true);
-    expect(jspb.Message.equals(s1, new proto.jspb.test.Simple1(['bye'])))
+    expect(Message.equals(s1, new proto.jspb.test.Simple1(['bye'])))
         .toEqual(false);
     const s1b = new proto.jspb.test.Simple1(['hi', ['hello']]);
-    expect(jspb.Message.equals(s1b, new proto.jspb.test.Simple1([
+    expect(Message.equals(s1b, new proto.jspb.test.Simple1([
       'hi', ['hello']
     ]))).toEqual(true);
-    expect(jspb.Message.equals(s1b, new proto.jspb.test.Simple1([
+    expect(Message.equals(s1b, new proto.jspb.test.Simple1([
       'hi', ['hello', undefined, undefined, undefined]
     ]))).toEqual(true);
-    expect(jspb.Message.equals(s1b, new proto.jspb.test.Simple1([
+    expect(Message.equals(s1b, new proto.jspb.test.Simple1([
       'no', ['hello']
     ]))).toEqual(false);
     // Test with messages of different types
     const s2 = new proto.jspb.test.Simple2(['hi']);
-    expect(jspb.Message.equals(s1, s2)).toEqual(false);
+    expect(Message.equals(s1, s2)).toEqual(false);
   });
 
   it('testEquals_softComparison', () => {
     const s1 = new proto.jspb.test.Simple1(['hi', [], null]);
-    expect(jspb.Message.equals(s1, new proto.jspb.test.Simple1(['hi', []])))
+    expect(Message.equals(s1, new proto.jspb.test.Simple1(['hi', []])))
         .toBeTrue();
 
     const s1b = new proto.jspb.test.Simple1(['hi', [], true]);
-    expect(jspb.Message.equals(s1b, new proto.jspb.test.Simple1(['hi', [], 1])))
+    expect(Message.equals(s1b, new proto.jspb.test.Simple1(['hi', [], 1])))
         .toBeTrue();
   });
 
@@ -360,72 +359,72 @@ describe('Message test suite', () => {
     const c3 = new proto.jspb.test.Complex(data3);
     const s1 = new proto.jspb.test.Simple1(data4);
 
-    expect(jspb.Message.equals(c1a, c1b)).toBeTrue();
-    expect(jspb.Message.equals(c1a, c2)).toBeFalse();
-    expect(jspb.Message.equals(c2, c3)).toBeFalse();
-    expect(jspb.Message.equals(c1a, s1)).toBeFalse();
+    expect(Message.equals(c1a, c1b)).toBeTrue();
+    expect(Message.equals(c1a, c2)).toBeFalse();
+    expect(Message.equals(c2, c3)).toBeFalse();
+    expect(Message.equals(c1a, s1)).toBeFalse();
   });
 
   it('testEqualsExtensionsConstructed', () => {
-    expect(jspb.Message.equals(
+    expect(Message.equals(
                new proto.jspb.test.HasExtensions([]),
                new proto.jspb.test.HasExtensions([{}])))
         .toBeTrue();
-    expect(jspb.Message.equals(
+    expect(Message.equals(
                new proto.jspb.test.HasExtensions(['hi', {100: [{200: 'a'}]}]),
                new proto.jspb.test.HasExtensions(['hi', {100: [{200: 'a'}]}])))
         .toBeTrue();
-    expect(jspb.Message.equals(
+    expect(Message.equals(
                new proto.jspb.test.HasExtensions(['hi', {100: [{200: 'a'}]}]),
                new proto.jspb.test.HasExtensions(['hi', {100: [{200: 'b'}]}])))
         .toBeFalse();
-    expect(jspb.Message.equals(
+    expect(Message.equals(
                new proto.jspb.test.HasExtensions([{100: [{200: 'a'}]}]),
                new proto.jspb.test.HasExtensions([{100: [{200: 'a'}]}])))
         .toBeTrue();
-    expect(jspb.Message.equals(
+    expect(Message.equals(
                new proto.jspb.test.HasExtensions([{100: [{200: 'a'}]}]),
                new proto.jspb.test.HasExtensions([, , , {100: [{200: 'a'}]}])))
         .toBeTrue();
-    expect(jspb.Message.equals(
+    expect(Message.equals(
                new proto.jspb.test.HasExtensions([, , , {100: [{200: 'a'}]}]),
                new proto.jspb.test.HasExtensions([{100: [{200: 'a'}]}])))
         .toBeTrue();
     expect(
-        jspb.Message.equals(
+        Message.equals(
             new proto.jspb.test.HasExtensions(['hi', {100: [{200: 'a'}]}]),
             new proto.jspb.test.HasExtensions(['hi', , , {100: [{200: 'a'}]}])))
         .toBeTrue();
     expect(
-        jspb.Message.equals(
+        Message.equals(
             new proto.jspb.test.HasExtensions(['hi', , , {100: [{200: 'a'}]}]),
             new proto.jspb.test.HasExtensions(['hi', {100: [{200: 'a'}]}])))
         .toBeTrue();
   });
 
   it('testEqualsExtensionsUnconstructed', () => {
-    expect(jspb.Message.compareFields([], [{}])).toBeTrue();
-    expect(jspb.Message.compareFields([, , , {}], [])).toBeTrue();
-    expect(jspb.Message.compareFields([, , , {}], [, , {}])).toBeTrue();
-    expect(jspb.Message.compareFields(['hi', {100: [{200: 'a'}]}], [
+    expect(Message.compareFields([], [{}])).toBeTrue();
+    expect(Message.compareFields([, , , {}], [])).toBeTrue();
+    expect(Message.compareFields([, , , {}], [, , {}])).toBeTrue();
+    expect(Message.compareFields(['hi', {100: [{200: 'a'}]}], [
       'hi', {100: [{200: 'a'}]}
     ])).toBeTrue();
-    expect(jspb.Message.compareFields(['hi', {100: [{200: 'a'}]}], [
+    expect(Message.compareFields(['hi', {100: [{200: 'a'}]}], [
       'hi', {100: [{200: 'b'}]}
     ])).toBeFalse();
-    expect(jspb.Message.compareFields([{100: [{200: 'a'}]}], [
+    expect(Message.compareFields([{100: [{200: 'a'}]}], [
       {100: [{200: 'a'}]}
     ])).toBeTrue();
-    expect(jspb.Message.compareFields([{100: [{200: 'a'}]}], [
+    expect(Message.compareFields([{100: [{200: 'a'}]}], [
       , , , {100: [{200: 'a'}]}
     ])).toBeTrue();
-    expect(jspb.Message.compareFields([, , , {100: [{200: 'a'}]}], [
+    expect(Message.compareFields([, , , {100: [{200: 'a'}]}], [
       {100: [{200: 'a'}]}
     ])).toBeTrue();
-    expect(jspb.Message.compareFields(['hi', {100: [{200: 'a'}]}], [
+    expect(Message.compareFields(['hi', {100: [{200: 'a'}]}], [
       'hi', , , {100: [{200: 'a'}]}
     ])).toBeTrue();
-    expect(jspb.Message.compareFields(['hi', , , {100: [{200: 'a'}]}], [
+    expect(Message.compareFields(['hi', , , {100: [{200: 'a'}]}], [
       'hi', {100: [{200: 'a'}]}
     ])).toBeTrue();
   });
@@ -437,26 +436,26 @@ describe('Message test suite', () => {
   });
 
   it('testEqualsNonFinite', () => {
-    expect(jspb.Message.compareFields(NaN, NaN)).toEqual(true);
-    expect(jspb.Message.compareFields(NaN, 'NaN')).toEqual(true);
-    expect(jspb.Message.compareFields('NaN', NaN)).toEqual(true);
-    expect(jspb.Message.compareFields(Infinity, Infinity)).toEqual(true);
-    expect(jspb.Message.compareFields(Infinity, 'Infinity')).toEqual(true);
-    expect(jspb.Message.compareFields('-Infinity', -Infinity)).toEqual(true);
-    expect(jspb.Message.compareFields([NaN], ['NaN'])).toEqual(true);
-    expect(jspb.Message.compareFields(undefined, NaN)).toEqual(false);
-    expect(jspb.Message.compareFields(NaN, undefined)).toEqual(false);
+    expect(Message.compareFields(NaN, NaN)).toEqual(true);
+    expect(Message.compareFields(NaN, 'NaN')).toEqual(true);
+    expect(Message.compareFields('NaN', NaN)).toEqual(true);
+    expect(Message.compareFields(Infinity, Infinity)).toEqual(true);
+    expect(Message.compareFields(Infinity, 'Infinity')).toEqual(true);
+    expect(Message.compareFields('-Infinity', -Infinity)).toEqual(true);
+    expect(Message.compareFields([NaN], ['NaN'])).toEqual(true);
+    expect(Message.compareFields(undefined, NaN)).toEqual(false);
+    expect(Message.compareFields(NaN, undefined)).toEqual(false);
   });
 
   it('testToMap', () => {
     const p1 = new proto.jspb.test.Simple1(['k', ['v']]);
     const p2 = new proto.jspb.test.Simple1(['k1', ['v1', 'v2']]);
-    const soymap = jspb.Message.toMap(
+    const soymap = Message.toMap(
         [p1, p2], proto.jspb.test.Simple1.prototype.getAString,
         proto.jspb.test.Simple1.prototype.toObject);
     expect(soymap['k'].aString).toEqual('k');
     expect(soymap['k'].aRepeatedStringList).toEqual(['v']);
-    const protomap = jspb.Message.toMap(
+    const protomap = Message.toMap(
         [p1, p2], proto.jspb.test.Simple1.prototype.getAString);
     expect(protomap['k'].getAString()).toEqual('k');
     expect(protomap['k'].getARepeatedStringList()).toEqual(['v']);
@@ -464,7 +463,7 @@ describe('Message test suite', () => {
 
   it('testClone', () => {
     const supportsUint8Array =
-        !goog.userAgent.IE || goog.userAgent.isVersionOrHigher('10');
+        !userAgent.IE || userAgent.isVersionOrHigher('10');
     const original = new proto.jspb.test.TestClone();
     original.setStr('v1');
     const simple1 = new proto.jspb.test.Simple1(['x1', ['y1', 'z1']]);
@@ -510,7 +509,7 @@ describe('Message test suite', () => {
 
   it('testCopyInto', () => {
     const supportsUint8Array =
-        !goog.userAgent.IE || goog.userAgent.isVersionOrHigher('10');
+        !userAgent.IE || userAgent.isVersionOrHigher('10');
     const original = new proto.jspb.test.TestClone();
     original.setStr('v1');
     const dest = new proto.jspb.test.TestClone();
@@ -533,7 +532,7 @@ describe('Message test suite', () => {
     extension.setExt('e1');
     original.setExtension(proto.jspb.test.CloneExtension.extField, extension);
 
-    jspb.Message.copyInto(original, dest);
+    Message.copyInto(original, dest);
     expect(dest.toArray()).toEqual(original.toArray());
     expect(dest.getSimple1().getAString()).toEqual('x1');
     expect(dest.getExtension(proto.jspb.test.CloneExtension.extField).getExt())
@@ -564,7 +563,7 @@ describe('Message test suite', () => {
     const a = new proto.jspb.test.TestClone();
     const b = new proto.jspb.test.Simple1(['str', ['s1', 's2']]);
 
-    expect(() => {jspb.Message.copyInto(a, b)})
+    expect(() => {Message.copyInto(a, b)})
         .toThrowError(Error, /should have the same type/);
   });
 
@@ -739,7 +738,7 @@ describe('Message test suite', () => {
        const data =
            new proto.jspb.test.HasExtensions(['str1', {'a_key': 'an_object'}]);
 
-       expect(jspb.Message.getField(data, ['a_key'])).toEqual('an_object');
+       expect(Message.getField(data, ['a_key'])).toEqual('an_object');
      });
 
   it('testToObject_hasExtensionField', () => {

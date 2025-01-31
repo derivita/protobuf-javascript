@@ -1,7 +1,6 @@
-goog.module('protobuf.binary.packedDoubleTestPairs');
-
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
+import { BufferDecoder } from './buffer_decoder.js';
+import bufferDecoderHelper from './buffer_decoder_helper.js';
+const {createBufferDecoder} = bufferDecoderHelper;
 
 /**
  * An array of Pairs of packed double values and their bit representation.
@@ -49,4 +48,4 @@ function getPackedDoublePairs() {
   ];
 }
 
-exports = {getPackedDoublePairs};
+export default {getPackedDoublePairs};

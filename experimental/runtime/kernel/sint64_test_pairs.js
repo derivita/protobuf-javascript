@@ -1,11 +1,11 @@
 /**
  * @fileoverview Test data for sint64 encoding and decoding.
  */
-goog.module('protobuf.binary.sint64TestPairs');
+import { BufferDecoder } from './buffer_decoder.js';
 
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const Int64 = goog.require('protobuf.Int64');
-const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
+import { Int64 } from '../int64.js';
+import bufferDecoderHelper from './buffer_decoder_helper.js';
+const {createBufferDecoder} = bufferDecoderHelper;
 
 /**
  * An array of Pairs of float values and their bit representation.
@@ -57,4 +57,4 @@ function getSint64Pairs() {
   return [...sint64Pairs];
 }
 
-exports = {getSint64Pairs};
+export default {getSint64Pairs};

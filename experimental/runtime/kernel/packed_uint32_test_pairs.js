@@ -1,7 +1,6 @@
-goog.module('protobuf.binary.packedUint32TestPairs');
-
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
+import { BufferDecoder } from './buffer_decoder.js';
+import bufferDecoderHelper from './buffer_decoder_helper.js';
+const {createBufferDecoder} = bufferDecoderHelper;
 
 /**
  * An array of Pairs of packed uint32 values and their bit representation.
@@ -30,4 +29,4 @@ function getPackedUint32Pairs() {
   ];
 }
 
-exports = {getPackedUint32Pairs};
+export default {getPackedUint32Pairs};

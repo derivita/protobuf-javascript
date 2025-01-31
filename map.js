@@ -33,13 +33,12 @@
  * @fileoverview
  * @suppress {missingRequire} TODO(b/152540451): this shouldn't be needed
  */
-goog.provide('jspb.Map');
+import * as asserts from './asserts.js';
 
-goog.require('jspb.asserts');
+import {BinaryReader} from './binary/reader.js';
+import {BinaryWriter} from './binary/writer.js';
 
-goog.requireType('jspb.BinaryReader');
-goog.requireType('jspb.BinaryWriter');
-
+const { Message } = goog.requireType('jspb.message');
 
 
 /**
@@ -62,13 +61,13 @@ goog.requireType('jspb.BinaryWriter');
  * @struct
  * @export
  */
-jspb.Map = function(arr, opt_valueCtor) {
+export function Map(arr, opt_valueCtor) {
   /** @const @private */
   this.arr_ = arr;
   /** @const @private */
   this.valueCtor_ = opt_valueCtor;
 
-  /** @type {!Object<string, !jspb.Map.Entry_<K,V>>} @private */
+  /** @type {!Object<string, !Map.Entry_<K,V>>} @private */
   this.map_ = {};
 
   /**
@@ -81,19 +80,19 @@ jspb.Map = function(arr, opt_valueCtor) {
   if (this.arr_.length > 0) {
     this.loadFromArray_();
   }
-};
+}
 
 
 /**
  * Load initial content from underlying array.
  * @private
  */
-jspb.Map.prototype.loadFromArray_ = function() {
+Map.prototype.loadFromArray_ = function() {
   for (var i = 0; i < this.arr_.length; i++) {
     var record = this.arr_[i];
     var key = record[0];
     var value = record[1];
-    this.map_[key.toString()] = new jspb.Map.Entry_(key, value);
+    this.map_[key.toString()] = new Map.Entry_(key, value);
   }
   this.arrClean = true;
 };
@@ -104,14 +103,14 @@ jspb.Map.prototype.loadFromArray_ = function() {
  * @return {!Array<!Array<!Object>>}
  * @export
  */
-jspb.Map.prototype.toArray = function() {
+Map.prototype.toArray = function() {
   if (this.arrClean) {
     if (this.valueCtor_) {
       // We need to recursively sync maps in submessages to their arrays.
       var m = this.map_;
       for (var p in m) {
         if (Object.prototype.hasOwnProperty.call(m, p)) {
-          var valueWrapper = /** @type {?jspb.Message} */ (m[p].valueWrapper);
+          var valueWrapper = /** @type {?Message} */ (m[p].valueWrapper);
           if (valueWrapper) {
             valueWrapper.toArray();
           }
@@ -126,7 +125,7 @@ jspb.Map.prototype.toArray = function() {
     strKeys.sort();
     for (var i = 0; i < strKeys.length; i++) {
       var entry = this.map_[strKeys[i]];
-      var valueWrapper = /** @type {?jspb.Message} */ (entry.valueWrapper);
+      var valueWrapper = /** @type {?Message} */ (entry.valueWrapper);
       if (valueWrapper) {
         valueWrapper.toArray();
       }
@@ -149,7 +148,7 @@ jspb.Map.prototype.toArray = function() {
  * @return {!Array<!Array<!Object>>}
  * @export
  */
-jspb.Map.prototype.toObject = function(includeInstance, valueToObject) {
+Map.prototype.toObject = function(includeInstance, valueToObject) {
   var rawArray = this.toArray();
   var entries = [];
   for (var i = 0; i < rawArray.length; i++) {
@@ -157,7 +156,7 @@ jspb.Map.prototype.toObject = function(includeInstance, valueToObject) {
     this.wrapEntry_(entry);
     var valueWrapper = /** @type {V|undefined} */ (entry.valueWrapper);
     if (valueWrapper) {
-      jspb.asserts.assert(valueToObject);
+      asserts.assert(valueToObject);
       entries.push([entry.key, valueToObject(includeInstance, valueWrapper)]);
     } else {
       entries.push([entry.key, entry.value]);
@@ -178,11 +177,11 @@ jspb.Map.prototype.toObject = function(includeInstance, valueToObject) {
  *    The constructor for type V.
  * @param {function(!Object):V} valueFromObject
  *    The fromObject function for type V.
- * @return {!jspb.Map<K, V>}
+ * @return {!Map<K, V>}
  * @export
  */
-jspb.Map.fromObject = function(entries, valueCtor, valueFromObject) {
-  var result = new jspb.Map([], valueCtor);
+Map.fromObject = function(entries, valueCtor, valueFromObject) {
+  var result = new Map([], valueCtor);
   for (var i = 0; i < entries.length; i++) {
     var key = entries[i][0];
     var value = valueFromObject(entries[i][1]);
@@ -200,7 +199,7 @@ jspb.Map.fromObject = function(entries, valueCtor, valueFromObject) {
  * @constructor @struct
  * @private
  */
-jspb.Map.ArrayIteratorIterable_ = function(arr) {
+Map.ArrayIteratorIterable_ = function(arr) {
   /** @type {number} @private */
   this.idx_ = 0;
 
@@ -210,7 +209,7 @@ jspb.Map.ArrayIteratorIterable_ = function(arr) {
 
 
 /** @override @final */
-jspb.Map.ArrayIteratorIterable_.prototype.next = function() {
+Map.ArrayIteratorIterable_.prototype.next = function() {
   if (this.idx_ < this.arr_.length) {
     return {done: false, value: this.arr_[this.idx_++]};
   } else {
@@ -220,7 +219,7 @@ jspb.Map.ArrayIteratorIterable_.prototype.next = function() {
 
 if (typeof(Symbol) != 'undefined') {
   /** @override */
-  jspb.Map.ArrayIteratorIterable_.prototype[Symbol.iterator] = function() {
+  Map.ArrayIteratorIterable_.prototype[Symbol.iterator] = function() {
     return this;
   };
 }
@@ -231,7 +230,7 @@ if (typeof(Symbol) != 'undefined') {
  * @return {number}
  * @export
  */
-jspb.Map.prototype.getLength = function() {
+Map.prototype.getLength = function() {
   return this.stringKeys_().length;
 };
 
@@ -240,7 +239,7 @@ jspb.Map.prototype.getLength = function() {
  * Clears the map.
  * @export
  */
-jspb.Map.prototype.clear = function() {
+Map.prototype.clear = function() {
   this.map_ = {};
   this.arrClean = false;
 };
@@ -250,12 +249,12 @@ jspb.Map.prototype.clear = function() {
  * Deletes a particular key from the map.
  * N.B.: differs in name from ES6 Map's `delete` because IE8 does not support
  * reserved words as property names.
- * @this {jspb.Map}
+ * @this {Map}
  * @param {K} key
  * @return {boolean} Whether any entry with this key was deleted.
  * @export
  */
-jspb.Map.prototype.del = function(key) {
+Map.prototype.del = function(key) {
   var keyValue = key.toString();
   var hadKey = this.map_.hasOwnProperty(keyValue);
   delete this.map_[keyValue];
@@ -274,7 +273,7 @@ jspb.Map.prototype.del = function(key) {
  * @return {!Array<!Array<K|V>>}
  * @export
  */
-jspb.Map.prototype.getEntryList = function() {
+Map.prototype.getEntryList = function() {
   var entries = [];
   var strKeys = this.stringKeys_();
   strKeys.sort();
@@ -292,7 +291,7 @@ jspb.Map.prototype.getEntryList = function() {
  * @return {!IteratorIterable<!Array<K|V>>} The iterator-iterable.
  * @export
  */
-jspb.Map.prototype.entries = function() {
+Map.prototype.entries = function() {
   var entries = [];
   var strKeys = this.stringKeys_();
   strKeys.sort();
@@ -300,7 +299,7 @@ jspb.Map.prototype.entries = function() {
     var entry = this.map_[strKeys[i]];
     entries.push([entry.key, this.wrapEntry_(entry)]);
   }
-  return new jspb.Map.ArrayIteratorIterable_(entries);
+  return new Map.ArrayIteratorIterable_(entries);
 };
 
 
@@ -309,7 +308,7 @@ jspb.Map.prototype.entries = function() {
  * @return {!IteratorIterable<K>} The iterator-iterable.
  * @export
  */
-jspb.Map.prototype.keys = function() {
+Map.prototype.keys = function() {
   var keys = [];
   var strKeys = this.stringKeys_();
   strKeys.sort();
@@ -317,7 +316,7 @@ jspb.Map.prototype.keys = function() {
     var entry = this.map_[strKeys[i]];
     keys.push(entry.key);
   }
-  return new jspb.Map.ArrayIteratorIterable_(keys);
+  return new Map.ArrayIteratorIterable_(keys);
 };
 
 
@@ -326,7 +325,7 @@ jspb.Map.prototype.keys = function() {
  * @return {!IteratorIterable<V>} The iterator-iterable.
  * @export
  */
-jspb.Map.prototype.values = function() {
+Map.prototype.values = function() {
   var values = [];
   var strKeys = this.stringKeys_();
   strKeys.sort();
@@ -334,18 +333,18 @@ jspb.Map.prototype.values = function() {
     var entry = this.map_[strKeys[i]];
     values.push(this.wrapEntry_(entry));
   }
-  return new jspb.Map.ArrayIteratorIterable_(values);
+  return new Map.ArrayIteratorIterable_(values);
 };
 
 
 /**
  * Iterates over entries in the map, calling a function on each.
  * @template T
- * @param {function(this:T, V, K, ?jspb.Map<K, V>)} cb
+ * @param {function(this:T, V, K, ?Map<K, V>)} cb
  * @param {T=} opt_thisArg
  * @export
  */
-jspb.Map.prototype.forEach = function(cb, opt_thisArg) {
+Map.prototype.forEach = function(cb, opt_thisArg) {
   var strKeys = this.stringKeys_();
   strKeys.sort();
   for (var i = 0; i < strKeys.length; i++) {
@@ -359,11 +358,11 @@ jspb.Map.prototype.forEach = function(cb, opt_thisArg) {
  * Sets a key in the map to the given value.
  * @param {K} key The key
  * @param {V} value The value
- * @return {!jspb.Map<K,V>}
+ * @return {!Map<K,V>}
  * @export
  */
-jspb.Map.prototype.set = function(key, value) {
-  var entry = new jspb.Map.Entry_(key);
+Map.prototype.set = function(key, value) {
+  var entry = new Map.Entry_(key);
   if (this.valueCtor_) {
     entry.valueWrapper = value;
     // .toArray() on a message returns a reference to the underlying array
@@ -381,11 +380,11 @@ jspb.Map.prototype.set = function(key, value) {
 /**
  * Helper: lazily construct a wrapper around an entry, if needed, and return the
  * user-visible type.
- * @param {!jspb.Map.Entry_<K,V>} entry
+ * @param {!Map.Entry_<K,V>} entry
  * @return {V}
  * @private
  */
-jspb.Map.prototype.wrapEntry_ = function(entry) {
+Map.prototype.wrapEntry_ = function(entry) {
   if (this.valueCtor_) {
     if (!entry.valueWrapper) {
       entry.valueWrapper = new this.valueCtor_(entry.value);
@@ -403,7 +402,7 @@ jspb.Map.prototype.wrapEntry_ = function(entry) {
  * @return {V|undefined} The value, or `undefined` if key not present
  * @export
  */
-jspb.Map.prototype.get = function(key) {
+Map.prototype.get = function(key) {
   var keyValue = key.toString();
   var entry = this.map_[keyValue];
   if (entry) {
@@ -420,7 +419,7 @@ jspb.Map.prototype.get = function(key) {
  * @return {boolean} `true` if the key is present
  * @export
  */
-jspb.Map.prototype.has = function(key) {
+Map.prototype.has = function(key) {
   var keyValue = key.toString();
   return (keyValue in this.map_);
 };
@@ -430,19 +429,19 @@ jspb.Map.prototype.has = function(key) {
  * Write this Map field in wire format to a BinaryWriter, using the given field
  * number.
  * @param {number} fieldNumber
- * @param {!jspb.BinaryWriter} writer
- * @param {function(this:jspb.BinaryWriter,number,K)} keyWriterFn
+ * @param {!BinaryWriter} writer
+ * @param {function(this:BinaryWriter,number,K)} keyWriterFn
  *     The method on BinaryWriter that writes type K to the stream.
- * @param {function(this:jspb.BinaryWriter,number,V,?=)|
- *          function(this:jspb.BinaryWriter,number,V,?)} valueWriterFn
+ * @param {function(this:BinaryWriter,number,V,?=)|
+ *          function(this:BinaryWriter,number,V,?)} valueWriterFn
  *     The method on BinaryWriter that writes type V to the stream.  May be
  *     writeMessage, in which case the second callback arg form is used.
- * @param {function(V,!jspb.BinaryWriter)=} opt_valueWriterCallback
+ * @param {function(V,!BinaryWriter)=} opt_valueWriterCallback
  *    The BinaryWriter serialization callback for type V, if V is a message
  *    type.
  * @export
  */
-jspb.Map.prototype.serializeBinary = function(
+Map.prototype.serializeBinary = function(
     fieldNumber, writer, keyWriterFn, valueWriterFn, opt_valueWriterCallback) {
   var strKeys = this.stringKeys_();
   strKeys.sort();
@@ -454,7 +453,7 @@ jspb.Map.prototype.serializeBinary = function(
       valueWriterFn.call(writer, 2, this.wrapEntry_(entry),
                          opt_valueWriterCallback);
     } else {
-      /** @type {function(this:jspb.BinaryWriter,number,?)} */ (valueWriterFn)
+      /** @type {function(this:BinaryWriter,number,?)} */ (valueWriterFn)
           .call(writer, 2, entry.value);
     }
     writer.endSubMessage();
@@ -464,22 +463,22 @@ jspb.Map.prototype.serializeBinary = function(
 
 /**
  * Read one key/value message from the given BinaryReader. Compatible as the
- * `reader` callback parameter to jspb.BinaryReader.readMessage, to be called
+ * `reader` callback parameter to BinaryReader.readMessage, to be called
  * when a key/value pair submessage is encountered. If the Key is undefined,
  * we should default it to 0.
  * @template K, V
- * @param {!jspb.Map} map
- * @param {!jspb.BinaryReader} reader
- * @param {function(this:jspb.BinaryReader):K} keyReaderFn
+ * @param {!Map} map
+ * @param {!BinaryReader} reader
+ * @param {function(this:BinaryReader):K} keyReaderFn
  *     The method on BinaryReader that reads type K from the stream.
  *
- * @param {function(this:jspb.BinaryReader):V|
- *          function(this:jspb.BinaryReader,V,
- *                  function(V,!jspb.BinaryReader))} valueReaderFn
+ * @param {function(this:BinaryReader):V|
+ *          function(this:BinaryReader,V,
+ *                  function(V,!BinaryReader))} valueReaderFn
  *    The method on BinaryReader that reads type V from the stream. May be
  *    readMessage, in which case the second callback arg form is used.
  *
- * @param {?function(V,!jspb.BinaryReader)=} opt_valueReaderCallback
+ * @param {?function(V,!BinaryReader)=} opt_valueReaderCallback
  *    The BinaryReader parsing callback for type V, if V is a message type
  *
  * @param {K=} opt_defaultKey
@@ -494,7 +493,7 @@ jspb.Map.prototype.serializeBinary = function(
  * @export
  *
  */
-jspb.Map.deserializeBinary = function(map, reader, keyReaderFn, valueReaderFn,
+Map.deserializeBinary = function(map, reader, keyReaderFn, valueReaderFn,
                                       opt_valueReaderCallback, opt_defaultKey,
                                       opt_defaultValue) {
   var key = opt_defaultKey;
@@ -512,7 +511,7 @@ jspb.Map.deserializeBinary = function(map, reader, keyReaderFn, valueReaderFn,
     } else if (field == 2) {
       // Value.
       if (map.valueCtor_) {
-        jspb.asserts.assert(opt_valueReaderCallback);
+        asserts.assert(opt_valueReaderCallback);
         if (!value) {
           // Old generator still doesn't provide default value message.
           // Need this for backward compatibility.
@@ -521,14 +520,14 @@ jspb.Map.deserializeBinary = function(map, reader, keyReaderFn, valueReaderFn,
         valueReaderFn.call(reader, value, opt_valueReaderCallback);
       } else {
         value =
-            (/** @type {function(this:jspb.BinaryReader):?} */ (valueReaderFn))
+            (/** @type {function(this:BinaryReader):?} */ (valueReaderFn))
                 .call(reader);
       }
     }
   }
 
-  jspb.asserts.assert(key != undefined);
-  jspb.asserts.assert(value != undefined);
+  asserts.assert(key != undefined);
+  asserts.assert(value != undefined);
   map.set(key, value);
 };
 
@@ -539,7 +538,7 @@ jspb.Map.deserializeBinary = function(map, reader, keyReaderFn, valueReaderFn,
  * @return {!Array<string>}
  * @private
  */
-jspb.Map.prototype.stringKeys_ = function() {
+Map.prototype.stringKeys_ = function() {
   var m = this.map_;
   var ret = [];
   for (var p in m) {
@@ -560,7 +559,7 @@ jspb.Map.prototype.stringKeys_ = function() {
  * @template K, V
  * @private
  */
-jspb.Map.Entry_ = function(key, opt_value) {
+Map.Entry_ = function(key, opt_value) {
   /** @const {K} */
   this.key = key;
 

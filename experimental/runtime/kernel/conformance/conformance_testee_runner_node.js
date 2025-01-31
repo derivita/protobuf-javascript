@@ -1,5 +1,5 @@
-const ConformanceRequest = goog.require('proto.conformance.ConformanceRequest');
-const {doTest} = goog.require('javascript.protobuf.conformance');
+import { ConformanceRequest } from './conformance_request.js';
+import { doTest } from './conformance_testee.js';
 const fs = require('fs');
 
 

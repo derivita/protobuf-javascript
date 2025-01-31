@@ -12,21 +12,23 @@
  * fields), Kernel will only need the full type information of used
  * fields.
  */
-goog.module('protobuf.runtime.Kernel');
+import { BinaryStorage } from './binary_storage.js';
 
-const BinaryStorage = goog.require('protobuf.runtime.BinaryStorage');
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const ByteString = goog.require('protobuf.ByteString');
-const Int64 = goog.require('protobuf.Int64');
-const InternalMessage = goog.require('protobuf.binary.InternalMessage');
-const Storage = goog.require('protobuf.runtime.Storage');
-const WireType = goog.require('protobuf.binary.WireType');
-const Writer = goog.require('protobuf.binary.Writer');
-const reader = goog.require('protobuf.binary.reader');
-const {CHECK_TYPE, checkCriticalElementIndex, checkCriticalState, checkCriticalType, checkCriticalTypeBool, checkCriticalTypeBoolArray, checkCriticalTypeByteString, checkCriticalTypeByteStringArray, checkCriticalTypeDouble, checkCriticalTypeDoubleArray, checkCriticalTypeFloat, checkCriticalTypeFloatIterable, checkCriticalTypeMessageArray, checkCriticalTypeSignedInt32, checkCriticalTypeSignedInt32Array, checkCriticalTypeSignedInt64, checkCriticalTypeSignedInt64Array, checkCriticalTypeString, checkCriticalTypeStringArray, checkCriticalTypeUnsignedInt32, checkCriticalTypeUnsignedInt32Array, checkDefAndNotNull, checkElementIndex, checkFieldNumber, checkFunctionExists, checkState, checkTypeDouble, checkTypeFloat, checkTypeSignedInt32, checkTypeSignedInt64, checkTypeUnsignedInt32} = goog.require('protobuf.internal.checks');
-const {Field, IndexEntry} = goog.require('protobuf.binary.field');
-const {buildIndex} = goog.require('protobuf.binary.indexer');
-const {createTag, get32BitVarintLength, getTagLength} = goog.require('protobuf.binary.tag');
+import { BufferDecoder } from './buffer_decoder.js';
+import { ByteString } from '../bytestring.js';
+import { Int64 } from '../int64.js';
+import { InternalMessage } from './internal_message.js';
+import { Storage } from './storage.js';
+import { WireType } from './wire_type.js';
+import { Writer } from './writer.js';
+import reader from './reader.js';
+import checks from '../internal/checks.js';
+const {CHECK_TYPE, checkCriticalElementIndex, checkCriticalState, checkCriticalType, checkCriticalTypeBool, checkCriticalTypeBoolArray, checkCriticalTypeByteString, checkCriticalTypeByteStringArray, checkCriticalTypeDouble, checkCriticalTypeDoubleArray, checkCriticalTypeFloat, checkCriticalTypeFloatIterable, checkCriticalTypeMessageArray, checkCriticalTypeSignedInt32, checkCriticalTypeSignedInt32Array, checkCriticalTypeSignedInt64, checkCriticalTypeSignedInt64Array, checkCriticalTypeString, checkCriticalTypeStringArray, checkCriticalTypeUnsignedInt32, checkCriticalTypeUnsignedInt32Array, checkDefAndNotNull, checkElementIndex, checkFieldNumber, checkFunctionExists, checkState, checkTypeDouble, checkTypeFloat, checkTypeSignedInt32, checkTypeSignedInt64, checkTypeUnsignedInt32} = checks;
+import { Field, IndexEntry } from './field.js';
+import indexer from './indexer.js';
+const {buildIndex} = indexer;
+import binaryTag from './tag.js';
+const {createTag, get32BitVarintLength, getTagLength} = binaryTag;
 
 
 /**
@@ -4119,4 +4121,4 @@ class Kernel {
   }
 }
 
-exports = Kernel;
+export { Kernel };

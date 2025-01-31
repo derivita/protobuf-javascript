@@ -1,41 +1,63 @@
 /**
  * @fileoverview Tests for writer.js.
  */
-goog.module('protobuf.binary.WriterTest');
-
 goog.setTestOnly();
 
 // Note to the reader:
 // Since the writer behavior changes with the checking level some of the tests
 // in this file have to know which checking level is enable to make correct
 // assertions.
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const ByteString = goog.require('protobuf.ByteString');
-const WireType = goog.require('protobuf.binary.WireType');
-const Writer = goog.require('protobuf.binary.Writer');
-const {CHECK_BOUNDS, CHECK_TYPE, MAX_FIELD_NUMBER} = goog.require('protobuf.internal.checks');
-const {arrayBufferSlice} = goog.require('protobuf.binary.typedArrays');
-const {getDoublePairs} = goog.require('protobuf.binary.doubleTestPairs');
-const {getFixed32Pairs} = goog.require('protobuf.binary.fixed32TestPairs');
-const {getFloatPairs} = goog.require('protobuf.binary.floatTestPairs');
-const {getInt32Pairs} = goog.require('protobuf.binary.int32TestPairs');
-const {getInt64Pairs} = goog.require('protobuf.binary.int64TestPairs');
-const {getPackedBoolPairs} = goog.require('protobuf.binary.packedBoolTestPairs');
-const {getPackedDoublePairs} = goog.require('protobuf.binary.packedDoubleTestPairs');
-const {getPackedFixed32Pairs} = goog.require('protobuf.binary.packedFixed32TestPairs');
-const {getPackedFloatPairs} = goog.require('protobuf.binary.packedFloatTestPairs');
-const {getPackedInt32Pairs} = goog.require('protobuf.binary.packedInt32TestPairs');
-const {getPackedInt64Pairs} = goog.require('protobuf.binary.packedInt64TestPairs');
-const {getPackedSfixed32Pairs} = goog.require('protobuf.binary.packedSfixed32TestPairs');
-const {getPackedSfixed64Pairs} = goog.require('protobuf.binary.packedSfixed64TestPairs');
-const {getPackedSint32Pairs} = goog.require('protobuf.binary.packedSint32TestPairs');
-const {getPackedSint64Pairs} = goog.require('protobuf.binary.packedSint64TestPairs');
-const {getPackedUint32Pairs} = goog.require('protobuf.binary.packedUint32TestPairs');
-const {getSfixed32Pairs} = goog.require('protobuf.binary.sfixed32TestPairs');
-const {getSfixed64Pairs} = goog.require('protobuf.binary.sfixed64TestPairs');
-const {getSint32Pairs} = goog.require('protobuf.binary.sint32TestPairs');
-const {getSint64Pairs} = goog.require('protobuf.binary.sint64TestPairs');
-const {getUint32Pairs} = goog.require('protobuf.binary.uint32TestPairs');
+import { BufferDecoder } from './buffer_decoder.js';
+
+import { ByteString } from '../bytestring.js';
+import { WireType } from './wire_type.js';
+import { Writer } from './writer.js';
+import checks from '../internal/checks.js';
+const {CHECK_BOUNDS, CHECK_TYPE, MAX_FIELD_NUMBER} = checks;
+import typedArrays from './typed_arrays.js';
+const {arrayBufferSlice} = typedArrays;
+import doubleTestPairs from './double_test_pairs.js';
+const {getDoublePairs} = doubleTestPairs;
+import fixed32TestPairs from './fixed32_test_pairs.js';
+const {getFixed32Pairs} = fixed32TestPairs;
+import floatTestPairs from './float_test_pairs.js';
+const {getFloatPairs} = floatTestPairs;
+import int32TestPairs from './int32_test_pairs.js';
+const {getInt32Pairs} = int32TestPairs;
+import int64TestPairs from './int64_test_pairs.js';
+const {getInt64Pairs} = int64TestPairs;
+import packedBoolTestPairs from './packed_bool_test_pairs.js';
+const {getPackedBoolPairs} = packedBoolTestPairs;
+import packedDoubleTestPairs from './packed_double_test_pairs.js';
+const {getPackedDoublePairs} = packedDoubleTestPairs;
+import packedFixed32TestPairs from './packed_fixed32_test_pairs.js';
+const {getPackedFixed32Pairs} = packedFixed32TestPairs;
+import packedFloatTestPairs from './packed_float_test_pairs.js';
+const {getPackedFloatPairs} = packedFloatTestPairs;
+import packedInt32TestPairs from './packed_int32_test_pairs.js';
+const {getPackedInt32Pairs} = packedInt32TestPairs;
+import packedInt64TestPairs from './packed_int64_test_pairs.js';
+const {getPackedInt64Pairs} = packedInt64TestPairs;
+import packedSfixed32TestPairs from './packed_sfixed32_test_pairs.js';
+const {getPackedSfixed32Pairs} = packedSfixed32TestPairs;
+import packedSfixed64TestPairs from './packed_sfixed64_test_pairs.js';
+const {getPackedSfixed64Pairs} = packedSfixed64TestPairs;
+import packedSint32TestPairs from './packed_sint32_test_pairs.js';
+const {getPackedSint32Pairs} = packedSint32TestPairs;
+import packedSint64TestPairs from './packed_sint64_test_pairs.js';
+const {getPackedSint64Pairs} = packedSint64TestPairs;
+import packedUint32TestPairs from './packed_uint32_test_pairs.js';
+const {getPackedUint32Pairs} = packedUint32TestPairs;
+import sfixed32TestPairs from './sfixed32_test_pairs.js';
+const {getSfixed32Pairs} = sfixed32TestPairs;
+import sfixed64TestPairs from './sfixed64_test_pairs.js';
+const {getSfixed64Pairs} = sfixed64TestPairs;
+import sint32TestPairs from './sint32_test_pairs.js';
+const {getSint32Pairs} = sint32TestPairs;
+import sint64TestPairs from './sint64_test_pairs.js';
+const {getSint64Pairs} = sint64TestPairs;
+import uint32TestPairs from './uint32_test_pairs.js';
+const {getUint32Pairs} = uint32TestPairs;
 
 
 /**
