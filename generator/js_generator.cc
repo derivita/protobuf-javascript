@@ -3930,9 +3930,14 @@ const std::string DTS_INDENT = "  ";
 void Generator::GenerateDTS(const GeneratorOptions& options,
                             io::Printer* printer,
                             const FileDescriptor* file) const {
-  printer->Print("import * as jspb from 'google-protobuf';\n\n");
-
-  // determine other imports
+  printer->Print("import * as jspb from 'google-protobuf';\n");
+  for (int i = 0; i < file->dependency_count(); i++) {
+    const std::string& name = file->dependency(i)->name();
+    printer->Print(
+        "import * as $alias$ from '$file$';\n", "alias", ModuleAlias(name),
+        "file", GetRootPath(file->name(), name) + GetJSFilename(options, name));
+  }
+  printer->Print("\n");
 
   for (int i = 0; i < file->message_type_count(); i++) {
     auto desc = file->message_type(i);
