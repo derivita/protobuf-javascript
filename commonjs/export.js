@@ -5,32 +5,24 @@
  * the google-protobuf.js file that we build at distribution time.
  */
 
-goog.provide('jspb.Export');
-
-goog.require('goog.object');
-
-goog.require('jspb.debug');
-goog.require('jspb.BinaryReader');
-goog.require('jspb.BinaryWriter');
-goog.require('jspb.ExtensionFieldBinaryInfo');
-goog.require('jspb.ExtensionFieldInfo');
-goog.require('jspb.Message');
-goog.require('jspb.Map');
-
+import * as debug from '../debug.js'
+import { BinaryReader } from '../binary/reader.js';
+import { BinaryWriter } from '../binary/writer.js';
+import { ExtensionFieldBinaryInfo, ExtensionFieldInfo, Message } from '../message.js';
+import { Map } from '../map.js';
 
 if (typeof exports === 'object') {
-  exports['debug'] = jspb.debug;
-  exports['Map'] = jspb.Map;
-  exports['Message'] = jspb.Message;
+  exports['debug'] = debug;
+  exports['Map'] = Map;
+  exports['Message'] = Message;
 
-  exports['BinaryReader'] = jspb.BinaryReader;
-  exports['BinaryWriter'] = jspb.BinaryWriter;
-  exports['ExtensionFieldInfo'] = jspb.ExtensionFieldInfo;
-  exports['ExtensionFieldBinaryInfo'] = jspb.ExtensionFieldBinaryInfo;
+  exports['BinaryReader'] = BinaryReader;
+  exports['BinaryWriter'] = BinaryWriter;
+  exports['ExtensionFieldInfo'] = ExtensionFieldInfo;
+  exports['ExtensionFieldBinaryInfo'] = ExtensionFieldBinaryInfo;
 
   // These are used by generated code but should not be used directly by clients.
   exports['exportSymbol'] = goog.exportSymbol;
   exports['inherits'] = goog.inherits;
-  exports['object'] = {extend: goog.object.extend};
   exports['typeOf'] = goog.typeOf;
 }

@@ -1,8 +1,6 @@
 /**
  * @fileoverview Handwritten code of WireFormat.
  */
-goog.module('proto.conformance.WireFormat');
-
 /**
  * @enum {number}
  */
@@ -13,4 +11,4 @@ const WireFormat = {
   TEXT_FORMAT: 4,
 };
 
-exports = WireFormat;
+export { WireFormat };

@@ -7,8 +7,8 @@ function exec(command, cb) {
 }
 
 const plugin =   '--plugin=protoc-gen-js=bazel-bin/generator/protoc-gen-js';
-const protoc = [(process.env.PROTOC || 'protoc'), plugin].join(' ');
-const protocInc = process.env.PROTOC_INC || '../src';
+const protoc = [(process.env.PROTOC || 'bazel-bin/external/com_google_protobuf/protoc'), plugin].join(' ');
+const protocInc = process.env.PROTOC_INC || 'bazel-protobuf-javascript/external/com_google_protobuf/src';
 
 // See https://github.com/google/closure-compiler/wiki/Flags-and-Options
 let compilationLevel = 'SIMPLE';
@@ -131,7 +131,7 @@ function genproto_group3_commonjs_strict(cb) {
 
 
 function getClosureCompilerCommand(exportsFile, outputFile) {
-  const closureLib = 'node_modules/google-closure-library';
+  const closureLib = '../closure-library';
   return [
     'node_modules/.bin/google-closure-compiler',
     `--js=${closureLib}/closure/goog/**.js`,
@@ -218,6 +218,8 @@ function remove_gen_files(cb) {
 exports.build_protoc_plugin = function (cb) {
   exec('bazel build generator:protoc-gen-js',
        make_exec_logging_callback(cb));
+  exec('bazel build @com_google_protobuf//:protoc',
+       make_exec_logging_callback(cb));
 }
 
 const dist = series(exports.build_protoc_plugin,
@@ -261,8 +263,8 @@ exports.test_commonjs = series(enableSimpleOptimizations,
 exports.test_commonjs_opt = series(enableAdvancedOptimizations,
                                    test_commonjs_series);
 
-const test_series = series(test_closure_series,
-                           test_commonjs_series);
+const test_series = series(test_commonjs_series,
+                          test_closure_series);
 
 exports.test = series(enableSimpleOptimizations,
                       test_series);

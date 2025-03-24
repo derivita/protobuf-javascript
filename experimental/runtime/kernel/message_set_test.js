@@ -1,13 +1,11 @@
 /**
  * @fileoverview Tests for message_set.js.
  */
-goog.module('protobuf.runtime.MessageSetTest');
-
 goog.setTestOnly();
 
-const Kernel = goog.require('protobuf.runtime.Kernel');
-const MessageSet = goog.require('protobuf.runtime.MessageSet');
-const TestMessage = goog.require('protobuf.testing.binary.TestMessage');
+import { Kernel } from './kernel.js';
+import { MessageSet } from './message_set.js';
+import { TestMessage } from '../testing/binary/test_message.js';
 
 /**
  * @param {...number} bytes

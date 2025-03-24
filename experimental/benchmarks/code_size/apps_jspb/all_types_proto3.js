@@ -1,13 +1,11 @@
 /**
  * @fileoverview The code size benchmark of apps JSPB for proto3 all types
  */
-goog.module('protobuf.benchmark.code_size.apps_jspb.AllTypesProto3');
-
 // const ForeignEnum = goog.require('proto.proto3_unittest.ForeignEnum');
 const ForeignMessage = goog.require('proto.proto3_unittest.ForeignMessage');
 const TestAllTypes = goog.require('proto.proto3_unittest.TestAllTypes');
 const TestPackedTypes = goog.require('proto.proto3_unittest.TestPackedTypes');
-const {ensureCommonBaseLine} = goog.require('protobuf.benchmark.codeSize.codeSizeBase');
+import { ensureCommonBaseLine } from '../code_size_base.js';
 
 ensureCommonBaseLine();
 

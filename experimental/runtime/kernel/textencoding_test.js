@@ -1,11 +1,10 @@
 /**
  * @fileoverview Tests for textdecoder.js.
  */
-goog.module('protobuf.binary.TextDecoderTest');
-
 goog.setTestOnly();
 
-const {decode, encode} = goog.require('protobuf.binary.textencoding');
+import textencoding from './textencoding.js';
+const {decode, encode} = textencoding;
 
 describe('Decode does', () => {
   it('return empty string for empty array', () => {

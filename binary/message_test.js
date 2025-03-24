@@ -33,17 +33,17 @@
 goog.setTestOnly();
 
 // CommonJS-LoadFromFile: ../protos/test_pb proto.jspb.test
-goog.require('proto.jspb.test.Deeply.Nested.Message');
+import {Deeply} from '../protos/test_pb.js';
 
 // CommonJS-LoadFromFile: ../protos/test2_pb proto.jspb.test
-goog.require('proto.jspb.test.ForeignNestedFieldMessage');
+import {ForeignNestedFieldMessage} from '../protos/test2_pb.js';
 
 describe('Message test suite', () => {
   // Verify that we can successfully use a field referring to a nested message
   // from a different .proto file.
   it('testForeignNestedMessage', () => {
-    const msg = new proto.jspb.test.ForeignNestedFieldMessage();
-    const nested = new proto.jspb.test.Deeply.Nested.Message();
+    const msg = new ForeignNestedFieldMessage();
+    const nested = new Deeply.Nested.Message();
     nested.setCount(5);
     msg.setDeeplyNestedMessage(nested);
     expect(msg.getDeeplyNestedMessage().getCount()).toEqual(5);
@@ -52,7 +52,7 @@ describe('Message test suite', () => {
     // same data we started with.
     const serialized = msg.serializeBinary();
     const deserialized =
-        proto.jspb.test.ForeignNestedFieldMessage.deserializeBinary(serialized);
+        ForeignNestedFieldMessage.deserializeBinary(serialized);
     expect(deserialized.getDeeplyNestedMessage().getCount()).toEqual(5);
   });
 });

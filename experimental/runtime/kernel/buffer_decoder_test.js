@@ -2,10 +2,10 @@
  * @fileoverview Tests for BufferDecoder.
  */
 
-goog.module('protobuf.binary.varintsTest');
+import { BufferDecoder } from './buffer_decoder.js';
 
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const {CHECK_CRITICAL_STATE, CHECK_STATE} = goog.require('protobuf.internal.checks');
+import checks from '../internal/checks.js';
+const {CHECK_CRITICAL_STATE, CHECK_STATE} = checks;
 
 goog.setTestOnly();
 

@@ -1,10 +1,9 @@
 /**
  * @fileoverview Handwritten code of ConformanceRequest.
  */
-goog.module('proto.conformance.ConformanceRequest');
+import { Kernel } from '../kernel.js';
 
-const Kernel = goog.require('protobuf.runtime.Kernel');
-const WireFormat = goog.require('proto.conformance.WireFormat');
+import { WireFormat } from './wire_format.js';
 
 /**
  * Handwritten code of conformance.ConformanceRequest.
@@ -88,4 +87,4 @@ ConformanceRequest.PayloadCase = {
   TEXT_PAYLOAD: 8,
 };
 
-exports = ConformanceRequest;
+export { ConformanceRequest };

@@ -36,8 +36,7 @@
  * @author cfallin@google.com (Chris Fallin)
  */
 
-goog.require('jspb.arith.Int64');
-goog.require('jspb.arith.UInt64');
+import { Int64, UInt64 } from './arith.js';
 
 
 describe('binaryArithTest', function() {
@@ -45,8 +44,8 @@ describe('binaryArithTest', function() {
    * Tests comparison operations.
    */
   it('testCompare', function() {
-    const a = new jspb.arith.UInt64(1234, 5678);
-    const b = new jspb.arith.UInt64(1234, 5678);
+    const a = new UInt64(1234, 5678);
+    const b = new UInt64(1234, 5678);
     expect(a.cmp(b)).toEqual(0);
     expect(b.cmp(a)).toEqual(0);
     b.lo -= 1;
@@ -78,7 +77,7 @@ describe('binaryArithTest', function() {
    * Tests shifts.
    */
   it('testShifts', function() {
-    let a = new jspb.arith.UInt64(1, 0);
+    let a = new UInt64(1, 0);
     expect(a.lo).toEqual(1);
     expect(a.hi).toEqual(0);
     const orig = a;
@@ -115,10 +114,10 @@ describe('binaryArithTest', function() {
    * Tests additions.
    */
   it('testAdd', function() {
-    const a = new jspb.arith.UInt64(
+    const a = new UInt64(
         /* lo = */ 0x89abcdef,
         /* hi = */ 0x01234567);
-    const b = new jspb.arith.UInt64(
+    const b = new UInt64(
         /* lo = */ 0xff52ab91,
         /* hi = */ 0x92fa2123);
     // Addition with carry.
@@ -156,8 +155,8 @@ describe('binaryArithTest', function() {
     ];
     for (let i = 0; i < kLength; i++) {
       for (let j = 0; j < kLength; j++) {
-        const a = new jspb.arith.UInt64(loValues[i], hiValues[j]);
-        const b = new jspb.arith.UInt64(loValues[j], hiValues[i]);
+        const a = new UInt64(loValues[i], hiValues[j]);
+        const b = new UInt64(loValues[j], hiValues[i]);
         const c = a.add(b).sub(b);
         expect(c.hi).toEqual(a.hi);
         expect(c.lo).toEqual(a.lo);
@@ -189,7 +188,7 @@ describe('binaryArithTest', function() {
       const b = testData[i][1] >>> 0;
       const cLow = testData[i][2] >>> 0;
       const cHigh = testData[i][3] >>> 0;
-      const c = jspb.arith.UInt64.mul32x32(a, b);
+      const c = UInt64.mul32x32(a, b);
       expect(c.lo).toEqual(cLow);
       expect(c.hi).toEqual(cHigh);
     }
@@ -218,7 +217,7 @@ describe('binaryArithTest', function() {
     ];
 
     for (let i = 0; i < testData.length; i++) {
-      const a = new jspb.arith.UInt64(testData[i][0], testData[i][1]);
+      const a = new UInt64(testData[i][0], testData[i][1]);
       const prod = a.mul(testData[i][2]);
       expect(prod.lo).toEqual(testData[i][3]);
       expect(prod.hi).toEqual(testData[i][4]);
@@ -259,7 +258,7 @@ describe('binaryArithTest', function() {
     ];
 
     for (let i = 0; i < testData.length; i++) {
-      const a = new jspb.arith.UInt64(testData[i][0], testData[i][1]);
+      const a = new UInt64(testData[i][0], testData[i][1]);
       const result = a.div(testData[i][2]);
       const quotient = result[0];
       const remainder = result[1];
@@ -298,8 +297,8 @@ describe('binaryArithTest', function() {
     ];
 
     for (let i = 0; i < testData.length; i++) {
-      const a = new jspb.arith.UInt64(testData[i][0], testData[i][1]);
-      const roundtrip = jspb.arith.UInt64.fromString(a.toString());
+      const a = new UInt64(testData[i][0], testData[i][1]);
+      const roundtrip = UInt64.fromString(a.toString());
       expect(roundtrip.lo).toEqual(a.lo);
       expect(roundtrip.hi).toEqual(a.hi);
       expect(a.toString()).toEqual(testData[i][2]);
@@ -323,7 +322,7 @@ describe('binaryArithTest', function() {
     ];
 
     for (let i = 0; i < testStrings.length; i++) {
-      const roundtrip = jspb.arith.Int64.fromString(testStrings[i]).toString();
+      const roundtrip = Int64.fromString(testStrings[i]).toString();
       expect(roundtrip).toEqual(testStrings[i]);
     }
   });

@@ -41,80 +41,78 @@
  * @author aappleby@google.com (Austin Appleby)
  */
 
-goog.require('jspb.BinaryConstants');
-goog.require('jspb.BinaryDecoder');
-goog.require('jspb.BinaryReader');
-goog.require('jspb.BinaryWriter');
-goog.require('jspb.utils');
+import * as BinaryConstants from './constants.js';
 
-goog.requireType('jspb.BinaryMessage');
-
+import { BinaryDecoder } from './decoder.js';
+import { BinaryReader } from './reader.js';
+import { BinaryWriter } from './writer.js';
+import * as utils from './utils.js';
 
 describe('binaryReaderTest', () => {
   /**
    * Tests the reader instance cache.
    */
   it('testInstanceCaches', /** @suppress {visibility} */ () => {
-    const writer = new jspb.BinaryWriter();
-    const dummyMessage = /** @type {!jspb.BinaryMessage} */ ({});
+    const writer = new BinaryWriter();
+    const dummyMessage = /** @type {!BinaryConstants.BinaryMessage} */ ({});
     writer.writeMessage(1, dummyMessage, () => {});
     writer.writeMessage(2, dummyMessage, () => {});
 
     const buffer = writer.getResultBuffer();
 
     // Empty the instance caches.
-    jspb.BinaryReader.clearInstanceCache();
+    BinaryReader.clearInstanceCache();
 
     // Allocating and then freeing three decoders should leave us with three in
     // the cache.
 
-    const decoder1 = jspb.BinaryDecoder.alloc();
-    const decoder2 = jspb.BinaryDecoder.alloc();
-    const decoder3 = jspb.BinaryDecoder.alloc();
+    const decoder1 = BinaryDecoder.alloc();
+    const decoder2 = BinaryDecoder.alloc();
+    const decoder3 = BinaryDecoder.alloc();
     decoder1.free();
     decoder2.free();
     decoder3.free();
 
-    expect(jspb.BinaryDecoder.getInstanceCacheLength()).toEqual(3);
-    expect(jspb.BinaryReader.getInstanceCacheLength()).toEqual(0);
+    expect(BinaryDecoder.getInstanceCacheLength()).toEqual(3);
+    expect(BinaryReader.getInstanceCacheLength()).toEqual(0);
 
     // Allocating and then freeing a reader should remove one decoder from its
     // cache, but it should stay stuck to the reader afterwards since we can't
     // have a reader without a decoder.
-    jspb.BinaryReader.alloc().free();
+    BinaryReader.alloc().free();
 
-    expect(jspb.BinaryDecoder.getInstanceCacheLength()).toEqual(2);
-    expect(jspb.BinaryReader.getInstanceCacheLength()).toEqual(1);
+    expect(BinaryDecoder.getInstanceCacheLength()).toEqual(2);
+    expect(BinaryReader.getInstanceCacheLength()).toEqual(1);
 
     // Allocating a reader should remove a reader from the cache.
-    const reader = jspb.BinaryReader.alloc(buffer);
+    const reader = BinaryReader.alloc(buffer);
 
-    expect(jspb.BinaryDecoder.getInstanceCacheLength()).toEqual(2);
-    expect(jspb.BinaryReader.getInstanceCacheLength()).toEqual(0);
+    expect(BinaryDecoder.getInstanceCacheLength()).toEqual(2);
+    expect(BinaryReader.getInstanceCacheLength()).toEqual(0);
 
     // Processing the message reuses the current reader.
     reader.nextField();
     expect(reader.getFieldNumber()).toEqual(1);
     reader.readMessage(dummyMessage, () => {
-        expect(jspb.BinaryReader.getInstanceCacheLength()).toEqual(0);
+        expect(BinaryReader.getInstanceCacheLength()).toEqual(0);
       });
 
     reader.nextField();
     expect(reader.getFieldNumber()).toEqual(2);
     reader.readMessage(dummyMessage, () => {
-        expect(jspb.BinaryReader.getInstanceCacheLength()).toEqual(0);
+        expect(BinaryReader.getInstanceCacheLength()).toEqual(0);
       });
 
     expect(reader.nextField()).toEqual(false);
 
-    expect(jspb.BinaryDecoder.getInstanceCacheLength()).toEqual(2);
-    expect(jspb.BinaryReader.getInstanceCacheLength()).toEqual(0);
+    expect(BinaryDecoder.getInstanceCacheLength()).toEqual(2);
+    expect(BinaryReader.getInstanceCacheLength()).toEqual(0);
 
     // Freeing the reader should put it back into the cache.
     reader.free();
 
-    expect(jspb.BinaryDecoder.getInstanceCacheLength()).toEqual(2);
-    expect(jspb.BinaryReader.getInstanceCacheLength()).toEqual(1);
+    expect(BinaryDecoder.getInstanceCacheLength()).toEqual(2);
+    expect(BinaryReader.getInstanceCacheLength()).toEqual(1);
   });
 
 
@@ -135,22 +133,22 @@ describe('binaryReaderTest', () => {
   it('testReadErrors', /** @suppress {checkTypes|visibility} */ () => {
       // Calling readMessage on a non-delimited field should trigger an
       // assertion.
-      let reader = jspb.BinaryReader.alloc([8, 1]);
-      const dummyMessage = /** @type {!jspb.BinaryMessage} */ ({});
+      let reader = BinaryReader.alloc([8, 1]);
+      const dummyMessage = /** @type {!BinaryConstants.BinaryMessage} */ ({});
       reader.nextField();
       expect(() => {
         reader.readMessage(dummyMessage, () => { });
       }).toThrow();
 
       // Reading past the end of the stream should trigger an assertion.
-      reader = jspb.BinaryReader.alloc([9, 1]);
+      reader = BinaryReader.alloc([9, 1]);
       reader.nextField();
       expect(() => {
         reader.readFixed64();
       }).toThrow();
 
       // Reading past the end of a submessage should trigger an assertion.
-      reader = jspb.BinaryReader.alloc([10, 4, 13, 1, 1, 1]);
+      reader = BinaryReader.alloc([10, 4, 13, 1, 1, 1]);
       reader.nextField();
       reader.readMessage(dummyMessage, () => {
           reader.nextField();
@@ -160,14 +158,14 @@ describe('binaryReaderTest', () => {
         });
 
       // Skipping an invalid field should trigger an assertion.
-      reader = jspb.BinaryReader.alloc([12, 1]);
+      reader = BinaryReader.alloc([12, 1]);
       reader.nextWireType_ = 1000;
       expect(() => {
         reader.skipField();
       }).toThrow();
 
       // Reading fields with the wrong wire type should assert.
-      reader = jspb.BinaryReader.alloc([9, 0, 0, 0, 0, 0, 0, 0, 0]);
+      reader = BinaryReader.alloc([9, 0, 0, 0, 0, 0, 0, 0, 0]);
       reader.nextField();
       expect(() => {
         reader.readInt32();
@@ -203,7 +201,7 @@ describe('binaryReaderTest', () => {
         reader.readEnum();
       }).toThrow();
 
-      reader = jspb.BinaryReader.alloc([8, 1]);
+      reader = BinaryReader.alloc([8, 1]);
       reader.nextField();
       expect(function () {
         reader.readFixed32();
@@ -248,7 +246,7 @@ describe('binaryReaderTest', () => {
     expect(readField).not.toBeNull();
     expect(writeField).not.toBeNull();
 
-    const writer = new jspb.BinaryWriter();
+    const writer = new BinaryWriter();
 
     // Encode zero and limits.
     writeField.call(writer, 1, filter(0));
@@ -260,7 +258,7 @@ describe('binaryReaderTest', () => {
       writeField.call(writer, 4, filter(cursor));
     }
 
-    const reader = jspb.BinaryReader.alloc(writer.getResultBuffer());
+    const reader = BinaryReader.alloc(writer.getResultBuffer());
 
     // Check zero and limits.
     reader.nextField();
@@ -297,7 +295,7 @@ describe('binaryReaderTest', () => {
    */
   const doTestSignedField_ = function(
       readField, writeField, epsilon, lowerLimit, upperLimit, filter) {
-    const writer = new jspb.BinaryWriter();
+    const writer = new BinaryWriter();
 
     // Encode zero and limits.
     writeField.call(writer, 1, filter(lowerLimit));
@@ -322,7 +320,7 @@ describe('binaryReaderTest', () => {
       inputValues.push({fieldNumber: 7, value: val});
     }
 
-    const reader = jspb.BinaryReader.alloc(writer.getResultBuffer());
+    const reader = BinaryReader.alloc(writer.getResultBuffer());
 
     // Check zero and limits.
     reader.nextField();
@@ -358,40 +356,40 @@ describe('binaryReaderTest', () => {
    * Tests fields that use varint encoding.
    */
   it('testVarintFields', () => {
-    expect(jspb.BinaryReader.prototype.readUint32).not.toBeUndefined();
-    expect(jspb.BinaryWriter.prototype.writeUint32).not.toBeUndefined();
-    expect(jspb.BinaryReader.prototype.readUint64).not.toBeUndefined();
-    expect(jspb.BinaryWriter.prototype.writeUint64).not.toBeUndefined();
-    expect(jspb.BinaryReader.prototype.readBool).not.toBeUndefined();
-    expect(jspb.BinaryWriter.prototype.writeBool).not.toBeUndefined();
+    expect(BinaryReader.prototype.readUint32).not.toBeUndefined();
+    expect(BinaryWriter.prototype.writeUint32).not.toBeUndefined();
+    expect(BinaryReader.prototype.readUint64).not.toBeUndefined();
+    expect(BinaryWriter.prototype.writeUint64).not.toBeUndefined();
+    expect(BinaryReader.prototype.readBool).not.toBeUndefined();
+    expect(BinaryWriter.prototype.writeBool).not.toBeUndefined();
     doTestUnsignedField_(
-        jspb.BinaryReader.prototype.readUint32,
-        jspb.BinaryWriter.prototype.writeUint32, 1, Math.pow(2, 32) - 1,
+        BinaryReader.prototype.readUint32,
+        BinaryWriter.prototype.writeUint32, 1, Math.pow(2, 32) - 1,
         Math.round);
 
     doTestUnsignedField_(
-        jspb.BinaryReader.prototype.readUint64,
-        jspb.BinaryWriter.prototype.writeUint64, 1, Math.pow(2, 64) - 1025,
+        BinaryReader.prototype.readUint64,
+        BinaryWriter.prototype.writeUint64, 1, Math.pow(2, 64) - 1025,
         Math.round);
 
     doTestSignedField_(
-        jspb.BinaryReader.prototype.readInt32,
-        jspb.BinaryWriter.prototype.writeInt32, 1, -Math.pow(2, 31),
+        BinaryReader.prototype.readInt32,
+        BinaryWriter.prototype.writeInt32, 1, -Math.pow(2, 31),
         Math.pow(2, 31) - 1, Math.round);
 
     doTestSignedField_(
-        jspb.BinaryReader.prototype.readInt64,
-        jspb.BinaryWriter.prototype.writeInt64, 1, -Math.pow(2, 63),
+        BinaryReader.prototype.readInt64,
+        BinaryWriter.prototype.writeInt64, 1, -Math.pow(2, 63),
         Math.pow(2, 63) - 513, Math.round);
 
     doTestSignedField_(
-        jspb.BinaryReader.prototype.readEnum,
-        jspb.BinaryWriter.prototype.writeEnum, 1, -Math.pow(2, 31),
+        BinaryReader.prototype.readEnum,
+        BinaryWriter.prototype.writeEnum, 1, -Math.pow(2, 31),
         Math.pow(2, 31) - 1, Math.round);
 
     doTestUnsignedField_(
-        jspb.BinaryReader.prototype.readBool,
-        jspb.BinaryWriter.prototype.writeBool, 1, 1, function(x) {
+        BinaryReader.prototype.readBool,
+        BinaryWriter.prototype.writeBool, 1, 1, function(x) {
           return !!x;
         });
   });
@@ -409,7 +407,7 @@ describe('binaryReaderTest', () => {
     for (let i = 0; i < bytesCount; i++) {
       bytes[i] = parseInt(hexString.substring(i * 3, i * 3 + 2), 16);
     }
-    const reader = jspb.BinaryReader.alloc(bytes);
+    const reader = BinaryReader.alloc(bytes);
     reader.nextField();
     expect(readField.call(reader)).toEqual(expected);
   }
@@ -419,29 +417,29 @@ describe('binaryReaderTest', () => {
    * Tests non-canonical redundant varint decoding.
    */
   it('testRedundantVarintFields', () => {
-    expect(jspb.BinaryReader.prototype.readUint32).not.toBeNull();
-    expect(jspb.BinaryReader.prototype.readUint64).not.toBeNull();
-    expect(jspb.BinaryReader.prototype.readSint32).not.toBeNull();
-    expect(jspb.BinaryReader.prototype.readSint64).not.toBeNull();
+    expect(BinaryReader.prototype.readUint32).not.toBeNull();
+    expect(BinaryReader.prototype.readUint64).not.toBeNull();
+    expect(BinaryReader.prototype.readSint32).not.toBeNull();
+    expect(BinaryReader.prototype.readSint64).not.toBeNull();
 
     // uint32 and sint32 take no more than 5 bytes
     // 08 - field prefix (type = 0 means varint)
     doTestHexStringVarint_(
-        jspb.BinaryReader.prototype.readUint32, 12, '08 8C 80 80 80 00');
+        BinaryReader.prototype.readUint32, 12, '08 8C 80 80 80 00');
 
     // 11 stands for -6 in zigzag encoding
     doTestHexStringVarint_(
-        jspb.BinaryReader.prototype.readSint32, -6, '08 8B 80 80 80 00');
+        BinaryReader.prototype.readSint32, -6, '08 8B 80 80 80 00');
 
     // uint64 and sint64 take no more than 10 bytes
     // 08 - field prefix (type = 0 means varint)
     doTestHexStringVarint_(
-        jspb.BinaryReader.prototype.readUint64, 12,
+        BinaryReader.prototype.readUint64, 12,
         '08 8C 80 80 80 80 80 80 80 80 00');
 
     // 11 stands for -6 in zigzag encoding
     doTestHexStringVarint_(
-        jspb.BinaryReader.prototype.readSint64, -6,
+        BinaryReader.prototype.readSint64, -6,
         '08 8B 80 80 80 80 80 80 80 80 00');
   });
 
@@ -449,11 +447,11 @@ describe('binaryReaderTest', () => {
    * Tests reading 64-bit integers as split values.
    */
   it('handles split 64 fields', () => {
-    const writer = new jspb.BinaryWriter();
+    const writer = new BinaryWriter();
     writer.writeInt64String(1, '4294967296');
     writer.writeSfixed64String(2, '4294967298');
     writer.writeInt64String(3, '3');  // 3 is the zig-zag encoding of -2.
-    const reader = jspb.BinaryReader.alloc(writer.getResultBuffer());
+    const reader = BinaryReader.alloc(writer.getResultBuffer());
 
     function rejoin(lowBits, highBits) {
       return highBits * 2 ** 32 + (lowBits >>> 0);
@@ -475,7 +473,7 @@ describe('binaryReaderTest', () => {
    * Tests 64-bit fields that are handled as strings.
    */
   it('testStringInt64Fields', () => {
-    const writer = new jspb.BinaryWriter();
+    const writer = new BinaryWriter();
 
     const testSignedData = [
       '2730538252207801776', '-2688470994844604560', '3398529779486536359',
@@ -495,7 +493,7 @@ describe('binaryReaderTest', () => {
       writer.writeUint64String(2 * i + 2, testUnsignedData[i]);
     }
 
-    const reader = jspb.BinaryReader.alloc(writer.getResultBuffer());
+    const reader = BinaryReader.alloc(writer.getResultBuffer());
 
     for (let i = 0; i < testSignedData.length; i++) {
       reader.nextField();
@@ -513,19 +511,19 @@ describe('binaryReaderTest', () => {
    */
   it('testZigzagFields', () => {
     doTestSignedField_(
-        jspb.BinaryReader.prototype.readSint32,
-        jspb.BinaryWriter.prototype.writeSint32, 1, -Math.pow(2, 31),
+        BinaryReader.prototype.readSint32,
+        BinaryWriter.prototype.writeSint32, 1, -Math.pow(2, 31),
         Math.pow(2, 31) - 1, Math.round);
 
     doTestSignedField_(
-        jspb.BinaryReader.prototype.readSint64,
-        jspb.BinaryWriter.prototype.writeSint64, 1, -Math.pow(2, 63),
+        BinaryReader.prototype.readSint64,
+        BinaryWriter.prototype.writeSint64, 1, -Math.pow(2, 63),
         Math.pow(2, 63) - 513, Math.round);
 
     doTestSignedField_(
-        jspb.BinaryReader.prototype.readSintHash64,
-        jspb.BinaryWriter.prototype.writeSintHash64, 1, -Math.pow(2, 63),
-        Math.pow(2, 63) - 513, jspb.utils.numberToHash64);
+        BinaryReader.prototype.readSintHash64,
+        BinaryWriter.prototype.writeSintHash64, 1, -Math.pow(2, 63),
+        Math.pow(2, 63) - 513, utils.numberToHash64);
   });
 
 
@@ -534,23 +532,23 @@ describe('binaryReaderTest', () => {
    */
   it('testFixedFields', () => {
     doTestUnsignedField_(
-        jspb.BinaryReader.prototype.readFixed32,
-        jspb.BinaryWriter.prototype.writeFixed32, 1, Math.pow(2, 32) - 1,
+        BinaryReader.prototype.readFixed32,
+        BinaryWriter.prototype.writeFixed32, 1, Math.pow(2, 32) - 1,
         Math.round);
 
     doTestUnsignedField_(
-        jspb.BinaryReader.prototype.readFixed64,
-        jspb.BinaryWriter.prototype.writeFixed64, 1, Math.pow(2, 64) - 1025,
+        BinaryReader.prototype.readFixed64,
+        BinaryWriter.prototype.writeFixed64, 1, Math.pow(2, 64) - 1025,
         Math.round);
 
     doTestSignedField_(
-        jspb.BinaryReader.prototype.readSfixed32,
-        jspb.BinaryWriter.prototype.writeSfixed32, 1, -Math.pow(2, 31),
+        BinaryReader.prototype.readSfixed32,
+        BinaryWriter.prototype.writeSfixed32, 1, -Math.pow(2, 31),
         Math.pow(2, 31) - 1, Math.round);
 
     doTestSignedField_(
-        jspb.BinaryReader.prototype.readSfixed64,
-        jspb.BinaryWriter.prototype.writeSfixed64, 1, -Math.pow(2, 63),
+        BinaryReader.prototype.readSfixed64,
+        BinaryWriter.prototype.writeSfixed64, 1, -Math.pow(2, 63),
         Math.pow(2, 63) - 513, Math.round);
   });
 
@@ -560,16 +558,16 @@ describe('binaryReaderTest', () => {
    */
   it('testFloatFields', () => {
     doTestSignedField_(
-        jspb.BinaryReader.prototype.readFloat,
-        jspb.BinaryWriter.prototype.writeFloat,
-        jspb.BinaryConstants.FLOAT32_MIN, -jspb.BinaryConstants.FLOAT32_MAX,
-        jspb.BinaryConstants.FLOAT32_MAX, truncate);
+        BinaryReader.prototype.readFloat,
+        BinaryWriter.prototype.writeFloat,
+        BinaryConstants.FLOAT32_MIN, -BinaryConstants.FLOAT32_MAX,
+        BinaryConstants.FLOAT32_MAX, truncate);
 
     doTestSignedField_(
-        jspb.BinaryReader.prototype.readDouble,
-        jspb.BinaryWriter.prototype.writeDouble,
-        jspb.BinaryConstants.FLOAT64_EPS * 10,
-        -jspb.BinaryConstants.FLOAT64_MIN, jspb.BinaryConstants.FLOAT64_MIN,
+        BinaryReader.prototype.readDouble,
+        BinaryWriter.prototype.writeDouble,
+        BinaryConstants.FLOAT64_EPS * 10,
+        -BinaryConstants.FLOAT64_MIN, BinaryConstants.FLOAT64_MIN,
         function(x) {
           return x;
         });
@@ -583,12 +581,12 @@ describe('binaryReaderTest', () => {
     const s1 = 'The quick brown fox jumps over the lazy dog.';
     const s2 = '人人生而自由，在尊嚴和權利上一律平等。';
 
-    const writer = new jspb.BinaryWriter();
+    const writer = new BinaryWriter();
 
     writer.writeString(1, s1);
     writer.writeString(2, s2);
 
-    const reader = jspb.BinaryReader.alloc(writer.getResultBuffer());
+    const reader = BinaryReader.alloc(writer.getResultBuffer());
 
     reader.nextField();
     expect(reader.getFieldNumber()).toEqual(1);
@@ -609,7 +607,7 @@ describe('binaryReaderTest', () => {
     const upperLimit = 256;
     const scale = 1.1;
 
-    const writer = new jspb.BinaryWriter();
+    const writer = new BinaryWriter();
 
     for (let cursor = lowerLimit; cursor < upperLimit; cursor *= 1.1) {
       const len = Math.round(cursor);
@@ -619,7 +617,7 @@ describe('binaryReaderTest', () => {
       writer.writeBytes(len, bytes);
     }
 
-    const reader = jspb.BinaryReader.alloc(writer.getResultBuffer());
+    const reader = BinaryReader.alloc(writer.getResultBuffer());
 
     for (let cursor = lowerLimit; reader.nextField(); cursor *= 1.1) {
       const len = Math.round(cursor);
@@ -638,8 +636,8 @@ describe('binaryReaderTest', () => {
    * Tests nested messages.
    */
   it('testNesting', () => {
-    const writer = new jspb.BinaryWriter();
-    const dummyMessage = /** @type {!jspb.BinaryMessage} */ ({});
+    const writer = new BinaryWriter();
+    const dummyMessage = /** @type {!BinaryConstants.BinaryMessage} */ ({});
 
     writer.writeInt32(1, 100);
 
@@ -655,7 +653,7 @@ describe('binaryReaderTest', () => {
 
     writer.writeInt32(7, 700);
 
-    const reader = jspb.BinaryReader.alloc(writer.getResultBuffer());
+    const reader = BinaryReader.alloc(writer.getResultBuffer());
 
     // Validate outermost message.
 
@@ -702,7 +700,7 @@ describe('binaryReaderTest', () => {
    * values and skipping everything that's not a sentinel.
    */
   it('testSkipField', () => {
-    const writer = new jspb.BinaryWriter();
+    const writer = new BinaryWriter();
 
     const sentinel = 123456789;
 
@@ -732,7 +730,7 @@ describe('binaryReaderTest', () => {
 
     // Write a group with a nested group inside.
     writer.writeInt32(5, sentinel);
-    const dummyMessage = /** @type {!jspb.BinaryMessage} */ ({});
+    const dummyMessage = /** @type {!BinaryConstants.BinaryMessage} */ ({});
     writer.writeGroup(5, dummyMessage, () => {
       // Previously the skipGroup implementation was wrong, which only consume
       // the decoder by nextField. This case is for making the previous
@@ -758,7 +756,7 @@ describe('binaryReaderTest', () => {
     // Write final sentinel.
     writer.writeInt32(6, sentinel);
 
-    const reader = jspb.BinaryReader.alloc(writer.getResultBuffer());
+    const reader = BinaryReader.alloc(writer.getResultBuffer());
 
     function skip(field, count) {
       for (let i = 0; i < count; i++) {
@@ -803,7 +801,7 @@ describe('binaryReaderTest', () => {
    * Tests packed fields.
    */
   it('testPackedFields', () => {
-    const writer = new jspb.BinaryWriter();
+    const writer = new BinaryWriter();
 
     const sentinel = 123456789;
 
@@ -836,7 +834,7 @@ describe('binaryReaderTest', () => {
 
     writer.writeInt32(3, sentinel);
 
-    const reader = jspb.BinaryReader.alloc(writer.getResultBuffer());
+    const reader = BinaryReader.alloc(writer.getResultBuffer());
 
     reader.nextField();
     expect(sentinel).toEqual(reader.readInt32());
@@ -897,10 +895,10 @@ describe('binaryReaderTest', () => {
     // Create a proto consisting of two nested messages, with the inner one
     // containing a blob of bytes.
 
-    const fieldTag = (1 << 3) | /* jspb.BinaryConstants.WireType.DELIMITED = */ 2;
+    const fieldTag = (1 << 3) | /* BinaryConstants.WireType.DELIMITED = */ 2;
     const blob = [1, 2, 3, 4, 5];
-    const writer = new jspb.BinaryWriter();
-    const dummyMessage = /** @type {!jspb.BinaryMessage} */ ({});
+    const writer = new BinaryWriter();
+    const dummyMessage = /** @type {!BinaryConstants.BinaryMessage} */ ({});
 
     writer.writeMessage(1, dummyMessage, () => {
       writer.writeMessage(1, dummyMessage, () => {
@@ -912,12 +910,12 @@ describe('binaryReaderTest', () => {
     // of overhead, one for the field tag and one for the length of the inner
     // blob.
 
-    const decoder1 = new jspb.BinaryDecoder(writer.getResultBuffer());
+    const decoder1 = new BinaryDecoder(writer.getResultBuffer());
     expect(fieldTag).toEqual(decoder1.readUnsignedVarint32());
     expect(blob.length + 4).toEqual(decoder1.readUnsignedVarint32());
 
     const decoder2 =
-        new jspb.BinaryDecoder(decoder1.readBytes(blob.length + 4));
+        new BinaryDecoder(decoder1.readBytes(blob.length + 4));
     expect(fieldTag).toEqual(decoder2.readUnsignedVarint32());
     expect(blob.length + 2).toEqual(decoder2.readUnsignedVarint32());
 
@@ -933,8 +931,8 @@ describe('binaryReaderTest', () => {
    * Tests read callbacks.
    */
   it('testReadCallbacks', () => {
-    const writer = new jspb.BinaryWriter();
-    const dummyMessage = /** @type {!jspb.BinaryMessage} */ ({});
+    const writer = new BinaryWriter();
+    const dummyMessage = /** @type {!BinaryConstants.BinaryMessage} */ ({});
 
     // Add an int, a submessage, and another int.
     writer.writeInt32(1, 100);
@@ -948,12 +946,12 @@ describe('binaryReaderTest', () => {
     writer.writeInt32(7, 700);
 
     // Create the reader and register a custom read callback.
-    const reader = jspb.BinaryReader.alloc(writer.getResultBuffer());
+    const reader = BinaryReader.alloc(writer.getResultBuffer());
 
     /**
-     * @param {!jspb.BinaryReader} reader
-     * @return {*}
-     */
+         * @param {!BinaryReader} reader
+         * @return {*}
+         */
     function readCallback(reader) {
       reader.nextField();
       expect(reader.getFieldNumber()).toEqual(3);

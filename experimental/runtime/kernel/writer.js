@@ -2,16 +2,19 @@
  * @fileoverview Implements Writer for writing data as the binary wire format
  * bytes array.
  */
-goog.module('protobuf.binary.Writer');
+import { BufferDecoder } from './buffer_decoder.js';
 
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const ByteString = goog.require('protobuf.ByteString');
-const Int64 = goog.require('protobuf.Int64');
-const WireType = goog.require('protobuf.binary.WireType');
-const {POLYFILL_TEXT_ENCODING, checkFieldNumber, checkTypeUnsignedInt32, checkWireType} = goog.require('protobuf.internal.checks');
-const {concatenateByteArrays} = goog.require('protobuf.binary.uint8arrays');
-const {createTag, getTagLength} = goog.require('protobuf.binary.tag');
-const {encode} = goog.require('protobuf.binary.textencoding');
+import { ByteString } from '../bytestring.js';
+import { Int64 } from '../int64.js';
+import { WireType } from './wire_type.js';
+import checks from '../internal/checks.js';
+const {POLYFILL_TEXT_ENCODING, checkFieldNumber, checkTypeUnsignedInt32, checkWireType} = checks;
+import uint8arrays from './uint8arrays.js';
+const {concatenateByteArrays} = uint8arrays;
+import binaryTag from './tag.js';
+const {createTag, getTagLength} = binaryTag;
+import textencoding from './textencoding.js';
+const {encode} = textencoding;
 
 /**
  * Returns a valid utf-8 encoder function based on TextEncoder if available or
@@ -740,4 +743,4 @@ class Writer {
   }
 }
 
-exports = Writer;
+export { Writer };

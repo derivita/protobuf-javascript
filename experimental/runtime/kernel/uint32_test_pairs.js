@@ -1,10 +1,10 @@
 /**
  * @fileoverview Test data for int32 encoding and decoding.
  */
-goog.module('protobuf.binary.uint32TestPairs');
+import { BufferDecoder } from './buffer_decoder.js';
 
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
+import bufferDecoderHelper from './buffer_decoder_helper.js';
+const {createBufferDecoder} = bufferDecoderHelper;
 
 /**
  * An array of Pairs of float values and their bit representation.
@@ -65,4 +65,4 @@ function getUint32Pairs() {
   return [...uint32Pairs];
 }
 
-exports = {getUint32Pairs};
+export default {getUint32Pairs};

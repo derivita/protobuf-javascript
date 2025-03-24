@@ -1,12 +1,10 @@
 /**
  * @fileoverview Tests for storage.js.
  */
-goog.module('protobuf.runtime.BinaryStorageTest');
-
 goog.setTestOnly();
 
-const BinaryStorage = goog.require('protobuf.runtime.BinaryStorage');
-const {Field} = goog.require('protobuf.binary.field');
+import { BinaryStorage } from './binary_storage.js';
+import { Field } from './field.js';
 
 /**
  * @type {number}

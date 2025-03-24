@@ -1,8 +1,6 @@
 /**
  * @fileoverview Tests for indexer.js.
  */
-goog.module('protobuf.binary.IndexerTest');
-
 goog.setTestOnly();
 
 // Note to the reader:
@@ -10,13 +8,17 @@ goog.setTestOnly();
 // in this file have to know which checking level is enabled to make correct
 // assertions.
 // Test are run in all checking levels.
-const BinaryStorage = goog.require('protobuf.runtime.BinaryStorage');
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const WireType = goog.require('protobuf.binary.WireType');
-const {CHECK_CRITICAL_STATE} = goog.require('protobuf.internal.checks');
-const {Field, IndexEntry} = goog.require('protobuf.binary.field');
-const {buildIndex} = goog.require('protobuf.binary.indexer');
-const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
+import { BinaryStorage } from './binary_storage.js';
+
+import { BufferDecoder } from './buffer_decoder.js';
+import { WireType } from './wire_type.js';
+import checks from '../internal/checks.js';
+const {CHECK_CRITICAL_STATE} = checks;
+import { Field, IndexEntry } from './field.js';
+import indexer from './indexer.js';
+const {buildIndex} = indexer;
+import bufferDecoderHelper from './buffer_decoder_helper.js';
+const {createBufferDecoder} = bufferDecoderHelper;
 
 /**
  * Returns the number of fields stored.

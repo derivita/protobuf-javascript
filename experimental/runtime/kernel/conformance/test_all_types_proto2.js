@@ -1,10 +1,9 @@
 /**
  * @fileoverview Handwritten code of TestAllTypesProto2.
  */
-goog.module('proto.conformance.TestAllTypesProto2');
+import { InternalMessage } from '../internal_message.js';
 
-const InternalMessage = goog.require('protobuf.binary.InternalMessage');
-const Kernel = goog.require('protobuf.runtime.Kernel');
+import { Kernel } from '../kernel.js';
 
 /**
  * Handwritten code of conformance.TestAllTypesProto2.
@@ -306,4 +305,4 @@ class TestAllTypesProto2 {
   }
 }
 
-exports = TestAllTypesProto2;
+export { TestAllTypesProto2 };

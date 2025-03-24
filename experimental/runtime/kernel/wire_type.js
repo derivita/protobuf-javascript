@@ -1,5 +1,3 @@
-goog.module('protobuf.binary.WireType');
-
 /**
  * Wire-format type codes, taken from proto2/public/wire_format_lite.h.
  * @enum {number}
@@ -14,4 +12,4 @@ const WireType = {
   INVALID: 6
 };
 
-exports = WireType;
+export { WireType };

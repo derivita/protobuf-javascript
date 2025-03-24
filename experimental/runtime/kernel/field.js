@@ -2,11 +2,10 @@
  * @fileoverview Contains classes that hold data for a protobuf field.
  */
 
-goog.module('protobuf.binary.field');
-
-const WireType = goog.requireType('protobuf.binary.WireType');
-const Writer = goog.requireType('protobuf.binary.Writer');
-const {checkDefAndNotNull, checkState} = goog.require('protobuf.internal.checks');
+import { WireType } from './wire_type.js';
+import { Writer } from './writer.js';
+import checks from '../internal/checks.js';
+const {checkDefAndNotNull, checkState} = checks;
 
 /**
  * Number of bits taken to represent a wire type.
@@ -24,7 +23,7 @@ const WIRE_TYPE_EXTRACTOR = (1 << WIRE_TYPE_LENGTH_BITS) - 1;
  * Field.getStartIndex() methods.
  * @typedef {number}
  */
-let IndexEntry;
+export let IndexEntry;
 
 /**
  * An entry containing the index into the binary data and/or the corresponding
@@ -33,7 +32,7 @@ let IndexEntry;
  * @final
  * @package
  */
-class Field {
+export class Field {
   /**
    * Creates a field and inserts the wireType and position of the first
    * occurrence of a field.
@@ -190,7 +189,3 @@ class Field {
   }
 }
 
-exports = {
-  IndexEntry,
-  Field,
-};

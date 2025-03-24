@@ -14,10 +14,9 @@
 # exists to make proto code generation easier.           #
 ##########################################################
 */
-goog.module('protobuf.runtime.MessageSet');
+import { InternalMessage } from './internal_message.js';
 
-const InternalMessage = goog.require('protobuf.binary.InternalMessage');
-const Kernel = goog.require('protobuf.runtime.Kernel');
+import { Kernel } from './kernel.js';
 
 // These are the tags for the old MessageSet format, which was defined as:
 //   message MessageSet {
@@ -282,4 +281,4 @@ class Item {
   }
 }
 
-exports = MessageSet;
+export { MessageSet };

@@ -1,7 +1,6 @@
-goog.module('protobuf.binary.packedBoolTestPairs');
-
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
+import { BufferDecoder } from './buffer_decoder.js';
+import bufferDecoderHelper from './buffer_decoder_helper.js';
+const {createBufferDecoder} = bufferDecoderHelper;
 
 /**
  * An array of Pairs of packed bool values and their bit representation.
@@ -56,4 +55,4 @@ function getPackedBoolPairs() {
   ];
 }
 
-exports = {getPackedBoolPairs};
+export default {getPackedBoolPairs};

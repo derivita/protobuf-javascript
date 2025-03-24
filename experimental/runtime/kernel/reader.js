@@ -1,12 +1,12 @@
 /**
  * @fileoverview Helper methods for reading data from the binary wire format.
  */
-goog.module('protobuf.binary.reader');
+import { BufferDecoder } from './buffer_decoder.js';
 
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const ByteString = goog.require('protobuf.ByteString');
-const Int64 = goog.require('protobuf.Int64');
-const {checkState} = goog.require('protobuf.internal.checks');
+import { ByteString } from '../bytestring.js';
+import { Int64 } from '../int64.js';
+import checks from '../internal/checks.js';
+const {checkState} = checks;
 
 
 /******************************************************************************
@@ -335,7 +335,7 @@ function readPacked(bufferDecoder, start, valueFunction) {
   return result;
 }
 
-exports = {
+export default {
   readBool,
   readBytes,
   readDelimited,

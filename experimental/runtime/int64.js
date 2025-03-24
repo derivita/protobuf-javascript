@@ -1,10 +1,9 @@
 /**
  * @fileoverview Protobufs Int64 representation.
  */
-goog.module('protobuf.Int64');
+import { Long } from '../../../closure-library/closure/goog/math/long.js';
 
-const Long = goog.require('goog.math.Long');
-const {assert} = goog.require('goog.asserts');
+import { assert } from '../../../closure-library/closure/goog/asserts/asserts.js';
 
 /**
  * A container for protobufs Int64/Uint64 data type.
@@ -400,4 +399,4 @@ const TWO_PWR_32_DBL = 0x100000000;
 /** @const {string} */
 const HEX_DIGITS = '0123456789abcdef';
 
-exports = Int64;
+export { Int64 };

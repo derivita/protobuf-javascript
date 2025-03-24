@@ -30,10 +30,10 @@
 
 // Test suite is written using Jasmine -- see http://jasmine.github.io/
 
-goog.require('goog.crypt.base64');
+import * as base64 from '../../closure-library/closure/goog/crypt/base64.js';
 
-goog.require('jspb.BinaryWriter');
-goog.require('jspb.Message');
+import { BinaryWriter } from './writer.js';
+import { Message } from '../message.js';
 
 // CommonJS-LoadFromFile: ../protos/testbinary_pb proto.jspb.test
 goog.require('proto.jspb.test.ExtendsWithMessage');
@@ -97,7 +97,7 @@ const suite = {};
 
 const BYTES = new Uint8Array([1, 2, 8, 9]);
 
-const BYTES_B64 = goog.crypt.base64.encodeByteArray(BYTES);
+const BYTES_B64 = base64.encodeByteArray(BYTES);
 
 
 /**
@@ -177,7 +177,7 @@ function fillAllFields(msg) {
  */
 function bytesCompare(arr, expected) {
   if (typeof arr === 'string') {
-    arr = goog.crypt.base64.decodeStringToUint8Array(arr);
+    arr = base64.decodeStringToUint8Array(arr);
   }
   if (arr.length != expected.length) {
     return false;
@@ -215,7 +215,7 @@ function checkAllFields(original, copy) {
   expect(bytesCompare(copy.getOptionalBytes(), BYTES)).toEqual(true);
   expect(true).toEqual(bytesCompare(copy.getOptionalBytes_asU8(), BYTES));
   expect(copy.getOptionalBytes_asB64())
-      .toEqual(goog.crypt.base64.encodeByteArray(BYTES));
+      .toEqual(base64.encodeByteArray(BYTES));
 
   expect(copy.getOptionalGroup().getA()).toEqual(100);
   expect(copy.getOptionalForeignMessage().getC()).toEqual(16);
@@ -272,7 +272,7 @@ function checkAllFields(original, copy) {
 
 
   // Check last so we get more granular errors first.
-  expect(jspb.Message.equals(original, copy)).toBeTrue();
+  expect(Message.equals(original, copy)).toBeTrue();
 }
 
 
@@ -589,7 +589,7 @@ describe('protoBinaryTest', () => {
   it('testUnknownExtension', () => {
     const msg = new proto.jspb.test.TestExtendable();
     fillExtensions(msg);
-    const writer = new jspb.BinaryWriter();
+    const writer = new BinaryWriter();
     writer.writeBool((1 << 29) - 1, true);
     proto.jspb.test.TestExtendable.serializeBinaryToWriter(msg, writer);
     const encoded = writer.getResultBuffer();

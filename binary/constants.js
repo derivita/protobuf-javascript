@@ -36,28 +36,9 @@
  * @author aappleby@google.com (Austin Appleby)
  */
 
-goog.provide('jspb.AnyFieldType');
-goog.provide('jspb.BinaryConstants');
-goog.provide('jspb.BinaryMessage');
-goog.provide('jspb.BuilderFunction');
-goog.provide('jspb.ByteSource');
-goog.provide('jspb.ClonerFunction');
-goog.provide('jspb.ComparerFunction');
-goog.provide('jspb.ConstBinaryMessage');
-goog.provide('jspb.PrunerFunction');
-goog.provide('jspb.ReaderFunction');
-goog.provide('jspb.RecyclerFunction');
-goog.provide('jspb.RepeatedFieldType');
-goog.provide('jspb.ScalarFieldType');
-goog.provide('jspb.WriterFunction');
-
-
-goog.forwardDeclare('jspb.BinaryMessage');
-goog.forwardDeclare('jspb.BinaryReader');
-goog.forwardDeclare('jspb.BinaryWriter');
-goog.forwardDeclare('jspb.Message');
-goog.forwardDeclare('jsprotolib.BinaryExtension');
-
+const { BinaryReader } = goog.requireType('jspb.binary.reader');
+const { BinaryWriter } = goog.requireType('jspb.binary.writer');
+const { Message } = goog.requireType('jspb.message');
 
 
 /**
@@ -65,14 +46,14 @@ goog.forwardDeclare('jsprotolib.BinaryExtension');
  * @interface
  * @export
  */
-jspb.ConstBinaryMessage = function() {};
+export function ConstBinaryMessage() {}
 
 /**
  * Generate a debug string for this proto that is in proto2 text format.
  * @return {string} The debug string.
  * @export
  */
-jspb.ConstBinaryMessage.prototype.toDebugString;
+ConstBinaryMessage.prototype.toDebugString;
 
 /**
  * Helper to generate a debug string for this proto at some indent level. The
@@ -81,126 +62,112 @@ jspb.ConstBinaryMessage.prototype.toDebugString;
  * @return {string} The debug string.
  * @protected
  */
-jspb.ConstBinaryMessage.prototype.toDebugStringInternal;
+ConstBinaryMessage.prototype.toDebugStringInternal;
 
 /**
  * Base interface class for all messages. Does __not__ define any methods, as
  * doing so on a widely-used interface defeats dead-code elimination.
  * @interface
- * @extends {jspb.ConstBinaryMessage}
- * @export
+ * @extends {ConstBinaryMessage}
  */
-jspb.BinaryMessage = function() {};
+export function BinaryMessage() {}
 
 
 /**
  * The types convertible to Uint8Arrays. Strings are assumed to be
  * base64-encoded.
  * @typedef {ArrayBuffer|Uint8Array|Array<number>|string}
- * @export
  */
-jspb.ByteSource;
+export var ByteSource;
 
 
 /**
  * A scalar field in jspb can be a boolean, number, or string.
  * @typedef {boolean|number|string}
- * @export
  */
-jspb.ScalarFieldType;
+export var ScalarFieldType;
 
 
 /**
  * A repeated field in jspb is an array of scalars, blobs, or messages.
- * @typedef {!Array<jspb.ScalarFieldType>|
+ * @typedef {!Array<ScalarFieldType>|
              !Array<!Uint8Array>|
-             !Array<!jspb.ConstBinaryMessage>|
-             !Array<!jspb.BinaryMessage>}
-* @export
+             !Array<!ConstBinaryMessage>|
+             !Array<!BinaryMessage>}
  */
-jspb.RepeatedFieldType;
+export var RepeatedFieldType;
 
 
 /**
  * A field in jspb can be a scalar, a block of bytes, another proto, or an
  * array of any of the above.
- * @typedef {jspb.ScalarFieldType|
-             jspb.RepeatedFieldType|
+ * @typedef {ScalarFieldType|
+             RepeatedFieldType|
              !Uint8Array|
-             !jspb.ConstBinaryMessage|
-             !jspb.BinaryMessage|
-             !jsprotolib.BinaryExtension}
- * @export
+             !ConstBinaryMessage|
+             !BinaryMessage}
  */
-jspb.AnyFieldType;
+export var AnyFieldType;
 
 
 /**
  * A builder function creates an instance of a message object.
- * @typedef {function():!jspb.BinaryMessage}
- * @export
+ * @typedef {function():!BinaryMessage}
  */
-jspb.BuilderFunction;
+export var BuilderFunction;
 
 
 /**
  * A cloner function creates a deep copy of a message object.
- * @typedef {function(jspb.ConstBinaryMessage):jspb.BinaryMessage}
- * @export
+ * @typedef {function(ConstBinaryMessage):BinaryMessage}
  */
-jspb.ClonerFunction;
+export var ClonerFunction;
 
 
 /**
  * A recycler function destroys an instance of a message object.
- * @typedef {function(!jspb.BinaryMessage):void}
- * @export
+ * @typedef {function(!BinaryMessage):void}
  */
-jspb.RecyclerFunction;
+export var RecyclerFunction;
 
 
 /**
  * A reader function initializes a message using data from a BinaryReader.
- * @typedef {function(!jspb.BinaryMessage, !jspb.BinaryReader):void}
- * @export
+ * @typedef {function(!BinaryMessage, !BinaryReader):void}
  */
-jspb.ReaderFunction;
+export var ReaderFunction;
 
 
 /**
  * A writer function serializes a message to a BinaryWriter.
- * @typedef {function((!jspb.Message|!jspb.ConstBinaryMessage),
- *                    !jspb.BinaryWriter):void}
- * @export
+ * @typedef {function((!Message|!ConstBinaryMessage),
+ *                    !BinaryWriter):void}
  */
-jspb.WriterFunction;
+export var WriterFunction;
 
 
 /**
  * A pruner function removes default-valued fields and empty submessages from a
  * message and returns either the pruned message or null if the entire message
  * was pruned away.
- * @typedef {function(?jspb.BinaryMessage):?jspb.BinaryMessage}
- * @export
+ * @typedef {function(?BinaryMessage):?BinaryMessage}
  */
-jspb.PrunerFunction;
+export var PrunerFunction;
 
 
 /**
  * A comparer function returns true if two protos are equal.
- * @typedef {function(?jspb.ConstBinaryMessage,
- *                     ?jspb.ConstBinaryMessage):boolean}
- * @export
+ * @typedef {function(?ConstBinaryMessage,
+ *                     ?ConstBinaryMessage):boolean}
  */
-jspb.ComparerFunction;
+export var ComparerFunction;
 
 
 /**
  * Field type codes, taken from proto2/public/wire_format_lite.h.
  * @enum {number}
- * @export
  */
-jspb.BinaryConstants.FieldType = {
+export var FieldType = {
   INVALID: -1,
   DOUBLE: 1,
   FLOAT: 2,
@@ -231,9 +198,8 @@ jspb.BinaryConstants.FieldType = {
 /**
  * Wire-format type codes, taken from proto2/public/wire_format_lite.h.
  * @enum {number}
- * @export
  */
-jspb.BinaryConstants.WireType = {
+export var WireType = {
   INVALID: -1,
   VARINT: 0,
   FIXED64: 1,
@@ -246,13 +212,12 @@ jspb.BinaryConstants.WireType = {
 
 /**
  * Translates field type to wire type.
- * @param {jspb.BinaryConstants.FieldType} fieldType
- * @return {jspb.BinaryConstants.WireType}
- * @export
+ * @param {FieldType} fieldType
+ * @return {WireType}
  */
-jspb.BinaryConstants.FieldTypeToWireType = function(fieldType) {
-  var fieldTypes = jspb.BinaryConstants.FieldType;
-  var wireTypes = jspb.BinaryConstants.WireType;
+export function FieldTypeToWireType(fieldType) {
+  var fieldTypes = FieldType;
+  var wireTypes = WireType;
   switch (fieldType) {
     case fieldTypes.INT32:
     case fieldTypes.INT64:
@@ -286,124 +251,109 @@ jspb.BinaryConstants.FieldTypeToWireType = function(fieldType) {
     default:
       return wireTypes.INVALID;
   }
-};
+}
 
 
 /**
  * Flag to indicate a missing field.
  * @const {number}
- * @export
  */
-jspb.BinaryConstants.INVALID_FIELD_NUMBER = -1;
+export var INVALID_FIELD_NUMBER = -1;
 
 
 /**
  * The smallest denormal float32 value.
  * @const {number}
- * @export
  */
-jspb.BinaryConstants.FLOAT32_EPS = 1.401298464324817e-45;
+export var FLOAT32_EPS = 1.401298464324817e-45;
 
 
 /**
  * The smallest normal float64 value.
  * @const {number}
- * @export
  */
-jspb.BinaryConstants.FLOAT32_MIN = 1.1754943508222875e-38;
+export var FLOAT32_MIN = 1.1754943508222875e-38;
 
 
 /**
  * The largest finite float32 value.
  * @const {number}
- * @export
  */
-jspb.BinaryConstants.FLOAT32_MAX = 3.4028234663852886e+38;
+export var FLOAT32_MAX = 3.4028234663852886e+38;
 
 
 /**
  * The smallest denormal float64 value.
  * @const {number}
- * @export
  */
-jspb.BinaryConstants.FLOAT64_EPS = 5e-324;
+export var FLOAT64_EPS = 5e-324;
 
 
 /**
  * The smallest normal float64 value.
  * @const {number}
- * @export
  */
-jspb.BinaryConstants.FLOAT64_MIN = 2.2250738585072014e-308;
+export var FLOAT64_MIN = 2.2250738585072014e-308;
 
 
 /**
  * The largest finite float64 value.
  * @const {number}
- * @export
  */
-jspb.BinaryConstants.FLOAT64_MAX = 1.7976931348623157e+308;
+export var FLOAT64_MAX = 1.7976931348623157e+308;
 
 
 /**
  * Convenience constant equal to 2^20.
  * @const {number}
- * @export
  */
-jspb.BinaryConstants.TWO_TO_20 = 1048576;
+export var TWO_TO_20 = 1048576;
 
 
 /**
  * Convenience constant equal to 2^23.
  * @const {number}
- * @export
  */
-jspb.BinaryConstants.TWO_TO_23 = 8388608;
+export var TWO_TO_23 = 8388608;
 
 
 /**
  * Convenience constant equal to 2^31.
  * @const {number}
- * @export
  */
-jspb.BinaryConstants.TWO_TO_31 = 2147483648;
+export var TWO_TO_31 = 2147483648;
 
 
 /**
  * Convenience constant equal to 2^32.
  * @const {number}
- * @export
  */
-jspb.BinaryConstants.TWO_TO_32 = 4294967296;
+export var TWO_TO_32 = 4294967296;
 
 
 /**
  * Convenience constant equal to 2^52.
  * @const {number}
- * @export
  */
-jspb.BinaryConstants.TWO_TO_52 = 4503599627370496;
+export var TWO_TO_52 = 4503599627370496;
 
 
 /**
  * Convenience constant equal to 2^63.
  * @const {number}
- * @export
  */
-jspb.BinaryConstants.TWO_TO_63 = 9223372036854775808;
+export var TWO_TO_63 = 9223372036854775808;
 
 
 /**
  * Convenience constant equal to 2^64.
  * @const {number}
- * @export
  */
-jspb.BinaryConstants.TWO_TO_64 = 18446744073709551616;
+export var TWO_TO_64 = 18446744073709551616;
 
 
 /**
  * Eight-character string of zeros, used as the default 64-bit hash value.
  * @const {string}
- * @export
  */
-jspb.BinaryConstants.ZERO_HASH = '\0\0\0\0\0\0\0\0';
+export var ZERO_HASH = '\0\0\0\0\0\0\0\0';

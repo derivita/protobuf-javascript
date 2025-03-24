@@ -1,9 +1,9 @@
 /**
  * @fileoverview A UTF8 decoder.
  */
-goog.module('protobuf.binary.textencoding');
+import checks from '../internal/checks.js';
 
-const {checkElementIndex} = goog.require('protobuf.internal.checks');
+const {checkElementIndex} = checks;
 
 /**
  * Combines an array of codePoints into a string.
@@ -110,7 +110,7 @@ function encode(value) {
   return new Uint8Array(buffer);
 }
 
-exports = {
+export default {
   decode,
   encode,
 };

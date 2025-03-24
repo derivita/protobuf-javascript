@@ -28,36 +28,20 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-goog.require('goog.userAgent');
+import * as userAgent from '../closure-library/closure/goog/useragent/useragent.js';
 
 // CommonJS-LoadFromFile: protos/testbinary_pb proto.jspb.test
-goog.require('proto.jspb.test.MapValueEnum');
-goog.require('proto.jspb.test.MapValueMessage');
-goog.require('proto.jspb.test.TestMapFields');
-goog.require('proto.jspb.test.TestMapFieldsOptionalKeys');
-goog.require('proto.jspb.test.TestMapFieldsOptionalValues');
-goog.require('proto.jspb.test.MapEntryOptionalKeysStringKey');
-goog.require('proto.jspb.test.MapEntryOptionalKeysInt32Key');
-goog.require('proto.jspb.test.MapEntryOptionalKeysInt64Key');
-goog.require('proto.jspb.test.MapEntryOptionalKeysBoolKey');
-goog.require('proto.jspb.test.MapEntryOptionalValuesStringValue');
-goog.require('proto.jspb.test.MapEntryOptionalValuesInt32Value');
-goog.require('proto.jspb.test.MapEntryOptionalValuesInt64Value');
-goog.require('proto.jspb.test.MapEntryOptionalValuesBoolValue');
-goog.require('proto.jspb.test.MapEntryOptionalValuesDoubleValue');
-goog.require('proto.jspb.test.MapEntryOptionalValuesEnumValue');
-goog.require('proto.jspb.test.MapEntryOptionalValuesMessageValue');
+import * as testbinary_pb from './protos/testbinary_pb.js';
 
 // CommonJS-LoadFromFile: protos/test_pb proto.jspb.test
-goog.require('proto.jspb.test.MapValueMessageNoBinary');
-goog.require('proto.jspb.test.TestMapFieldsNoBinary');
+import {MapValueMessageNoBinary, TestMapFieldsNoBinary} from './protos/test_pb.js';
 
-goog.requireType('jspb.Map');
+import {Map} from './map.js';
 
 
 /**
  * Helper: check that the given map has exactly this set of (sorted) entries.
- * @param {!jspb.Map} map
+ * @param {!Map} map
  * @param {!Array<!Array<?>>} entries
  */
 function checkMapEquals(map, entries) {
@@ -110,8 +94,8 @@ function makeTests(msgInfo, submessageCtor, suffix) {
     msg.getMapStringBoolMap().set('e', true).set('f', false);
     msg.getMapStringDoubleMap().set('g', 3.14159).set('h', 2.71828);
     msg.getMapStringEnumMap()
-      .set('i', proto.jspb.test.MapValueEnum.MAP_VALUE_BAR)
-      .set('j', proto.jspb.test.MapValueEnum.MAP_VALUE_BAZ);
+      .set('i', testbinary_pb.MapValueEnum.MAP_VALUE_BAR)
+      .set('j', testbinary_pb.MapValueEnum.MAP_VALUE_BAZ);
     msg.getMapStringMsgMap()
       .set('k', new submessageCtor())
       .set('l', new submessageCtor());
@@ -139,8 +123,8 @@ function makeTests(msgInfo, submessageCtor, suffix) {
     checkMapEquals(
       msg.getMapStringDoubleMap(), [['g', 3.14159], ['h', 2.71828]]);
     checkMapEquals(msg.getMapStringEnumMap(), [
-      ['i', proto.jspb.test.MapValueEnum.MAP_VALUE_BAR],
-      ['j', proto.jspb.test.MapValueEnum.MAP_VALUE_BAZ]
+      ['i', testbinary_pb.MapValueEnum.MAP_VALUE_BAR],
+      ['j', testbinary_pb.MapValueEnum.MAP_VALUE_BAZ]
     ]);
     checkMapEquals(msg.getMapInt32StringMap(), [[-1, 'a'], [42, 'b']]);
     checkMapEquals(
@@ -232,7 +216,7 @@ function makeTests(msgInfo, submessageCtor, suffix) {
      * Tests serialization and deserialization in binary format.
      */
     it('testBinaryFormat' + suffix, () => {
-      if (goog.userAgent.IE && !goog.userAgent.isDocumentModeOrHigher(10)) {
+      if (userAgent.IE && !userAgent.isDocumentModeOrHigher(10)) {
         // IE8/9 currently doesn't support binary format because they lack
         // TypedArray.
         return;
@@ -268,18 +252,18 @@ function makeTests(msgInfo, submessageCtor, suffix) {
      */
     it('testMapDeserializationForUndefinedKeys', () => {
       const testMessageOptionalKeys =
-        new proto.jspb.test.TestMapFieldsOptionalKeys();
+        new testbinary_pb.TestMapFieldsOptionalKeys();
       const mapEntryStringKey =
-        new proto.jspb.test.MapEntryOptionalKeysStringKey();
+        new testbinary_pb.MapEntryOptionalKeysStringKey();
       mapEntryStringKey.setValue('a');
       testMessageOptionalKeys.setMapStringString(mapEntryStringKey);
-      const mapEntryInt32Key = new proto.jspb.test.MapEntryOptionalKeysInt32Key();
+      const mapEntryInt32Key = new testbinary_pb.MapEntryOptionalKeysInt32Key();
       mapEntryInt32Key.setValue('b');
       testMessageOptionalKeys.setMapInt32String(mapEntryInt32Key);
-      const mapEntryInt64Key = new proto.jspb.test.MapEntryOptionalKeysInt64Key();
+      const mapEntryInt64Key = new testbinary_pb.MapEntryOptionalKeysInt64Key();
       mapEntryInt64Key.setValue('c');
       testMessageOptionalKeys.setMapInt64String(mapEntryInt64Key);
-      const mapEntryBoolKey = new proto.jspb.test.MapEntryOptionalKeysBoolKey();
+      const mapEntryBoolKey = new testbinary_pb.MapEntryOptionalKeysBoolKey();
       mapEntryBoolKey.setValue('d');
       testMessageOptionalKeys.setMapBoolString(mapEntryBoolKey);
       const deserializedMessage =
@@ -296,33 +280,33 @@ function makeTests(msgInfo, submessageCtor, suffix) {
      */
     it('testMapDeserializationForUndefinedValues', () => {
       const testMessageOptionalValues =
-        new proto.jspb.test.TestMapFieldsOptionalValues();
+        new testbinary_pb.TestMapFieldsOptionalValues();
       const mapEntryStringValue =
-        new proto.jspb.test.MapEntryOptionalValuesStringValue();
+        new testbinary_pb.MapEntryOptionalValuesStringValue();
       mapEntryStringValue.setKey('a');
       testMessageOptionalValues.setMapStringString(mapEntryStringValue);
       const mapEntryInt32Value =
-        new proto.jspb.test.MapEntryOptionalValuesInt32Value();
+        new testbinary_pb.MapEntryOptionalValuesInt32Value();
       mapEntryInt32Value.setKey('b');
       testMessageOptionalValues.setMapStringInt32(mapEntryInt32Value);
       const mapEntryInt64Value =
-        new proto.jspb.test.MapEntryOptionalValuesInt64Value();
+        new testbinary_pb.MapEntryOptionalValuesInt64Value();
       mapEntryInt64Value.setKey('c');
       testMessageOptionalValues.setMapStringInt64(mapEntryInt64Value);
       const mapEntryBoolValue =
-        new proto.jspb.test.MapEntryOptionalValuesBoolValue();
+        new testbinary_pb.MapEntryOptionalValuesBoolValue();
       mapEntryBoolValue.setKey('d');
       testMessageOptionalValues.setMapStringBool(mapEntryBoolValue);
       const mapEntryDoubleValue =
-        new proto.jspb.test.MapEntryOptionalValuesDoubleValue();
+        new testbinary_pb.MapEntryOptionalValuesDoubleValue();
       mapEntryDoubleValue.setKey('e');
       testMessageOptionalValues.setMapStringDouble(mapEntryDoubleValue);
       const mapEntryEnumValue =
-        new proto.jspb.test.MapEntryOptionalValuesEnumValue();
+        new testbinary_pb.MapEntryOptionalValuesEnumValue();
       mapEntryEnumValue.setKey('f');
       testMessageOptionalValues.setMapStringEnum(mapEntryEnumValue);
       const mapEntryMessageValue =
-        new proto.jspb.test.MapEntryOptionalValuesMessageValue();
+        new testbinary_pb.MapEntryOptionalValuesMessageValue();
       mapEntryMessageValue.setKey('g');
       testMessageOptionalValues.setMapStringMsg(mapEntryMessageValue);
       const deserializedMessage = msgInfo.deserializeBinary(
@@ -379,7 +363,7 @@ function makeTests(msgInfo, submessageCtor, suffix) {
       expect(entryIterable.next().value).toEqual(['key2', 'value2']);
       expect(entryIterable.next().done).toBeTrue();
     } catch (err) {
-      // jspb.Map.ArrayIteratorIterable_.prototype[Symbol.iterator] may be
+      // Map.ArrayIteratorIterable_.prototype[Symbol.iterator] may be
       // undefined in some environment.
       if (err.name != 'TypeError' && err.name != 'ReferenceError') {
         throw err;
@@ -397,7 +381,7 @@ function makeTests(msgInfo, submessageCtor, suffix) {
       expect(keyIterable.next().value).toEqual('key2');
       expect(keyIterable.next().done).toBeTrue();
     } catch (err) {
-      // jspb.Map.ArrayIteratorIterable_.prototype[Symbol.iterator] may be
+      // Map.ArrayIteratorIterable_.prototype[Symbol.iterator] may be
       // undefined in some environment.
       if (err.name != 'TypeError' && err.name != 'ReferenceError') {
         throw err;
@@ -414,7 +398,7 @@ function makeTests(msgInfo, submessageCtor, suffix) {
       expect(valueIterable.next().value).toEqual('value2');
       expect(valueIterable.next().done).toBeTrue();
     } catch (err) {
-      // jspb.Map.ArrayIteratorIterable_.prototype[Symbol.iterator] may be
+      // Map.ArrayIteratorIterable_.prototype[Symbol.iterator] may be
       // undefined in some environment.
       if (err.name != 'TypeError' && err.name != 'ReferenceError') {
         throw err;
@@ -426,14 +410,14 @@ function makeTests(msgInfo, submessageCtor, suffix) {
 describe('mapsTest', () => {
   makeTests(
     {
-      constructor: proto.jspb.test.TestMapFields,
-      deserializeBinary: proto.jspb.test.TestMapFields.deserializeBinary
+      constructor: testbinary_pb.TestMapFields,
+      deserializeBinary: testbinary_pb.TestMapFields.deserializeBinary
     },
-    proto.jspb.test.MapValueMessage, '_Binary');
+    testbinary_pb.MapValueMessage, '_Binary');
   makeTests(
     {
-      constructor: proto.jspb.test.TestMapFieldsNoBinary,
+      constructor: TestMapFieldsNoBinary,
       deserializeBinary: null
     },
-    proto.jspb.test.MapValueMessageNoBinary, '_NoBinary');
+    MapValueMessageNoBinary, '_NoBinary');
 });

@@ -1,10 +1,10 @@
 /**
  * @fileoverview Test data for sfixed32 encoding and decoding.
  */
-goog.module('protobuf.binary.sfixed32TestPairs');
+import { BufferDecoder } from './buffer_decoder.js';
 
-const BufferDecoder = goog.require('protobuf.binary.BufferDecoder');
-const {createBufferDecoder} = goog.require('protobuf.binary.bufferDecoderHelper');
+import bufferDecoderHelper from './buffer_decoder_helper.js';
+const {createBufferDecoder} = bufferDecoderHelper;
 
 /**
  * An array of Pairs of int values and their bit representation.
@@ -43,4 +43,4 @@ function getSfixed32Pairs() {
   return [...sfixed32Pairs];
 }
 
-exports = {getSfixed32Pairs};
+export default {getSfixed32Pairs};

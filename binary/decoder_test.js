@@ -41,11 +41,11 @@
  * @author aappleby@google.com (Austin Appleby)
  */
 
-goog.require('jspb.BinaryConstants');
-goog.require('jspb.BinaryDecoder');
-goog.require('jspb.BinaryEncoder');
+import * as BinaryConstants from './constants.js';
 
-goog.require('jspb.utils');
+import { BinaryDecoder } from './decoder.js';
+import { BinaryEncoder } from './encoder.js';
+import * as utils from './utils.js';
 
 
 /**
@@ -59,7 +59,7 @@ goog.require('jspb.utils');
  */
 function doTestUnsignedValue(
     readValue, writeValue, epsilon, upperLimit, filter) {
-  const encoder = new jspb.BinaryEncoder();
+  const encoder = new BinaryEncoder();
 
   // Encode zero and limits.
   writeValue.call(encoder, filter(0));
@@ -71,7 +71,7 @@ function doTestUnsignedValue(
     writeValue.call(encoder, filter(cursor));
   }
 
-  const decoder = jspb.BinaryDecoder.alloc(encoder.end());
+  const decoder = BinaryDecoder.alloc(encoder.end());
 
   // Check zero and limits.
   expect(readValue.call(decoder)).toEqual(filter(0));
@@ -105,7 +105,7 @@ function doTestUnsignedValue(
  */
 function doTestSignedValue(
     readValue, writeValue, epsilon, lowerLimit, upperLimit, filter) {
-  const encoder = new jspb.BinaryEncoder();
+  const encoder = new BinaryEncoder();
 
   // Encode zero and limits.
   writeValue.call(encoder, filter(lowerLimit));
@@ -130,7 +130,7 @@ function doTestSignedValue(
     inputValues.push(val);
   }
 
-  const decoder = jspb.BinaryDecoder.alloc(encoder.end());
+  const decoder = BinaryDecoder.alloc(encoder.end());
 
   // Check zero and limits.
   expect(readValue.call(decoder)).toEqual(filter(lowerLimit));
@@ -161,31 +161,31 @@ describe('binaryDecoderTest', () => {
    */
   it('testInstanceCache', /** @suppress {visibility} */ () => {
     // Empty the instance caches.
-    jspb.BinaryDecoder.instanceCache_ = [];
+    BinaryDecoder.instanceCache_ = [];
 
     // Allocating and then freeing a decoder should put it in the instance
     // cache.
-    jspb.BinaryDecoder.alloc().free();
+    BinaryDecoder.alloc().free();
 
-    expect(jspb.BinaryDecoder.getInstanceCacheLength()).toEqual(1);
+    expect(BinaryDecoder.getInstanceCacheLength()).toEqual(1);
 
     // Allocating and then freeing three decoders should leave us with three in
     // the cache.
 
-    const decoder1 = jspb.BinaryDecoder.alloc();
-    const decoder2 = jspb.BinaryDecoder.alloc();
-    const decoder3 = jspb.BinaryDecoder.alloc();
+    const decoder1 = BinaryDecoder.alloc();
+    const decoder2 = BinaryDecoder.alloc();
+    const decoder3 = BinaryDecoder.alloc();
     decoder1.free();
     decoder2.free();
     decoder3.free();
 
-    expect(jspb.BinaryDecoder.getInstanceCacheLength()).toEqual(3);
+    expect(BinaryDecoder.getInstanceCacheLength()).toEqual(3);
   });
 
 
   describe('varint64', () => {
-    let /** !jspb.BinaryEncoder */ encoder;
-    let /** !jspb.BinaryDecoder */ decoder;
+    let /** !BinaryEncoder */ encoder;
+    let /** !BinaryDecoder */ decoder;
 
     const hashA =
         String.fromCharCode(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
@@ -196,7 +196,7 @@ describe('binaryDecoderTest', () => {
     const hashD =
         String.fromCharCode(0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
     beforeEach(() => {
-      encoder = new jspb.BinaryEncoder();
+      encoder = new BinaryEncoder();
 
       encoder.writeVarintHash64(hashA);
       encoder.writeVarintHash64(hashB);
@@ -208,7 +208,7 @@ describe('binaryDecoderTest', () => {
       encoder.writeFixedHash64(hashC);
       encoder.writeFixedHash64(hashD);
 
-      decoder = jspb.BinaryDecoder.alloc(encoder.end());
+      decoder = BinaryDecoder.alloc(encoder.end());
     });
 
     it('reads 64-bit integers as hash strings', () => {
@@ -229,9 +229,9 @@ describe('binaryDecoderTest', () => {
             (bitsLow >>> 0).toString(16)}`;
       }
       function hexJoinHash(hash64) {
-        jspb.utils.splitHash64(hash64, true);
+        utils.splitHash64(hash64, true);
 
-        return hexJoin(jspb.utils.getSplit64Low(), jspb.utils.getSplit64High());
+        return hexJoin(utils.getSplit64Low(), utils.getSplit64High());
       }
 
       expect(decoder.readSplitVarint64(hexJoin)).toEqual(hexJoinHash(hashA));
@@ -247,7 +247,7 @@ describe('binaryDecoderTest', () => {
   });
 
   describe('sint64', () => {
-    let /** !jspb.BinaryDecoder */ decoder;
+    let /** !BinaryDecoder */ decoder;
 
     const hashA =
         String.fromCharCode(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
@@ -258,26 +258,26 @@ describe('binaryDecoderTest', () => {
     const hashD =
         String.fromCharCode(0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);
     beforeEach(() => {
-      const encoder = new jspb.BinaryEncoder();
+      const encoder = new BinaryEncoder();
 
       encoder.writeZigzagVarintHash64(hashA);
       encoder.writeZigzagVarintHash64(hashB);
       encoder.writeZigzagVarintHash64(hashC);
       encoder.writeZigzagVarintHash64(hashD);
 
-      decoder = jspb.BinaryDecoder.alloc(encoder.end());
+      decoder = BinaryDecoder.alloc(encoder.end());
     });
 
     it('reads 64-bit integers as decimal strings', () => {
       const signed = true;
       expect(decoder.readZigzagVarint64String())
-          .toEqual(jspb.utils.hash64ToDecimalString(hashA, signed));
+          .toEqual(utils.hash64ToDecimalString(hashA, signed));
       expect(decoder.readZigzagVarint64String())
-          .toEqual(jspb.utils.hash64ToDecimalString(hashB, signed));
+          .toEqual(utils.hash64ToDecimalString(hashB, signed));
       expect(decoder.readZigzagVarint64String())
-          .toEqual(jspb.utils.hash64ToDecimalString(hashC, signed));
+          .toEqual(utils.hash64ToDecimalString(hashC, signed));
       expect(decoder.readZigzagVarint64String())
-          .toEqual(jspb.utils.hash64ToDecimalString(hashD, signed));
+          .toEqual(utils.hash64ToDecimalString(hashD, signed));
     });
 
     it('reads 64-bit integers as hash strings', () => {
@@ -293,8 +293,8 @@ describe('binaryDecoderTest', () => {
             (bitsLow >>> 0).toString(16)}`;
       }
       function hexJoinHash(hash64) {
-        jspb.utils.splitHash64(hash64);
-        return hexJoin(jspb.utils.getSplit64Low(), jspb.utils.getSplit64High());
+        utils.splitHash64(hash64);
+        return hexJoin(utils.getSplit64Low(), utils.getSplit64High());
       }
 
       expect(decoder.readSplitZigzagVarint64(hexJoin))
@@ -324,13 +324,13 @@ describe('binaryDecoderTest', () => {
         // 0x1FFFFF. The following used to be broken.
         {original: '72000000000', zigzag: '144000000000'},
       ];
-      const encoder = new jspb.BinaryEncoder();
+      const encoder = new BinaryEncoder();
       testCases.forEach(function(c) {
         encoder.writeZigzagVarint64String(c.original);
       });
       const buffer = encoder.end();
-      const zigzagDecoder = jspb.BinaryDecoder.alloc(buffer);
-      const varintDecoder = jspb.BinaryDecoder.alloc(buffer);
+      const zigzagDecoder = BinaryDecoder.alloc(buffer);
+      const varintDecoder = BinaryDecoder.alloc(buffer);
       testCases.forEach(function(c) {
         expect(zigzagDecoder.readZigzagVarint64String()).toEqual(c.original);
         expect(varintDecoder.readUnsignedVarint64String()).toEqual(c.zigzag);
@@ -342,7 +342,7 @@ describe('binaryDecoderTest', () => {
    * Tests reading and writing large strings
    */
   it('testLargeStrings', () => {
-    const encoder = new jspb.BinaryEncoder();
+    const encoder = new BinaryEncoder();
 
     const len = 150000;
     let long_string = '';
@@ -352,7 +352,7 @@ describe('binaryDecoderTest', () => {
 
     encoder.writeString(long_string);
 
-    const decoder = jspb.BinaryDecoder.alloc(encoder.end());
+    const decoder = BinaryDecoder.alloc(encoder.end());
 
     expect(decoder.readString(len, true)).toEqual(long_string);
   });
@@ -361,7 +361,7 @@ describe('binaryDecoderTest', () => {
    * Test encoding and decoding utf-8.
    */
   it('testUtf8', () => {
-    const encoder = new jspb.BinaryEncoder();
+    const encoder = new BinaryEncoder();
 
     const ascii = 'ASCII should work in 3, 2, 1...';
     const utf8_two_bytes = '©';
@@ -373,7 +373,7 @@ describe('binaryDecoderTest', () => {
     encoder.writeString(utf8_three_bytes);
     encoder.writeString(utf8_four_bytes);
 
-    const decoder = jspb.BinaryDecoder.alloc(encoder.end());
+    const decoder = BinaryDecoder.alloc(encoder.end());
 
     expect(decoder.readString(ascii.length,  /* enforceUtf8= */ true)).toEqual(ascii);
     expect(utf8_two_bytes).toEqual(decoder.readString(2,  /* enforceUtf8= */ true));
@@ -386,7 +386,7 @@ describe('binaryDecoderTest', () => {
    * Verifies that passing a non-string to writeString raises an error.
    */
   it('testBadString', () => {
-    const encoder = new jspb.BinaryEncoder();
+    const encoder = new BinaryEncoder();
 
     expect(() => {
       encoder.writeString(42)
@@ -401,7 +401,7 @@ describe('binaryDecoderTest', () => {
    */
   it('testDecodeErrors', () => {
     // Reading a value past the end of the stream should trigger an assertion.
-    const decoder = jspb.BinaryDecoder.alloc([0, 1, 2]);
+    const decoder = BinaryDecoder.alloc([0, 1, 2]);
     expect(() => {
       decoder.readUint64()
     }).toThrow();
@@ -432,30 +432,30 @@ describe('binaryDecoderTest', () => {
    */
   it('testUnsignedIntegers', () => {
     doTestUnsignedValue(
-        jspb.BinaryDecoder.prototype.readUint8,
-        jspb.BinaryEncoder.prototype.writeUint8, 1, 0xFF, Math.round);
+        BinaryDecoder.prototype.readUint8,
+        BinaryEncoder.prototype.writeUint8, 1, 0xFF, Math.round);
 
     doTestUnsignedValue(
-        jspb.BinaryDecoder.prototype.readUint16,
-        jspb.BinaryEncoder.prototype.writeUint16, 1, 0xFFFF, Math.round);
+        BinaryDecoder.prototype.readUint16,
+        BinaryEncoder.prototype.writeUint16, 1, 0xFFFF, Math.round);
 
     doTestUnsignedValue(
-        jspb.BinaryDecoder.prototype.readUint32,
-        jspb.BinaryEncoder.prototype.writeUint32, 1, 0xFFFFFFFF, Math.round);
+        BinaryDecoder.prototype.readUint32,
+        BinaryEncoder.prototype.writeUint32, 1, 0xFFFFFFFF, Math.round);
 
     doTestUnsignedValue(
-        jspb.BinaryDecoder.prototype.readUnsignedVarint32,
-        jspb.BinaryEncoder.prototype.writeUnsignedVarint32, 1, 0xFFFFFFFF,
+        BinaryDecoder.prototype.readUnsignedVarint32,
+        BinaryEncoder.prototype.writeUnsignedVarint32, 1, 0xFFFFFFFF,
         Math.round);
 
     doTestUnsignedValue(
-        jspb.BinaryDecoder.prototype.readUint64,
-        jspb.BinaryEncoder.prototype.writeUint64, 1, Math.pow(2, 64) - 1025,
+        BinaryDecoder.prototype.readUint64,
+        BinaryEncoder.prototype.writeUint64, 1, Math.pow(2, 64) - 1025,
         Math.round);
 
     doTestUnsignedValue(
-        jspb.BinaryDecoder.prototype.readUnsignedVarint64,
-        jspb.BinaryEncoder.prototype.writeUnsignedVarint64, 1,
+        BinaryDecoder.prototype.readUnsignedVarint64,
+        BinaryEncoder.prototype.writeUnsignedVarint64, 1,
         Math.pow(2, 64) - 1025, Math.round);
   });
 
@@ -465,32 +465,32 @@ describe('binaryDecoderTest', () => {
    */
   it('testSignedIntegers', () => {
     doTestSignedValue(
-        jspb.BinaryDecoder.prototype.readInt8,
-        jspb.BinaryEncoder.prototype.writeInt8, 1, -0x80, 0x7F, Math.round);
+        BinaryDecoder.prototype.readInt8,
+        BinaryEncoder.prototype.writeInt8, 1, -0x80, 0x7F, Math.round);
 
     doTestSignedValue(
-        jspb.BinaryDecoder.prototype.readInt16,
-        jspb.BinaryEncoder.prototype.writeInt16, 1, -0x8000, 0x7FFF,
+        BinaryDecoder.prototype.readInt16,
+        BinaryEncoder.prototype.writeInt16, 1, -0x8000, 0x7FFF,
         Math.round);
 
     doTestSignedValue(
-        jspb.BinaryDecoder.prototype.readInt32,
-        jspb.BinaryEncoder.prototype.writeInt32, 1, -0x80000000, 0x7FFFFFFF,
+        BinaryDecoder.prototype.readInt32,
+        BinaryEncoder.prototype.writeInt32, 1, -0x80000000, 0x7FFFFFFF,
         Math.round);
 
     doTestSignedValue(
-        jspb.BinaryDecoder.prototype.readSignedVarint32,
-        jspb.BinaryEncoder.prototype.writeSignedVarint32, 1, -0x80000000,
+        BinaryDecoder.prototype.readSignedVarint32,
+        BinaryEncoder.prototype.writeSignedVarint32, 1, -0x80000000,
         0x7FFFFFFF, Math.round);
 
     doTestSignedValue(
-        jspb.BinaryDecoder.prototype.readInt64,
-        jspb.BinaryEncoder.prototype.writeInt64, 1, -Math.pow(2, 63),
+        BinaryDecoder.prototype.readInt64,
+        BinaryEncoder.prototype.writeInt64, 1, -Math.pow(2, 63),
         Math.pow(2, 63) - 513, Math.round);
 
     doTestSignedValue(
-        jspb.BinaryDecoder.prototype.readSignedVarint64,
-        jspb.BinaryEncoder.prototype.writeSignedVarint64, 1, -Math.pow(2, 63),
+        BinaryDecoder.prototype.readSignedVarint64,
+        BinaryEncoder.prototype.writeSignedVarint64, 1, -Math.pow(2, 63),
         Math.pow(2, 63) - 513, Math.round);
   });
 
@@ -509,16 +509,16 @@ describe('binaryDecoderTest', () => {
       return temp[0];
     }
     doTestSignedValue(
-        jspb.BinaryDecoder.prototype.readFloat,
-        jspb.BinaryEncoder.prototype.writeFloat,
-        jspb.BinaryConstants.FLOAT32_EPS, -jspb.BinaryConstants.FLOAT32_MAX,
-        jspb.BinaryConstants.FLOAT32_MAX, truncate);
+        BinaryDecoder.prototype.readFloat,
+        BinaryEncoder.prototype.writeFloat,
+        BinaryConstants.FLOAT32_EPS, -BinaryConstants.FLOAT32_MAX,
+        BinaryConstants.FLOAT32_MAX, truncate);
 
     doTestSignedValue(
-        jspb.BinaryDecoder.prototype.readDouble,
-        jspb.BinaryEncoder.prototype.writeDouble,
-        jspb.BinaryConstants.FLOAT64_EPS * 10,
-        -jspb.BinaryConstants.FLOAT64_MAX, jspb.BinaryConstants.FLOAT64_MAX,
+        BinaryDecoder.prototype.readDouble,
+        BinaryEncoder.prototype.writeDouble,
+        BinaryConstants.FLOAT64_EPS * 10,
+        -BinaryConstants.FLOAT64_MAX, BinaryConstants.FLOAT64_MAX,
         function(x) {
           return x;
         });

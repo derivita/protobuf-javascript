@@ -1,20 +1,21 @@
 /**
  * @fileoverview Tests for kernel.js.
  */
-goog.module('protobuf.runtime.KernelTest');
-
 goog.setTestOnly();
 
-const ByteString = goog.require('protobuf.ByteString');
-const Int64 = goog.require('protobuf.Int64');
-const InternalMessage = goog.require('protobuf.binary.InternalMessage');
-const Kernel = goog.require('protobuf.runtime.Kernel');
-const TestMessage = goog.require('protobuf.testing.binary.TestMessage');
+import { ByteString } from '../bytestring.js';
+import { Int64 } from '../int64.js';
+import { InternalMessage } from './internal_message.js';
+import { Kernel } from './kernel.js';
+import { TestMessage } from '../testing/binary/test_message.js';
+
 // Note to the reader:
 // Since the lazy accessor behavior changes with the checking level some of the
 // tests in this file have to know which checking level is enable to make
 // correct assertions.
-const {CHECK_BOUNDS, CHECK_CRITICAL_STATE, CHECK_CRITICAL_TYPE, CHECK_TYPE, MAX_FIELD_NUMBER} = goog.require('protobuf.internal.checks');
+import checks from '../internal/checks.js';
+
+const {CHECK_BOUNDS, CHECK_CRITICAL_STATE, CHECK_CRITICAL_TYPE, CHECK_TYPE, MAX_FIELD_NUMBER} = checks;
 
 /**
  * @param {...number} bytes

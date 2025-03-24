@@ -1,8 +1,6 @@
 /**
  * @fileoverview Helper methods for Uint8Arrays.
  */
-goog.module('protobuf.binary.uint8arrays');
-
 /**
  * Combines multiple bytes arrays (either Uint8Array or number array whose
  * values are bytes) into a single Uint8Array.
@@ -23,6 +21,6 @@ function concatenateByteArrays(arrays) {
   return result;
 }
 
-exports = {
+export default {
   concatenateByteArrays,
 };

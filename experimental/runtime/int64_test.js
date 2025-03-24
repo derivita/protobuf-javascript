@@ -1,11 +1,10 @@
 /**
  * @fileoverview Tests for Int64.
  */
-goog.module('protobuf.Int64Test');
 goog.setTestOnly();
 
-const Int64 = goog.require('protobuf.Int64');
-const Long = goog.require('goog.math.Long');
+import { Int64 } from './int64.js';
+import { Long } from '../../../closure-library/closure/goog/math/long.js';
 
 describe('Int64', () => {
   it('can be constructed from bits', () => {
