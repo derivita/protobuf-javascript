@@ -241,21 +241,17 @@ class Generator : public CodeGenerator {
   void GenerateDTS(const GeneratorOptions& options, io::Printer* printer,
                    const FileDescriptor* file) const;
   void GenerateMessageDTS(const GeneratorOptions& options, io::Printer* printer,
-                          const Descriptor* desc,
-                          const std::string& indent) const;
+                          const Descriptor* desc) const;
   void GenerateOneofMethodDTS(const GeneratorOptions& options,
                               io::Printer* printer,
-                              const OneofDescriptor* oneof,
-                              const std::string& indent) const;
+                              const OneofDescriptor* oneof) const;
   void GenerateOneofEnumDTS(const GeneratorOptions& options,
-                            io::Printer* printer, const OneofDescriptor* oneof,
-                            const std::string& indent) const;
+                            io::Printer* printer,
+                            const OneofDescriptor* oneof) const;
   void GenerateFieldDTS(const GeneratorOptions& options, io::Printer* printer,
-                        const FieldDescriptor* field,
-                        const std::string& indent) const;
+                        const FieldDescriptor* field) const;
   void GenerateEnumDTS(const GeneratorOptions& options, io::Printer* printer,
-                       const EnumDescriptor* enumdesc,
-                       const std::string& indent) const;
+                       const EnumDescriptor* enumdesc) const;
 
   // Generate definitions for all message classes and enums in all files,
   // processing the files in dependence order.
@@ -281,6 +277,8 @@ class Generator : public CodeGenerator {
   // Generate definition for one class.
   void GenerateClass(const GeneratorOptions& options, io::Printer* printer,
                      const Descriptor* desc) const;
+  void GenerateES6Class(const GeneratorOptions& options, io::Printer* printer,
+                        const Descriptor* desc) const;
   void GenerateClassConstructor(const GeneratorOptions& options,
                                 io::Printer* printer,
                                 const Descriptor* desc) const;
@@ -313,6 +311,13 @@ class Generator : public CodeGenerator {
   void GenerateClassRegistration(const GeneratorOptions& options,
                                  io::Printer* printer,
                                  const Descriptor* desc) const;
+  void GenerateClassExtensionDeclarations(const GeneratorOptions& options,
+                                          io::Printer* printer,
+                                          const Descriptor* desc) const;
+  void GenerateClassExtensionRegistration(const GeneratorOptions& options,
+                                          io::Printer* printer,
+                                          const Descriptor* desc) const;
+
   void GenerateClassFields(const GeneratorOptions& options,
                            io::Printer* printer, const Descriptor* desc) const;
   void GenerateClassField(const GeneratorOptions& options, io::Printer* printer,
@@ -343,6 +348,12 @@ class Generator : public CodeGenerator {
   // Generate an extension definition.
   void GenerateExtension(const GeneratorOptions& options, io::Printer* printer,
                          const FieldDescriptor* field) const;
+  void GenerateExtensionDeclaration(const GeneratorOptions& options,
+                                    io::Printer* printer,
+                                    const FieldDescriptor* field) const;
+  void GenerateExtensionRegistration(const GeneratorOptions& options,
+                                     io::Printer* printer,
+                                     const FieldDescriptor* field) const;
 
   // Generate addFoo() method for repeated primitive fields.
   void GenerateRepeatedPrimitiveHelperMethods(const GeneratorOptions& options,

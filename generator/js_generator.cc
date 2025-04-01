@@ -2068,12 +2068,18 @@ void Generator::GenerateTestOnly(const GeneratorOptions& options,
 void Generator::GenerateClassesAndEnums(const GeneratorOptions& options,
                                         io::Printer* printer,
                                         const FileDescriptor* file) const {
-  for (int i = 0; i < file->message_type_count(); i++) {
-    GenerateClassConstructorAndDeclareExtensionFieldInfo(options, printer,
-                                                         file->message_type(i));
-  }
-  for (int i = 0; i < file->message_type_count(); i++) {
-    GenerateClass(options, printer, file->message_type(i));
+  if (options.import_style == GeneratorOptions::kImportEs6) {
+    for (int i = 0; i < file->message_type_count(); i++) {
+      GenerateES6Class(options, printer, file->message_type(i));
+    }
+  } else {
+    for (int i = 0; i < file->message_type_count(); i++) {
+      GenerateClassConstructorAndDeclareExtensionFieldInfo(
+          options, printer, file->message_type(i));
+    }
+    for (int i = 0; i < file->message_type_count(); i++) {
+      GenerateClass(options, printer, file->message_type(i));
+    }
   }
   for (int i = 0; i < file->enum_type_count(); i++) {
     GenerateEnum(options, printer, file->enum_type(i));
@@ -2140,14 +2146,17 @@ void Generator::GenerateClassConstructor(const GeneratorOptions& options,
       " * @extends {jspb.Message}\n"
       " * @constructor\n"
       " */\n");
-  if (IsExportedMessage(options, desc)) {
+  if (options.import_style == GeneratorOptions::kImportEs6) {
+    printer->Print("constructor(opt_data) {\n");
+  } else if (IsExportedMessage(options, desc)) {
     printer->Print("export function $classname$(opt_data) {\n", "classname",
                    LocalMessageRef(options, desc));
+    printer->Annotate("classname", desc);
   } else {
     printer->Print("$classname$ = function(opt_data) {\n", "classname",
                    LocalMessageRef(options, desc));
+    printer->Annotate("classname", desc);
   }
-  printer->Annotate("classname", desc);
   std::string message_id = GetMessageId(desc);
   printer->Print(
       "  jspb.Message.initialize(this, opt_data, $messageId$, $pivot$, "
@@ -2158,20 +2167,66 @@ void Generator::GenerateClassConstructor(const GeneratorOptions& options,
       "pivot", GetPivot(desc), "rptfields",
       RepeatedFieldsArrayName(options, desc), "oneoffields",
       OneofFieldsArrayName(options, desc));
-  printer->Print(
-      "};\n"
-      "goog.inherits($classname$, jspb.Message);\n"
-      "if (goog.DEBUG && !COMPILED) {\n"
-      // displayName overrides Function.prototype.displayName
-      // http://google3/javascript/externs/es3.js?l=511
-      "  /**\n"
-      "   * @public\n"
-      "   * @override\n"
-      "   */\n"
-      "  $classname$.displayName = '$displayname$';\n"
-      "}\n",
-      "classname", LocalMessageRef(options, desc), "displayname",
-      GetQualifiedMessagePath(options, desc));
+  printer->Print("};\n");
+  if (options.import_style != GeneratorOptions::kImportEs6) {
+    printer->Print(
+        "goog.inherits($classname$, jspb.Message);\n"
+        "if (goog.DEBUG && !COMPILED) {\n"
+        // displayName overrides Function.prototype.displayName
+        // http://google3/javascript/externs/es3.js?l=511
+        "  /**\n"
+        "   * @public\n"
+        "   * @override\n"
+        "   */\n"
+        "  $classname$.displayName = '$displayname$';\n"
+        "}\n",
+        "classname", LocalMessageRef(options, desc), "displayname",
+        GetQualifiedMessagePath(options, desc));
+  }
+}
+
+void Generator::GenerateES6Class(const GeneratorOptions& options,
+                                 io::Printer* printer,
+                                 const Descriptor* desc) const {
+  if (IgnoreMessage(desc)) {
+    return;
+  }
+
+  if (IsExportedMessage(options, desc)) {
+    printer->Print("export class $classname$ extends jspb.Message {\n",
+        "classname", LocalMessageRef(options, desc));
+  } else {
+    printer->Print("$classname$ = class extends jspb.Message {\n",
+        "classname", LocalMessageRef(options, desc));
+  }
+  printer->Annotate("classname", desc);
+  printer->Indent();
+
+  for (int i = 0; i < desc->enum_type_count(); i++) {
+    GenerateEnum(options, printer, desc->enum_type(i));
+  }
+
+  GenerateClassConstructor(options, printer, desc);
+
+  if (IsExtendable(desc) && desc->full_name() != "google.protobuf.bridge.MessageSet") {
+    GenerateClassExtensionFieldInfo(options, printer, desc);
+  }
+
+  GenerateClassExtensionDeclarations(options, printer, desc);
+  GenerateClassFieldInfo(options, printer, desc);
+  GenerateClassFields(options, printer, desc);
+  GenerateClassDeserializeBinary(options, printer, desc);
+  GenerateClassSerializeBinary(options, printer, desc);
+
+  printer->Outdent();
+  printer->Print("}\n\n");
+
+  GenerateClassToObject(options, printer, desc);
+  GenerateClassExtensionRegistration(options, printer, desc);
+
+  for (int i = 0; i < desc->nested_type_count(); i++) {
+    GenerateES6Class(options, printer, desc->nested_type(i));
+  }
 }
 
 void Generator::GenerateClassConstructorAndDeclareExtensionFieldInfo(
@@ -2201,12 +2256,18 @@ void Generator::GenerateClassFieldInfo(const GeneratorOptions& options,
         " * List of repeated fields within this message type.\n"
         " * @private {!Array<number>}\n"
         " * @const\n"
-        " */\n"
-        "$classname$$rptfieldarray$ = $rptfields$;\n"
-        "\n",
-        "classname", LocalMessageRef(options, desc), "rptfieldarray",
-        kRepeatedFieldArrayName, "rptfields",
-        RepeatedFieldNumberList(options, desc));
+        " */\n");
+    if (options.import_style == GeneratorOptions::kImportEs6) {
+      printer->Print("static repeatedFields_ = $rptfields$;\n\n",
+          "rptfields", RepeatedFieldNumberList(options, desc));
+    } else {
+      printer->Print(
+          "$classname$$rptfieldarray$ = $rptfields$;\n"
+          "\n",
+          "classname", LocalMessageRef(options, desc), "rptfieldarray",
+          kRepeatedFieldArrayName, "rptfields",
+          RepeatedFieldNumberList(options, desc));
+    }
   }
 
   if (HasOneofFields(desc)) {
@@ -2222,11 +2283,16 @@ void Generator::GenerateClassFieldInfo(const GeneratorOptions& options,
         "be kept.\n"
         " * @private {!Array<!Array<number>>}\n"
         " * @const\n"
-        " */\n"
-        "$classname$$oneofgrouparray$ = $oneofgroups$;\n"
-        "\n",
-        "classname", LocalMessageRef(options, desc), "oneofgrouparray",
-        kOneofGroupArrayName, "oneofgroups", OneofGroupList(desc));
+        " */\n");
+    if (options.import_style == GeneratorOptions::kImportEs6) {
+      printer->Print("static oneofGroups_ = $oneofgroups$;\n\n",
+          "oneofgroups", OneofGroupList(desc));
+    } else {
+      printer->Print("$classname$$oneofgrouparray$ = $oneofgroups$;\n"
+          "\n",
+          "classname", LocalMessageRef(options, desc), "oneofgrouparray",
+          kOneofGroupArrayName, "oneofgroups", OneofGroupList(desc));
+    }
 
     for (int i = 0; i < desc->oneof_decl_count(); i++) {
       if (IgnoreOneof(desc->oneof_decl(i))) {
@@ -2254,11 +2320,16 @@ void Generator::GenerateOneofCaseDefinition(
   printer->Print(
       "/**\n"
       " * @enum {number}\n"
-      " */\n"
-      "$classname$.$oneof$Case = {\n"
-      "  $upcase$_NOT_SET: 0",
-      "classname", LocalMessageRef(options, oneof->containing_type()), "oneof",
-      JSOneofName(oneof), "upcase", ToEnumCase(oneof->name()));
+      " */\n");
+  if (options.import_style == GeneratorOptions::kImportEs6) {
+    printer->Print("static $oneof$Case = {\n",
+        "oneof", JSOneofName(oneof));
+  } else {
+    printer->Print("$classname$.$oneof$Case = {\n",
+        "classname", LocalMessageRef(options, oneof->containing_type()),
+        "oneof", JSOneofName(oneof));
+  }
+  printer->Print("  $upcase$_NOT_SET: 0", "upcase", ToEnumCase(oneof->name()));
 
   for (int i = 0; i < oneof->field_count(); i++) {
     if (IgnoreField(oneof->field(i))) {
@@ -2279,8 +2350,18 @@ void Generator::GenerateOneofCaseDefinition(
       "\n"
       "/**\n"
       " * @return {$type$.$oneof$Case}\n"
-      " */\n"
-      "$class$.prototype.get$oneof$Case = function() {\n"
+      " */\n",
+      "type", GetQualifiedMessagePath(options, oneof->containing_type()),
+      "oneof", JSOneofName(oneof));
+  if (options.import_style == GeneratorOptions::kImportEs6) {
+    printer->Print("get$oneof$Case() {\n",
+        "oneof", JSOneofName(oneof));
+  } else {
+    printer->Print("$class$.prototype.get$oneof$Case = function() {\n",
+      "class", LocalMessageRef(options, oneof->containing_type()),
+      "oneof", JSOneofName(oneof));
+  }
+  printer->Print(
       "  return /** @type {$type$.$oneof$Case} */(jspb.Message."
       "computeOneofCase(this, $class$.oneofGroups_[$oneofindex$]));\n"
       "};\n"
@@ -2622,6 +2703,33 @@ void Generator::GenerateClassRegistration(const GeneratorOptions& options,
   }
 }
 
+void Generator::GenerateClassExtensionDeclarations(
+    const GeneratorOptions& options, io::Printer* printer,
+    const Descriptor* desc) const {
+  // Just declare any extensions defined inside this message type, without
+  // registering. Registration happens later with a call to
+  // GenerateClassExtensionRegistration.
+  for (int i = 0; i < desc->extension_count(); i++) {
+    const FieldDescriptor* extension = desc->extension(i);
+    if (ShouldGenerateExtension(extension)) {
+      GenerateExtensionDeclaration(options, printer, extension);
+    }
+  }
+}
+
+void Generator::GenerateClassExtensionRegistration(
+    const GeneratorOptions& options, io::Printer* printer,
+    const Descriptor* desc) const {
+  // Register the extensions defined inside this message type. Declaration
+  // happened earlier with a call to GenerateClassExtensionDeclarations.
+  for (int i = 0; i < desc->extension_count(); i++) {
+    const FieldDescriptor* extension = desc->extension(i);
+    if (ShouldGenerateExtension(extension)) {
+      GenerateExtensionRegistration(options, printer, extension);
+    }
+  }
+}
+
 void Generator::GenerateClassFields(const GeneratorOptions& options,
                                     io::Printer* printer,
                                     const Descriptor* desc) const {
@@ -2639,31 +2747,48 @@ void GenerateBytesWrapper(const GeneratorOptions& options, io::Printer* printer,
                             /* is_setter_argument = */ false,
                             /* force_present = */ false,
                             /* singular_if_not_packed = */ false, bytes_mode);
+  std::string name = JSGetterName(options, field, bytes_mode);
+  std::string defname = JSGetterName(options, field, BYTES_DEFAULT);
   printer->Print(
       "/**\n"
       " * $fielddef$\n"
       "$comment$"
       " * This is a type-conversion wrapper around `get$defname$()`\n"
       " * @return {$type$}\n"
-      " */\n"
-      "$class$.prototype.get$name$ = function() {\n"
+      " */\n",
+      "fielddef", FieldDefinition(options, field),
+      "comment", FieldComments(field, bytes_mode),
+      "type", type,
+      "defname", defname);
+  if (options.import_style == GeneratorOptions::kImportEs6) {
+    printer->Print("get$name$() {\n",
+        "name", name);
+  } else {
+    printer->Print("$class$.prototype.get$name$ = function() {\n",
+        "class", LocalMessageRef(options, field->containing_type()),
+        "name", name);
+  }
+  printer->Print(
       "  return /** @type {$type$} */ (jspb.Message.bytes$list$As$suffix$(\n"
       "      this.get$defname$()));\n"
       "};\n"
       "\n"
       "\n",
-      "fielddef", FieldDefinition(options, field), "comment",
-      FieldComments(field, bytes_mode), "type", type, "class",
-      LocalMessageRef(options, field->containing_type()), "name",
-      JSGetterName(options, field, bytes_mode), "list",
-      field->is_repeated() ? "List" : "", "suffix",
-      JSByteGetterSuffix(bytes_mode), "defname",
-      JSGetterName(options, field, BYTES_DEFAULT));
+      "type", type,
+      "list", field->is_repeated() ? "List" : "",
+      "suffix", JSByteGetterSuffix(bytes_mode),
+      "defname", defname);
 }
 
 void Generator::GenerateClassField(const GeneratorOptions& options,
                                    io::Printer* printer,
                                    const FieldDescriptor* field) const {
+  std::string classname = LocalMessageRef(options, field->containing_type());
+  std::string gettername = "get" + JSGetterName(options, field);
+  std::string settername = "set" + JSGetterName(options, field);
+  std::string clearername = "clear" + JSGetterName(options, field);
+  std::string hasername = "has" + JSGetterName(options, field);
+
   if (field->is_map()) {
     const FieldDescriptor* key_field = MapFieldKey(field);
     const FieldDescriptor* value_field = MapFieldValue(field);
@@ -2688,13 +2813,21 @@ void Generator::GenerateClassField(const GeneratorOptions& options,
         " */\n",
         "fielddef", FieldDefinition(options, field), "keytype", key_type,
         "valuetype", value_type);
-    printer->Print(
-        "$class$.prototype.$gettername$ = function(opt_noLazyCreate) {\n"
-        "  return /** @type {!jspb.Map<$keytype$,$valuetype$>} */ (\n",
-        "class", LocalMessageRef(options, field->containing_type()),
-        "gettername", "get" + JSGetterName(options, field), "keytype", key_type,
-        "valuetype", value_type);
+    if (options.import_style == GeneratorOptions::kImportEs6) {
+      printer->Print("$gettername$(opt_noLazyCreate) {\n",
+          "gettername", gettername);
+    } else {
+      printer->Print(
+          "$class$.prototype.$gettername$ = function(opt_noLazyCreate) {\n",
+          "class", classname,
+          "gettername", gettername);
+    }
     printer->Annotate("gettername", field);
+    printer->Print(
+        "  return /** @type {!jspb.Map<$keytype$,$valuetype$>} */ (\n",
+        "class", classname,
+        "keytype", key_type,
+        "valuetype", value_type);
     printer->Print(
         "      jspb.Message.getMapField(this, $index$, opt_noLazyCreate",
         "index", JSFieldIndex(field));
@@ -2732,16 +2865,23 @@ void Generator::GenerateClassField(const GeneratorOptions& options,
                               /* is_setter_argument = */ false,
                               /* force_present = */ false,
                               /* singular_if_not_packed = */ false));
+    if (options.import_style == GeneratorOptions::kImportEs6) {
+      printer->Print("$gettername$() {\n",
+          "gettername", gettername);
+    } else {
+      printer->Print("$class$.prototype.$gettername$ = function() {\n",
+        "class", classname,
+        "gettername", gettername);
+    }
+    printer->Annotate("gettername", field);
     printer->Print(
-        "$class$.prototype.$gettername$ = function() {\n"
         "  return /** @type{$type$} */ (\n"
         "    jspb.Message.get$rpt$WrapperField(this, $wrapperclass$, "
         "$index$$required$));\n"
         "};\n"
         "\n"
         "\n",
-        "class", LocalMessageRef(options, field->containing_type()),
-        "gettername", "get" + JSGetterName(options, field), "type",
+        "type",
         JSFieldTypeAnnotation(options, field,
                               /* is_setter_argument = */ false,
                               /* force_present = */ false,
@@ -2750,26 +2890,31 @@ void Generator::GenerateClassField(const GeneratorOptions& options,
         JSFieldIndex(field), "wrapperclass", SubmessageTypeRef(options, field),
         "required",
         (field->label() == FieldDescriptor::LABEL_REQUIRED ? ", 1" : ""));
-    printer->Annotate("gettername", field);
     printer->Print(
         "/**\n"
         " * @param {$optionaltype$} value\n"
         " * @return {!$returntype$} returns this\n"
-        "*/\n"
-        "$class$.prototype.$settername$ = function(value) {\n"
-        "  return jspb.Message.set$oneoftag$$repeatedtag$WrapperField(",
+        "*/\n",
         "optionaltype",
         JSFieldTypeAnnotation(options, field,
                               /* is_setter_argument = */ true,
                               /* force_present = */ false,
                               /* singular_if_not_packed = */ false),
-        "class", LocalMessageRef(options, field->containing_type()),
         "returntype",
-        GetQualifiedMessagePath(options, field->containing_type()),
-        "settername", "set" + JSGetterName(options, field), "oneoftag",
-        (InRealOneof(field) ? "Oneof" : ""), "repeatedtag",
-        (field->is_repeated() ? "Repeated" : ""));
+        GetQualifiedMessagePath(options, field->containing_type()));
+    if (options.import_style == GeneratorOptions::kImportEs6) {
+      printer->Print("$settername$(value) {\n",
+          "settername", settername);
+    } else {
+      printer->Print("$class$.prototype.$settername$ = function(value) {\n",
+          "class", classname,
+          "settername", settername);
+    }
     printer->Annotate("settername", field);
+    printer->Print(
+        "  return jspb.Message.set$oneoftag$$repeatedtag$WrapperField(",
+        "oneoftag", (InRealOneof(field) ? "Oneof" : ""),
+        "repeatedtag", (field->is_repeated() ? "Repeated" : ""));
 
     printer->Print(
         "this, $index$$oneofgroup$, value);\n"
@@ -2817,9 +2962,14 @@ void Generator::GenerateClassField(const GeneratorOptions& options,
           FieldComments(field, bytes_mode), "type", typed_annotation);
     }
 
-    printer->Print("$class$.prototype.$gettername$ = function() {\n", "class",
-                   LocalMessageRef(options, field->containing_type()),
-                   "gettername", "get" + JSGetterName(options, field));
+    if (options.import_style == GeneratorOptions::kImportEs6) {
+      printer->Print("$gettername$() {\n",
+          "gettername", gettername);
+    } else {
+      printer->Print("$class$.prototype.$gettername$ = function() {\n",
+          "class", classname,
+          "gettername", gettername);
+    }
     printer->Annotate("gettername", field);
 
     if (untyped) {
@@ -2876,30 +3026,32 @@ void Generator::GenerateClassField(const GeneratorOptions& options,
                                         /* force_present = */ false,
                                         /* singular_if_not_packed = */ false));
 
+    if (options.import_style == GeneratorOptions::kImportEs6) {
+      printer->Print("$settername$(value) {\n",
+          "settername", settername);
+    } else {
+      printer->Print("$class$.prototype.$settername$ = function(value) {\n",
+          "class", classname,
+          "settername", settername);
+    }
+    printer->Annotate("settername", field);
     if (!field->is_repeated() && !field->is_map() && !field->has_presence()) {
       // Proto3 non-repeated and non-map fields without presence use the
       // setProto3*Field function.
       printer->Print(
-          "$class$.prototype.$settername$ = function(value) {\n"
           "  return jspb.Message.setProto3$typetag$Field(this, $index$, "
           "value);"
           "\n"
           "};\n"
           "\n"
           "\n",
-          "class", LocalMessageRef(options, field->containing_type()),
-          "settername", "set" + JSGetterName(options, field), "typetag",
-          JSTypeTag(field), "index", JSFieldIndex(field));
-      printer->Annotate("settername", field);
+          "typetag", JSTypeTag(field),
+          "index", JSFieldIndex(field));
     } else {
       // Otherwise, use the regular setField function.
-      printer->Print(
-          "$class$.prototype.$settername$ = function(value) {\n"
-          "  return jspb.Message.set$oneoftag$Field(this, $index$",
-          "class", LocalMessageRef(options, field->containing_type()),
-          "settername", "set" + JSGetterName(options, field), "oneoftag",
-          (InRealOneof(field) ? "Oneof" : ""), "index", JSFieldIndex(field));
-      printer->Annotate("settername", field);
+      printer->Print("  return jspb.Message.set$oneoftag$Field(this, $index$",
+                     "oneoftag", (InRealOneof(field) ? "Oneof" : ""),
+                     "index", JSFieldIndex(field));
       printer->Print(
           "$oneofgroup$, $type$value$rptvalueinit$$typeclose$);\n"
           "};\n"
@@ -2934,19 +3086,25 @@ void Generator::GenerateClassField(const GeneratorOptions& options,
         "/**\n"
         " * Clears values from the map. The map will be non-null.\n"
         " * @return {!$returntype$} returns this\n"
-        " */\n"
-        "$class$.prototype.$clearername$ = function() {\n"
+        " */\n",
+        "returntype", GetQualifiedMessagePath(options, field->containing_type()));
+    if (options.import_style == GeneratorOptions::kImportEs6) {
+      printer->Print("$clearername$function() {\n",
+          "clearername", clearername);
+    } else {
+      printer->Print("$class$.prototype.$clearername$ = function() {\n",
+          "class", classname,
+          "clearername", clearername);
+    }
+    printer->Annotate("clearername", field);
+    printer->Print(
         "  this.$gettername$().clear();\n"
         "  return this;\n"
         "};\n"
         "\n"
         "\n",
-        "class", LocalMessageRef(options, field->containing_type()),
-        "returntype", GetQualifiedMessagePath(options, field->containing_type()),
-        "clearername", "clear" + JSGetterName(options, field),
-        "gettername", "get" + JSGetterName(options, field));
+        "gettername", gettername);
     // clang-format on
-    printer->Annotate("clearername", field);
   } else if (field->is_repeated() ||
              (field->cpp_type() == FieldDescriptor::CPPTYPE_MESSAGE &&
               !field->is_required())) {
@@ -2956,22 +3114,28 @@ void Generator::GenerateClassField(const GeneratorOptions& options,
         "/**\n"
         " * $jsdoc$\n"
         " * @return {!$returntype$} returns this\n"
-        " */\n"
-        "$class$.prototype.$clearername$ = function() {\n"
+        " */\n",
+        "jsdoc", field->is_repeated()
+            ? "Clears the list making it empty but non-null."
+            : "Clears the message field making it undefined.",
+        "returntype", GetQualifiedMessagePath(options, field->containing_type()));
+     if (options.import_style == GeneratorOptions::kImportEs6) {
+      printer->Print("$clearername$() {\n",
+          "clearername", clearername);
+     } else {
+      printer->Print("$class$.prototype.$clearername$ = function() {\n",
+          "class", classname,
+          "clearername", clearername);
+     }
+     printer->Annotate("clearername", field);
+     printer->Print(
         "  return this.$settername$($clearedvalue$);\n"
         "};\n"
         "\n"
         "\n",
-       "jsdoc", field->is_repeated()
-           ? "Clears the list making it empty but non-null."
-           : "Clears the message field making it undefined.",
-        "class", LocalMessageRef(options, field->containing_type()),
-        "returntype", GetQualifiedMessagePath(options, field->containing_type()),
-        "clearername", "clear" + JSGetterName(options, field),
-        "settername", "set" + JSGetterName(options, field),
+        "settername", settername,
         "clearedvalue", (field->is_repeated() ? "[]" : "undefined"));
     // clang-format on
-    printer->Annotate("clearername", field);
   } else if (HasFieldPresence(options, field)) {
     // Fields where we can't delegate to the regular setter because it doesn't
     // accept "undefined" as an argument.
@@ -2980,20 +3144,26 @@ void Generator::GenerateClassField(const GeneratorOptions& options,
         "/**\n"
         " * Clears the field making it undefined.\n"
         " * @return {!$returntype$} returns this\n"
-        " */\n"
-        "$class$.prototype.$clearername$ = function() {\n"
+        " */\n",
+        "returntype", GetQualifiedMessagePath(options, field->containing_type()));
+    if (options.import_style == GeneratorOptions::kImportEs6) {
+      printer->Print("$clearername$() {\n",
+          "clearername", clearername);
+    } else {
+      printer->Print("$class$.prototype.$clearername$ = function() {\n",
+          "class", classname,
+          "clearername", clearername);
+    }
+    printer->Annotate("clearername", field);
+    printer->Print(
         "  return jspb.Message.set$maybeoneof$Field(this, "
             "$index$$maybeoneofgroup$, ",
-        "class", LocalMessageRef(options, field->containing_type()),
-        "returntype", GetQualifiedMessagePath(options, field->containing_type()),
-        "clearername", "clear" + JSGetterName(options, field),
         "maybeoneof", (InRealOneof(field) ? "Oneof" : ""),
         "maybeoneofgroup", (InRealOneof(field)
                             ? (", " + JSOneofArray(options, field))
                             : ""),
         "index", JSFieldIndex(field));
     // clang-format on
-    printer->Annotate("clearername", field);
     printer->Print(
         "$clearedvalue$);\n"
         "};\n"
@@ -3007,36 +3177,37 @@ void Generator::GenerateClassField(const GeneratorOptions& options,
         "/**\n"
         " * Returns whether this field is set.\n"
         " * @return {boolean}\n"
-        " */\n"
-        "$class$.prototype.$hasername$ = function() {\n"
+        " */\n");
+    if (options.import_style == GeneratorOptions::kImportEs6) {
+      printer->Print("$hasername$() {\n",
+          "hasername", hasername);
+    } else {
+      printer->Print("$class$.prototype.$hasername$ = function() {\n",
+          "class", classname,
+          "hasername", hasername);
+    }
+    printer->Annotate("hasername", field);
+    printer->Print(
         "  return jspb.Message.getField(this, $index$) != null;\n"
         "};\n"
         "\n"
         "\n",
-        "class", LocalMessageRef(options, field->containing_type()),
-        "hasername", "has" + JSGetterName(options, field), "index",
-        JSFieldIndex(field));
-    printer->Annotate("hasername", field);
+        "index", JSFieldIndex(field));
   }
 }
 
 void Generator::GenerateRepeatedPrimitiveHelperMethods(
     const GeneratorOptions& options, io::Printer* printer,
     const FieldDescriptor* field, bool untyped) const {
+  std::string addername = "add" + JSGetterName(options, field, BYTES_DEFAULT, /* drop_list = */ true);
   // clang-format off
   printer->Print(
       "/**\n"
       " * @param {$optionaltype$} value\n"
       " * @param {number=} opt_index\n"
       " * @return {!$returntype$} returns this\n"
-      " */\n"
-      "$class$.prototype.$addername$ = function(value, opt_index) {\n"
-      "  return jspb.Message.addToRepeatedField(this, "
-      "$index$",
-      "class", LocalMessageRef(options, field->containing_type()),
-      "returntype", GetQualifiedMessagePath(options, field->containing_type()), "addername",
-      "add" + JSGetterName(options, field, BYTES_DEFAULT,
-                           /* drop_list = */ true),
+      " */\n",
+      "returntype", GetQualifiedMessagePath(options, field->containing_type()),
       "optionaltype",
           JSFieldTypeAnnotation(
                                 options, field,
@@ -3044,9 +3215,19 @@ void Generator::GenerateRepeatedPrimitiveHelperMethods(
                                 /* force_present = */ true,
                                 /* singular_if_not_packed = */ false,
                                 BYTES_DEFAULT,
-                                /* force_singular = */ true),
-      "index", JSFieldIndex(field));
+                                /* force_singular = */ true));
+  if (options.import_style == GeneratorOptions::kImportEs6) {
+    printer->Print("$addername$(value, opt_index) {\n",
+        "addername", addername);
+  } else {
+    printer->Print("$class$.prototype.$addername$ = function(value, opt_index) {\n",
+        "class", LocalMessageRef(options, field->containing_type()),
+        "addername", addername);
+  }
   printer->Annotate("addername", field);
+  printer->Print(
+      "  return jspb.Message.addToRepeatedField(this, $index$",
+      "index", JSFieldIndex(field));
   printer->Print(
       "$oneofgroup$, $type$value$rptvalueinit$$typeclose$, "
       "opt_index);\n"
@@ -3063,20 +3244,25 @@ void Generator::GenerateRepeatedPrimitiveHelperMethods(
 void Generator::GenerateRepeatedMessageHelperMethods(
     const GeneratorOptions& options, io::Printer* printer,
     const FieldDescriptor* field) const {
+  std::string addername = "add" + JSGetterName(options, field, BYTES_DEFAULT, /* drop_list = */ true);
   printer->Print(
       "/**\n"
       " * @param {$optionaltype$=} opt_value\n"
       " * @param {number=} opt_index\n"
       " * @return {$optionaltype$}\n"
-      " */\n"
-      "$class$.prototype.$addername$ = function(opt_value, opt_index) {\n"
-      "  return jspb.Message.addTo$repeatedtag$WrapperField(",
+      " */\n",
       "optionaltype",
       JSFieldTypeAnnotation(options, field, false, true, false, BYTES_DEFAULT,
-                            true),
-      "class", LocalMessageRef(options, field->containing_type()), "addername",
-      "add" + JSGetterName(options, field, BYTES_DEFAULT,
-                           /* drop_list = */ true),
+                            true));
+  if (options.import_style == GeneratorOptions::kImportEs6) {
+    printer->Print("$addername$(opt_value, opt_index) {\n",
+        "addername", addername);
+  } else {
+    printer->Print("$class$.prototype.$addername$ = function(opt_value, opt_index) {\n",
+        "class", LocalMessageRef(options, field->containing_type()),
+        "addername", addername);
+  }
+  printer->Print("  return jspb.Message.addTo$repeatedtag$WrapperField(",
       "repeatedtag", (field->is_repeated() ? "Repeated" : ""));
 
   printer->Annotate("addername", field);
@@ -3110,10 +3296,14 @@ void Generator::GenerateClassExtensionFieldInfo(const GeneratorOptions& options,
         " * works in OPTIMIZED mode.\n"
         " *\n"
         " * @type {!Object<number, jspb.ExtensionFieldInfo>}\n"
-        " */\n"
-        "$class$.extensions = {};\n"
-        "\n",
-        "class", LocalMessageRef(options, desc));
+        " */\n");
+    if (options.import_style == GeneratorOptions::kImportEs6) {
+      printer->Print("static extensions = {};\n\n");
+    } else {
+      printer->Print("$class$.extensions = {};\n"
+          "\n",
+          "class", LocalMessageRef(options, desc));
+    }
 
     printer->Print(
         "\n"
@@ -3131,10 +3321,14 @@ void Generator::GenerateClassExtensionFieldInfo(const GeneratorOptions& options,
         " * works in OPTIMIZED mode.\n"
         " *\n"
         " * @type {!Object<number, jspb.ExtensionFieldBinaryInfo>}\n"
-        " */\n"
-        "$class$.extensionsBinary = {};\n"
-        "\n",
-        "class", LocalMessageRef(options, desc));
+        " */\n");
+    if (options.import_style == GeneratorOptions::kImportEs6) {
+      printer->Print("static extensionsBinary = {};\n\n");
+    } else {
+      printer->Print("$class$.extensionsBinary = {};\n"
+          "\n",
+          "class", LocalMessageRef(options, desc));
+    }
   }
 }
 
@@ -3144,13 +3338,22 @@ void Generator::GenerateClassDeserializeBinary(const GeneratorOptions& options,
   // TODO(cfallin): Handle lazy decoding when requested by field option and/or
   // by default for 'bytes' fields and packed repeated fields.
 
+  std::string classname = LocalMessageRef(options, desc);
+  std::string classtype = GetQualifiedMessagePath(options, desc);
   printer->Print(
       "/**\n"
       " * Deserializes binary data (in protobuf wire format).\n"
       " * @param {jspb.ByteSource} bytes The bytes to deserialize.\n"
       " * @return {!$classtype$}\n"
-      " */\n"
-      "$classname$.deserializeBinary = function(bytes) {\n"
+      " */\n",
+      "classtype", classtype);
+  if (options.import_style == GeneratorOptions::kImportEs6) {
+    printer->Print("static deserializeBinary(bytes) {\n");
+  } else {
+    printer->Print("$classname$.deserializeBinary = function(bytes) {\n",
+        "classname", classname);
+  }
+  printer->Print(
       "  var reader = new jspb.BinaryReader(bytes);\n"
       "  var msg = new $classname$;\n"
       "  return $classname$.deserializeBinaryFromReader(msg, reader);\n"
@@ -3163,12 +3366,17 @@ void Generator::GenerateClassDeserializeBinary(const GeneratorOptions& options,
       " * @param {!$classtype$} msg The message object to deserialize into.\n"
       " * @param {!jspb.BinaryReader} reader The BinaryReader to use.\n"
       " * @return {!$classtype$}\n"
-      " */\n"
-      "$classname$.deserializeBinaryFromReader = function(msg, reader) {\n"
-      "  while (reader.nextField()) {\n",
-      "classname", LocalMessageRef(options, desc), "classtype",
-      GetQualifiedMessagePath(options, desc));
+      " */\n",
+      "classname", classname,
+      "classtype", classtype);
+  if (options.import_style == GeneratorOptions::kImportEs6) {
+    printer->Print("static deserializeBinaryFromReader(msg, reader) {\n");
+  } else {
+    printer->Print("$classname$.deserializeBinaryFromReader = function(msg, reader) {\n",
+        "classname", classname);
+  }
   printer->Print(
+      "  while (reader.nextField()) {\n"
       "    if (reader.isEndGroup()) {\n"
       "      break;\n"
       "    }\n"
@@ -3190,8 +3398,8 @@ void Generator::GenerateClassDeserializeBinary(const GeneratorOptions& options,
         "        $class$.prototype.setExtension);\n"
         "      break;\n"
         "    }\n",
-        "extobj", JSExtensionsObjectName(options, desc->file(), desc), "class",
-        LocalMessageRef(options, desc));
+        "extobj", JSExtensionsObjectName(options, desc->file(), desc),
+        "class", classname);
   } else {
     printer->Print(
         "      reader.skipField();\n"
@@ -3301,12 +3509,20 @@ void Generator::GenerateClassDeserializeBinaryField(
 void Generator::GenerateClassSerializeBinary(const GeneratorOptions& options,
                                              io::Printer* printer,
                                              const Descriptor* desc) const {
+  std::string classname = LocalMessageRef(options, desc);
+  std::string classtype = GetQualifiedMessagePath(options, desc);
   printer->Print(
       "/**\n"
       " * Serializes the message to binary data (in protobuf wire format).\n"
       " * @return {!Uint8Array}\n"
-      " */\n"
-      "$classname$.prototype.serializeBinary = function() {\n"
+      " */\n");
+  if (options.import_style == GeneratorOptions::kImportEs6) {
+    printer->Print("serializeBinary() {\n");
+  } else {
+    printer->Print("$classname$.prototype.serializeBinary = function() {\n",
+        "classname", classname);
+  }
+  printer->Print(
       "  var writer = new jspb.BinaryWriter();\n"
       "  $classname$.serializeBinaryToWriter(this, writer);\n"
       "  return writer.getResultBuffer();\n"
@@ -3319,12 +3535,16 @@ void Generator::GenerateClassSerializeBinary(const GeneratorOptions& options,
       " * @param {!$classtype$} message\n"
       " * @param {!jspb.BinaryWriter} writer\n"
       " * @suppress {unusedLocalVariables} f is only used for nested messages\n"
-      " */\n"
-      "$classname$.serializeBinaryToWriter = function(message, "
-      "writer) {\n"
-      "  var f = undefined;\n",
-      "classname", LocalMessageRef(options, desc), "classtype",
-      GetQualifiedMessagePath(options, desc));
+      " */\n",
+      "classname", classname,
+      "classtype", classtype);
+  if (options.import_style == GeneratorOptions::kImportEs6) {
+    printer->Print("static serializeBinaryToWriter(message, writer) {\n");
+  } else {
+    printer->Print("$classname$.serializeBinaryToWriter = function(message, writer) {\n",
+        "classname", classname);
+  }
+  printer->Print("  var f = undefined;\n");
 
   for (int i = 0; i < desc->field_count(); i++) {
     if (!IgnoreField(desc->field(i))) {
@@ -3469,6 +3689,9 @@ void Generator::GenerateEnum(const GeneratorOptions& options,
   if (IsExportedEnum(options, enumdesc)) {
     printer->Print("export const $enumname$ = {\n", "enumname",
                    LocalEnumRef(options, enumdesc));
+  } else if (options.import_style == GeneratorOptions::kImportEs6) {
+    printer->Print("static $enumname$ = {\n",
+        "enumname", enumdesc->name());
   } else {
     printer->Print("$enumname$ = {\n", "enumname",
                    LocalEnumRef(options, enumdesc));
@@ -3500,6 +3723,13 @@ void Generator::GenerateEnum(const GeneratorOptions& options,
 void Generator::GenerateExtension(const GeneratorOptions& options,
                                   io::Printer* printer,
                                   const FieldDescriptor* field) const {
+  GenerateExtensionDeclaration(options, printer, field);
+  GenerateExtensionRegistration(options, printer, field);
+}
+
+void Generator::GenerateExtensionDeclaration(
+    const GeneratorOptions& options, io::Printer* printer,
+    const FieldDescriptor* field) const {
   const std::string extension_object_name = JSObjectFieldName(options, field);
   printer->Print(
       "\n"
@@ -3521,7 +3751,10 @@ void Generator::GenerateExtension(const GeneratorOptions& options,
   if (!scope_desc && options.import_style == GeneratorOptions::kImportEs6) {
     extension_scope = "";
     printer->Print("export const $name$ = new jspb.ExtensionFieldInfo(\n",
-                   "name", extension_object_name);
+        "name", extension_object_name);
+  } else if (options.import_style == GeneratorOptions::kImportEs6) {
+    printer->Print("static $name$ = new jspb.ExtensionFieldInfo(\n",
+        "name", extension_object_name);
   } else {
     extension_scope += ".";
     printer->Print("$class$$name$ = new jspb.ExtensionFieldInfo(\n", "class",
@@ -3546,6 +3779,23 @@ void Generator::GenerateExtension(const GeneratorOptions& options,
            ? (SubmessageTypeRef(options, field) + ".toObject")
            : std::string("null")),
       "repeated", (field->is_repeated() ? "1" : "0"));
+}
+
+void Generator::GenerateExtensionRegistration(
+    const GeneratorOptions& options, io::Printer* printer,
+    const FieldDescriptor* field) const {
+
+  const std::string extension_object_name = JSObjectFieldName(options, field);
+  const Descriptor* scope_desc = field->extension_scope();
+  std::string extension_scope =
+      (scope_desc ? MaybeCrossFileMessageRef(options, field->file(), scope_desc)
+                  : GetNamespace(options, field->file()));
+
+  if (!scope_desc && options.import_style == GeneratorOptions::kImportEs6) {
+    extension_scope = "";
+  } else {
+    extension_scope += ".";
+  }
 
   printer->Print(
       "\n"
@@ -3941,12 +4191,12 @@ void Generator::GenerateDTS(const GeneratorOptions& options,
 
   for (int i = 0; i < file->message_type_count(); i++) {
     auto desc = file->message_type(i);
-    GenerateMessageDTS(options, printer, desc, "");
+    GenerateMessageDTS(options, printer, desc);
   }
 
   for (int i = 0; i < file->enum_type_count(); i++) {
     auto enumdesc = file->enum_type(i);
-    GenerateEnumDTS(options, printer, enumdesc, "");
+    GenerateEnumDTS(options, printer, enumdesc);
   }
 
   // Emit well-known type methods.
@@ -3959,51 +4209,47 @@ void Generator::GenerateDTS(const GeneratorOptions& options,
 }
 
 void Generator::GenerateMessageDTS(const GeneratorOptions& options,
-                                   io::Printer* printer, const Descriptor* desc,
-                                   const std::string& indent) const {
+                                   io::Printer* printer,
+                                   const Descriptor* desc) const {
   if (IgnoreMessage(desc)) {
     return;
   }
 
-  std::string prefix = indent;
-  if (indent == "") {
-    prefix = "export ";
-  }
-
+  const std::string prefix =
+      IsExportedMessage(options, desc) ? "export " : "";
   printer->Print("$prefix$class $classname$ extends jspb.Message {\n",
                  "classname", desc->name(), "prefix", prefix);
 
-  const std::string nested_indent = indent + DTS_INDENT;
-  printer->Print("$indent$constructor(data?: any[] | null);\n", "indent",
-                 nested_indent);
+  printer->Indent();
+  printer->Print("constructor(data?: any[] | null);\n");
 
   if (HasOneofFields(desc)) {
     for (int i = 0; i < desc->oneof_decl_count(); i++) {
-      GenerateOneofMethodDTS(options, printer, desc->oneof_decl(i),
-                             nested_indent);
+      GenerateOneofMethodDTS(options, printer, desc->oneof_decl(i));
     }
   }
 
   printer->Print(
-      "$indent$toObject(includeInstance?: boolean): { [key: string]: unknown "
+      "toObject(includeInstance?: boolean): { [key: string]: unknown "
       "};\n"
-      "$indent$static toObject(includeInstance: boolean | undefined, msg: "
+      "static toObject(includeInstance: boolean | undefined, msg: "
       "$class$): { [key: string]: unknown };\n"
-      "$indent$static deserializeBinary(bytes: jspb.ByteSource): $class$;\n"
-      "$indent$static deserializeBinaryFromReader(msg: $class$, reader: "
+      "static deserializeBinary(bytes: jspb.ByteSource): $class$;\n"
+      "static deserializeBinaryFromReader(msg: $class$, reader: "
       "jspb.BinaryReader): $class$;\n"
-      "$indent$serializeBinary(): Uint8Array;\n"
-      "$indent$static serializeBinaryToWriter(message: $class$, writer: "
+      "serializeBinary(): Uint8Array;\n"
+      "static serializeBinaryToWriter(message: $class$, writer: "
       "jspb.BinaryWriter): void;\n",
-      "class", LocalMessageRef(options, desc), "indent", nested_indent);
+      "class", LocalMessageRef(options, desc));
 
   for (int i = 0; i < desc->field_count(); i++) {
     if (!IgnoreField(desc->field(i))) {
-      GenerateFieldDTS(options, printer, desc->field(i), nested_indent);
+      GenerateFieldDTS(options, printer, desc->field(i));
     }
   }
 
-  printer->Print("$indent$}\n\n", "indent", indent);
+  printer->Outdent();
+  printer->Print("}\n\n");
 
   bool has_subtypes = false;
   if (HasOneofFields(desc)) {
@@ -4021,62 +4267,62 @@ void Generator::GenerateMessageDTS(const GeneratorOptions& options,
   if (has_subtypes) {
     printer->Print("$prefix$namespace $classname$ {\n", "prefix", prefix,
                    "classname", desc->name());
+    printer->Indent();
+
     if (HasOneofFields(desc)) {
       for (int i = 0; i < desc->oneof_decl_count(); i++) {
-        GenerateOneofEnumDTS(options, printer, desc->oneof_decl(i),
-                             nested_indent);
+        GenerateOneofEnumDTS(options, printer, desc->oneof_decl(i));
       }
     }
 
     for (int i = 0; i < desc->nested_type_count(); i++) {
-      GenerateMessageDTS(options, printer, desc->nested_type(i), nested_indent);
+      GenerateMessageDTS(options, printer, desc->nested_type(i));
     }
     for (int i = 0; i < desc->enum_type_count(); i++) {
-      GenerateEnumDTS(options, printer, desc->enum_type(i), nested_indent);
+      GenerateEnumDTS(options, printer, desc->enum_type(i));
     }
-    printer->Print("$indent$}\n\n", "indent", indent);
+
+    printer->Outdent();
+    printer->Print("}\n\n");
   }
 }
 
 void Generator::GenerateOneofEnumDTS(const GeneratorOptions& options,
                                      io::Printer* printer,
-                                     const OneofDescriptor* oneof,
-                                     const std::string& indent) const {
+                                     const OneofDescriptor* oneof) const {
   if (IgnoreOneof(oneof)) {
     return;
   }
 
-  printer->Print("$indent$enum $oneof$Case {\n", "oneof", JSOneofName(oneof),
-                 "indent", indent);
+  printer->Print("enum $oneof$Case {\n", "oneof", JSOneofName(oneof));
+  printer->Indent();
 
-  const std::string nested_indent = indent + DTS_INDENT;
-  printer->Print("$indent$$upcase$_NOT_SET = 0,\n", "upcase",
-                 ToEnumCase(oneof->name()), "indent", nested_indent);
+  printer->Print("$upcase$_NOT_SET = 0,\n", "upcase",
+                 ToEnumCase(oneof->name()));
 
   for (int i = 0; i < oneof->field_count(); i++) {
     auto field = oneof->field(i);
     if (IgnoreField(field)) {
       continue;
     }
-    printer->Print("$indent$$upcase$ = $number$,\n", "upcase",
-                   ToEnumCase(field->name()), "number", JSFieldIndex(field),
-                   "indent", nested_indent);
+    printer->Print("$upcase$ = $number$,\n", "upcase",
+                   ToEnumCase(field->name()), "number", JSFieldIndex(field));
   }
 
-  printer->Print("$indent$}\n", "indent", indent);
+  printer->Outdent();
+  printer->Print("}\n");
 }
 
 void Generator::GenerateOneofMethodDTS(const GeneratorOptions& options,
                                        io::Printer* printer,
-                                       const OneofDescriptor* oneof,
-                                       const std::string& indent) const {
+                                       const OneofDescriptor* oneof) const {
   if (IgnoreOneof(oneof)) {
     return;
   }
 
-  printer->Print("$indent$get$oneof$Case(): $class$.$oneof$Case;\n", "class",
+  printer->Print("get$oneof$Case(): $class$.$oneof$Case;\n", "class",
                  LocalMessageRef(options, oneof->containing_type()), "oneof",
-                 JSOneofName(oneof), "indent", indent);
+                 JSOneofName(oneof));
 }
 
 std::string DTSTypeName(const GeneratorOptions& options,
@@ -4144,72 +4390,66 @@ std::string DTSFieldSetterType(const GeneratorOptions& options,
 
 void Generator::GenerateFieldDTS(const GeneratorOptions& options,
                                  io::Printer* printer,
-                                 const FieldDescriptor* field,
-                                 const std::string& indent) const {
+                                 const FieldDescriptor* field) const {
   if (field->is_map()) {
     printer->Print(
-        "$indent$$gettername$(noLazyCreate?: boolean): "
+        "$gettername$(noLazyCreate?: boolean): "
         "jspb.Map<$keytype$,$valuetype$> "
         "| undefined;\n",
         "gettername", "get" + JSGetterName(options, field), "keytype",
         DTSFieldType(options, MapFieldKey(field)), "valuetype",
-        DTSFieldType(options, MapFieldValue(field)), "indent", indent);
+        DTSFieldType(options, MapFieldValue(field)));
   } else if (field->cpp_type() == FieldDescriptor::CPPTYPE_MESSAGE) {
-    printer->Print("$indent$$gettername$(): $type$;\n", "gettername",
+    printer->Print("$gettername$(): $type$;\n", "gettername",
                    "get" + JSGetterName(options, field), "type",
-                   DTSFieldReturnType(options, field), "indent", indent);
-    printer->Print("$indent$$settername$(value: $optionaltype$): $class$;\n",
+                   DTSFieldReturnType(options, field));
+    printer->Print("$settername$(value: $optionaltype$): $class$;\n",
                    "settername", "set" + JSGetterName(options, field),
                    "optionaltype", DTSFieldSetterType(options, field), "class",
-                   LocalMessageRef(options, field->containing_type()), "indent",
-                   indent);
+                   LocalMessageRef(options, field->containing_type()));
     if (field->is_repeated()) {
       printer->Print(
-          "$indent$$addername$(value?: $optionaltype$, index?: number): "
+          "$addername$(value?: $optionaltype$, index?: number): "
           "$optionaltype$;\n",
           "addername",
           "add" +
               JSGetterName(options, field, BYTES_DEFAULT, /* drop_list */ true),
           "optionaltype",
           DTSFieldType(options, field, BYTES_DEFAULT,
-                       /* force_singular */ true),
-          "indent", indent);
+                       /* force_singular */ true));
     }
   } else {
     BytesMode bytes_mode =
         field->type() == FieldDescriptor::TYPE_BYTES && !options.binary
             ? BYTES_B64
             : BYTES_DEFAULT;
-    printer->Print("$indent$$gettername$(): $type$;\n", "gettername",
+    printer->Print("$gettername$(): $type$;\n", "gettername",
                    "get" + JSGetterName(options, field), "type",
-                   DTSFieldReturnType(options, field, bytes_mode), "indent",
-                   indent);
+                   DTSFieldReturnType(options, field, bytes_mode));
 
     if (field->type() == FieldDescriptor::TYPE_BYTES) {
-      printer->Print("$indent$get$name$(): $type$;\n", "type",
+      printer->Print("get$name$(): $type$;\n", "type",
                      DTSFieldReturnType(options, field, BYTES_B64), "name",
-                     JSGetterName(options, field, BYTES_B64), "indent", indent);
-      printer->Print("$indent$get$name$(): $type$;\n", "type",
+                     JSGetterName(options, field, BYTES_B64));
+      printer->Print("get$name$(): $type$;\n", "type",
                      DTSFieldReturnType(options, field, BYTES_U8), "name",
-                     JSGetterName(options, field, BYTES_U8), "indent", indent);
+                     JSGetterName(options, field, BYTES_U8));
     }
 
-    printer->Print("$indent$$settername$(value: $optionaltype$): $class$;\n",
+    printer->Print("$settername$(value: $optionaltype$): $class$;\n",
                    "settername", "set" + JSGetterName(options, field),
                    "optionaltype", DTSFieldSetterType(options, field), "class",
-                   LocalMessageRef(options, field->containing_type()), "indent",
-                   indent);
+                   LocalMessageRef(options, field->containing_type()));
 
     if (field->is_repeated()) {
       printer->Print(
-          "$indent$$addername$(value: $optionaltype$, index?: number): "
+          "$addername$(value: $optionaltype$, index?: number): "
           "$class$;\n",
           "addername",
           "add" + JSGetterName(options, field, BYTES_DEFAULT,
                                /* drop_list = */ true),
           "optionaltype", DTSFieldType(options, field, BYTES_DEFAULT, true),
-          "class", LocalMessageRef(options, field->containing_type()), "indent",
-          indent);
+          "class", LocalMessageRef(options, field->containing_type()));
     }
   }
 
@@ -4217,29 +4457,25 @@ void Generator::GenerateFieldDTS(const GeneratorOptions& options,
       (field->cpp_type() == FieldDescriptor::CPPTYPE_MESSAGE &&
        !field->is_required()) ||
       HasFieldPresence(options, field)) {
-    printer->Print("$indent$$clearername$(): $class$;\n", "clearername",
+    printer->Print("$clearername$(): $class$;\n", "clearername",
                    "clear" + JSGetterName(options, field), "class",
-                   LocalMessageRef(options, field->containing_type()), "indent",
-                   indent);
+                   LocalMessageRef(options, field->containing_type()));
   }
 
   if (HasFieldPresence(options, field)) {
-    printer->Print("$indent$$hasername$(): boolean;\n", "hasername",
-                   "has" + JSGetterName(options, field), "indent", indent);
+    printer->Print("$hasername$(): boolean;\n", "hasername",
+                   "has" + JSGetterName(options, field));
   }
 }
 
 void Generator::GenerateEnumDTS(const GeneratorOptions& options,
                                 io::Printer* printer,
-                                const EnumDescriptor* enumdesc,
-                                const std::string& indent) const {
-  std::string prefix = indent;
-  if (indent == "") {
-    prefix = "export ";
-  }
-
+                                const EnumDescriptor* enumdesc) const {
+  const std::string prefix =
+      IsExportedEnum(options, enumdesc) ? "export " : "";
   printer->Print("$prefix$enum $name$ {\n", "prefix", prefix, "name",
                  enumdesc->name());
+  printer->Indent();
 
   std::set<std::string> used_name;
   std::vector<const EnumValueDescriptor*> valid_values;
@@ -4252,14 +4488,14 @@ void Generator::GenerateEnumDTS(const GeneratorOptions& options,
     valid_values.push_back(value);
   }
 
-  const std::string nested_indent = indent + DTS_INDENT;
   for (auto value : valid_values) {
-    printer->Print("$indent$$name$ = $value$,\n", "indent", nested_indent,
+    printer->Print("$name$ = $value$,\n",
                    "name", ToEnumCase(value->name()), "value",
                    absl::StrCat(value->number()));
   }
 
-  printer->Print("$indent$}\n\n", "indent", indent);
+  printer->Outdent();
+  printer->Print("}\n\n");
 }
 
 bool Generator::GenerateAll(const std::vector<const FileDescriptor*>& files,
