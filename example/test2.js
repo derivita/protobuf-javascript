@@ -40,7 +40,7 @@ export class TestExtensionsMessage extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.TestExtensionsMessage} returns this
+   * @return {!TestExtensionsMessage} returns this
    */
   setIntfield(value) {
     return jspb.Message.setField(this, 1, value);
@@ -49,7 +49,7 @@ export class TestExtensionsMessage extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestExtensionsMessage} returns this
+   * @return {!TestExtensionsMessage} returns this
    */
   clearIntfield() {
     return jspb.Message.setField(this, 1, undefined);
@@ -68,7 +68,7 @@ export class TestExtensionsMessage extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.TestExtensionsMessage}
+   * @return {!TestExtensionsMessage}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -80,9 +80,9 @@ export class TestExtensionsMessage extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.TestExtensionsMessage} msg The message object to deserialize into.
+   * @param {!TestExtensionsMessage} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.TestExtensionsMessage}
+   * @return {!TestExtensionsMessage}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -121,7 +121,7 @@ export class TestExtensionsMessage extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.TestExtensionsMessage} message
+   * @param {!TestExtensionsMessage} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -203,7 +203,7 @@ TestExtensionsMessage.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.TestExtensionsMessage} msg The msg instance to transform.
+ * @param {!TestExtensionsMessage} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -248,7 +248,7 @@ export class ExtensionMessage extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.ExtensionMessage} returns this
+   * @return {!ExtensionMessage} returns this
    */
   setExt1(value) {
     return jspb.Message.setField(this, 1, value);
@@ -257,7 +257,7 @@ export class ExtensionMessage extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.ExtensionMessage} returns this
+   * @return {!ExtensionMessage} returns this
    */
   clearExt1() {
     return jspb.Message.setField(this, 1, undefined);
@@ -276,7 +276,7 @@ export class ExtensionMessage extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.ExtensionMessage}
+   * @return {!ExtensionMessage}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -288,9 +288,9 @@ export class ExtensionMessage extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.ExtensionMessage} msg The message object to deserialize into.
+   * @param {!ExtensionMessage} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.ExtensionMessage}
+   * @return {!ExtensionMessage}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -326,7 +326,7 @@ export class ExtensionMessage extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.ExtensionMessage} message
+   * @param {!ExtensionMessage} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -355,7 +355,7 @@ if (goog.DEBUG && !COMPILED) {
 /**
  * A tuple of {field number, class constructor} for the extension
  * field named `extField`.
- * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.ExtensionMessage>}
+ * @type {!jspb.ExtensionFieldInfo<!ExtensionMessage>}
  */
 ExtensionMessage.extField = new jspb.ExtensionFieldInfo(
     100,
@@ -389,7 +389,7 @@ ExtensionMessage.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.ExtensionMessage} msg The msg instance to transform.
+ * @param {!ExtensionMessage} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -434,17 +434,17 @@ export class ForeignNestedFieldMessage extends jspb.Message {
   };
   /**
    * optional Deeply.Nested.Message deeply_nested_message = 1;
-   * @return {?proto.jspb.test.Deeply.Nested.Message}
+   * @return {?protos_test_pb.Deeply.Nested.Message}
    */
   getDeeplyNestedMessage() {
-    return /** @type{?proto.jspb.test.Deeply.Nested.Message} */ (
+    return /** @type{?protos_test_pb.Deeply.Nested.Message} */ (
       jspb.Message.getWrapperField(this, protos_test_pb.Deeply.Nested.Message, 1));
   };
 
 
   /**
-   * @param {?proto.jspb.test.Deeply.Nested.Message|undefined} value
-   * @return {!proto.jspb.test.ForeignNestedFieldMessage} returns this
+   * @param {?protos_test_pb.Deeply.Nested.Message|undefined} value
+   * @return {!ForeignNestedFieldMessage} returns this
   */
   setDeeplyNestedMessage(value) {
     return jspb.Message.setWrapperField(this, 1, value);
@@ -453,7 +453,7 @@ export class ForeignNestedFieldMessage extends jspb.Message {
 
   /**
    * Clears the message field making it undefined.
-   * @return {!proto.jspb.test.ForeignNestedFieldMessage} returns this
+   * @return {!ForeignNestedFieldMessage} returns this
    */
   clearDeeplyNestedMessage() {
     return this.setDeeplyNestedMessage(undefined);
@@ -472,7 +472,7 @@ export class ForeignNestedFieldMessage extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.ForeignNestedFieldMessage}
+   * @return {!ForeignNestedFieldMessage}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -484,9 +484,9 @@ export class ForeignNestedFieldMessage extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.ForeignNestedFieldMessage} msg The message object to deserialize into.
+   * @param {!ForeignNestedFieldMessage} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.ForeignNestedFieldMessage}
+   * @return {!ForeignNestedFieldMessage}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -523,7 +523,7 @@ export class ForeignNestedFieldMessage extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.ForeignNestedFieldMessage} message
+   * @param {!ForeignNestedFieldMessage} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -574,7 +574,7 @@ ForeignNestedFieldMessage.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.ForeignNestedFieldMessage} msg The msg instance to transform.
+ * @param {!ForeignNestedFieldMessage} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -595,7 +595,7 @@ deeplyNestedMessage: (f = msg.getDeeplyNestedMessage()) && protos_test_pb.Deeply
 /**
  * A tuple of {field number, class constructor} for the extension
  * field named `floatingMsgField`.
- * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.ExtensionMessage>}
+ * @type {!jspb.ExtensionFieldInfo<!ExtensionMessage>}
  */
 export const floatingMsgField = new jspb.ExtensionFieldInfo(
     101,

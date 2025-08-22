@@ -32,7 +32,7 @@ export class Empty extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.Empty}
+   * @return {!Empty}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -44,9 +44,9 @@ export class Empty extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.Empty} msg The message object to deserialize into.
+   * @param {!Empty} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.Empty}
+   * @return {!Empty}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -78,7 +78,7 @@ export class Empty extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.Empty} message
+   * @param {!Empty} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -121,7 +121,7 @@ Empty.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.Empty} msg The msg instance to transform.
+ * @param {!Empty} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -154,16 +154,16 @@ export class EnumContainer extends jspb.Message {
   };
   /**
    * optional OuterEnum outer_enum = 1;
-   * @return {!proto.jspb.test.OuterEnum}
+   * @return {!OuterEnum}
    */
   getOuterEnum() {
-    return /** @type {!proto.jspb.test.OuterEnum} */ (jspb.Message.getFieldWithDefault(this, 1, 1));
+    return /** @type {!OuterEnum} */ (jspb.Message.getFieldWithDefault(this, 1, 1));
   };
 
 
   /**
-   * @param {!proto.jspb.test.OuterEnum} value
-   * @return {!proto.jspb.test.EnumContainer} returns this
+   * @param {!OuterEnum} value
+   * @return {!EnumContainer} returns this
    */
   setOuterEnum(value) {
     return jspb.Message.setField(this, 1, value);
@@ -172,7 +172,7 @@ export class EnumContainer extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.EnumContainer} returns this
+   * @return {!EnumContainer} returns this
    */
   clearOuterEnum() {
     return jspb.Message.setField(this, 1, undefined);
@@ -191,7 +191,7 @@ export class EnumContainer extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.EnumContainer}
+   * @return {!EnumContainer}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -203,9 +203,9 @@ export class EnumContainer extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.EnumContainer} msg The message object to deserialize into.
+   * @param {!EnumContainer} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.EnumContainer}
+   * @return {!EnumContainer}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -215,7 +215,7 @@ export class EnumContainer extends jspb.Message {
       var field = reader.getFieldNumber();
       switch (field) {
       case 1:
-        var value = /** @type {!proto.jspb.test.OuterEnum} */ (reader.readEnum());
+        var value = /** @type {!OuterEnum} */ (reader.readEnum());
         msg.setOuterEnum(value);
         break;
       default:
@@ -241,13 +241,13 @@ export class EnumContainer extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.EnumContainer} message
+   * @param {!EnumContainer} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
   static serializeBinaryToWriter(message, writer) {
     var f = undefined;
-    f = /** @type {!proto.jspb.test.OuterEnum} */ (jspb.Message.getField(message, 1));
+    f = /** @type {!OuterEnum} */ (jspb.Message.getField(message, 1));
     if (f != null) {
       writer.writeEnum(
         1,
@@ -291,7 +291,7 @@ EnumContainer.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.EnumContainer} msg The msg instance to transform.
+ * @param {!EnumContainer} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -333,7 +333,7 @@ export class Simple1 extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.Simple1} returns this
+   * @return {!Simple1} returns this
    */
   setAString(value) {
     return jspb.Message.setField(this, 1, value);
@@ -342,7 +342,7 @@ export class Simple1 extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.Simple1} returns this
+   * @return {!Simple1} returns this
    */
   clearAString() {
     return jspb.Message.setField(this, 1, undefined);
@@ -369,7 +369,7 @@ export class Simple1 extends jspb.Message {
 
   /**
    * @param {!Array<string>} value
-   * @return {!proto.jspb.test.Simple1} returns this
+   * @return {!Simple1} returns this
    */
   setARepeatedStringList(value) {
     return jspb.Message.setField(this, 2, value || []);
@@ -379,7 +379,7 @@ export class Simple1 extends jspb.Message {
   /**
    * @param {string} value
    * @param {number=} opt_index
-   * @return {!proto.jspb.test.Simple1} returns this
+   * @return {!Simple1} returns this
    */
   addARepeatedString(value, opt_index) {
     return jspb.Message.addToRepeatedField(this, 2, value, opt_index);
@@ -388,7 +388,7 @@ export class Simple1 extends jspb.Message {
 
   /**
    * Clears the list making it empty but non-null.
-   * @return {!proto.jspb.test.Simple1} returns this
+   * @return {!Simple1} returns this
    */
   clearARepeatedStringList() {
     return this.setARepeatedStringList([]);
@@ -406,7 +406,7 @@ export class Simple1 extends jspb.Message {
 
   /**
    * @param {boolean} value
-   * @return {!proto.jspb.test.Simple1} returns this
+   * @return {!Simple1} returns this
    */
   setABoolean(value) {
     return jspb.Message.setField(this, 3, value);
@@ -415,7 +415,7 @@ export class Simple1 extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.Simple1} returns this
+   * @return {!Simple1} returns this
    */
   clearABoolean() {
     return jspb.Message.setField(this, 3, undefined);
@@ -434,7 +434,7 @@ export class Simple1 extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.Simple1}
+   * @return {!Simple1}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -446,9 +446,9 @@ export class Simple1 extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.Simple1} msg The message object to deserialize into.
+   * @param {!Simple1} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.Simple1}
+   * @return {!Simple1}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -492,7 +492,7 @@ export class Simple1 extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.Simple1} message
+   * @param {!Simple1} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -563,7 +563,7 @@ Simple1.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.Simple1} msg The msg instance to transform.
+ * @param {!Simple1} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -607,7 +607,7 @@ export class Simple2 extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.Simple2} returns this
+   * @return {!Simple2} returns this
    */
   setAString(value) {
     return jspb.Message.setField(this, 1, value);
@@ -616,7 +616,7 @@ export class Simple2 extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.Simple2} returns this
+   * @return {!Simple2} returns this
    */
   clearAString() {
     return jspb.Message.setField(this, 1, undefined);
@@ -643,7 +643,7 @@ export class Simple2 extends jspb.Message {
 
   /**
    * @param {!Array<string>} value
-   * @return {!proto.jspb.test.Simple2} returns this
+   * @return {!Simple2} returns this
    */
   setARepeatedStringList(value) {
     return jspb.Message.setField(this, 2, value || []);
@@ -653,7 +653,7 @@ export class Simple2 extends jspb.Message {
   /**
    * @param {string} value
    * @param {number=} opt_index
-   * @return {!proto.jspb.test.Simple2} returns this
+   * @return {!Simple2} returns this
    */
   addARepeatedString(value, opt_index) {
     return jspb.Message.addToRepeatedField(this, 2, value, opt_index);
@@ -662,7 +662,7 @@ export class Simple2 extends jspb.Message {
 
   /**
    * Clears the list making it empty but non-null.
-   * @return {!proto.jspb.test.Simple2} returns this
+   * @return {!Simple2} returns this
    */
   clearARepeatedStringList() {
     return this.setARepeatedStringList([]);
@@ -672,7 +672,7 @@ export class Simple2 extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.Simple2}
+   * @return {!Simple2}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -684,9 +684,9 @@ export class Simple2 extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.Simple2} msg The message object to deserialize into.
+   * @param {!Simple2} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.Simple2}
+   * @return {!Simple2}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -726,7 +726,7 @@ export class Simple2 extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.Simple2} message
+   * @param {!Simple2} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -790,7 +790,7 @@ Simple2.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.Simple2} msg The msg instance to transform.
+ * @param {!Simple2} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -833,7 +833,7 @@ export class SpecialCases extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.SpecialCases} returns this
+   * @return {!SpecialCases} returns this
    */
   setNormal(value) {
     return jspb.Message.setField(this, 1, value);
@@ -842,7 +842,7 @@ export class SpecialCases extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.SpecialCases} returns this
+   * @return {!SpecialCases} returns this
    */
   clearNormal() {
     return jspb.Message.setField(this, 1, undefined);
@@ -869,7 +869,7 @@ export class SpecialCases extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.SpecialCases} returns this
+   * @return {!SpecialCases} returns this
    */
   setDefault(value) {
     return jspb.Message.setField(this, 2, value);
@@ -878,7 +878,7 @@ export class SpecialCases extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.SpecialCases} returns this
+   * @return {!SpecialCases} returns this
    */
   clearDefault() {
     return jspb.Message.setField(this, 2, undefined);
@@ -905,7 +905,7 @@ export class SpecialCases extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.SpecialCases} returns this
+   * @return {!SpecialCases} returns this
    */
   setFunction(value) {
     return jspb.Message.setField(this, 3, value);
@@ -914,7 +914,7 @@ export class SpecialCases extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.SpecialCases} returns this
+   * @return {!SpecialCases} returns this
    */
   clearFunction() {
     return jspb.Message.setField(this, 3, undefined);
@@ -941,7 +941,7 @@ export class SpecialCases extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.SpecialCases} returns this
+   * @return {!SpecialCases} returns this
    */
   setVar(value) {
     return jspb.Message.setField(this, 4, value);
@@ -950,7 +950,7 @@ export class SpecialCases extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.SpecialCases} returns this
+   * @return {!SpecialCases} returns this
    */
   clearVar() {
     return jspb.Message.setField(this, 4, undefined);
@@ -969,7 +969,7 @@ export class SpecialCases extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.SpecialCases}
+   * @return {!SpecialCases}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -981,9 +981,9 @@ export class SpecialCases extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.SpecialCases} msg The message object to deserialize into.
+   * @param {!SpecialCases} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.SpecialCases}
+   * @return {!SpecialCases}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -1031,7 +1031,7 @@ export class SpecialCases extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.SpecialCases} message
+   * @param {!SpecialCases} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -1102,7 +1102,7 @@ SpecialCases.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.SpecialCases} msg The msg instance to transform.
+ * @param {!SpecialCases} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -1147,7 +1147,7 @@ export class OptionalFields extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.OptionalFields} returns this
+   * @return {!OptionalFields} returns this
    */
   setAString(value) {
     return jspb.Message.setField(this, 1, value);
@@ -1156,7 +1156,7 @@ export class OptionalFields extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.OptionalFields} returns this
+   * @return {!OptionalFields} returns this
    */
   clearAString() {
     return jspb.Message.setField(this, 1, undefined);
@@ -1183,7 +1183,7 @@ export class OptionalFields extends jspb.Message {
 
   /**
    * @param {boolean} value
-   * @return {!proto.jspb.test.OptionalFields} returns this
+   * @return {!OptionalFields} returns this
    */
   setABool(value) {
     return jspb.Message.setField(this, 2, value);
@@ -1192,7 +1192,7 @@ export class OptionalFields extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.OptionalFields} returns this
+   * @return {!OptionalFields} returns this
    */
   clearABool() {
     return jspb.Message.setField(this, 2, undefined);
@@ -1210,17 +1210,17 @@ export class OptionalFields extends jspb.Message {
 
   /**
    * optional Nested a_nested_message = 3;
-   * @return {?proto.jspb.test.OptionalFields.Nested}
+   * @return {?OptionalFields.Nested}
    */
   getANestedMessage() {
-    return /** @type{?proto.jspb.test.OptionalFields.Nested} */ (
+    return /** @type{?OptionalFields.Nested} */ (
       jspb.Message.getWrapperField(this, OptionalFields.Nested, 3));
   };
 
 
   /**
-   * @param {?proto.jspb.test.OptionalFields.Nested|undefined} value
-   * @return {!proto.jspb.test.OptionalFields} returns this
+   * @param {?OptionalFields.Nested|undefined} value
+   * @return {!OptionalFields} returns this
   */
   setANestedMessage(value) {
     return jspb.Message.setWrapperField(this, 3, value);
@@ -1229,7 +1229,7 @@ export class OptionalFields extends jspb.Message {
 
   /**
    * Clears the message field making it undefined.
-   * @return {!proto.jspb.test.OptionalFields} returns this
+   * @return {!OptionalFields} returns this
    */
   clearANestedMessage() {
     return this.setANestedMessage(undefined);
@@ -1247,17 +1247,17 @@ export class OptionalFields extends jspb.Message {
 
   /**
    * repeated Nested a_repeated_message = 4;
-   * @return {!Array<!proto.jspb.test.OptionalFields.Nested>}
+   * @return {!Array<!OptionalFields.Nested>}
    */
   getARepeatedMessageList() {
-    return /** @type{!Array<!proto.jspb.test.OptionalFields.Nested>} */ (
+    return /** @type{!Array<!OptionalFields.Nested>} */ (
       jspb.Message.getRepeatedWrapperField(this, OptionalFields.Nested, 4));
   };
 
 
   /**
-   * @param {!Array<!proto.jspb.test.OptionalFields.Nested>} value
-   * @return {!proto.jspb.test.OptionalFields} returns this
+   * @param {!Array<!OptionalFields.Nested>} value
+   * @return {!OptionalFields} returns this
   */
   setARepeatedMessageList(value) {
     return jspb.Message.setRepeatedWrapperField(this, 4, value);
@@ -1265,9 +1265,9 @@ export class OptionalFields extends jspb.Message {
 
 
   /**
-   * @param {!proto.jspb.test.OptionalFields.Nested} opt_value
+   * @param {!OptionalFields.Nested} opt_value
    * @param {number=} opt_index
-   * @return {!proto.jspb.test.OptionalFields.Nested}
+   * @return {!OptionalFields.Nested}
    */
   addARepeatedMessage(opt_value, opt_index) {
     return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, OptionalFields.Nested, opt_index);
@@ -1276,7 +1276,7 @@ export class OptionalFields extends jspb.Message {
 
   /**
    * Clears the list making it empty but non-null.
-   * @return {!proto.jspb.test.OptionalFields} returns this
+   * @return {!OptionalFields} returns this
    */
   clearARepeatedMessageList() {
     return this.setARepeatedMessageList([]);
@@ -1294,7 +1294,7 @@ export class OptionalFields extends jspb.Message {
 
   /**
    * @param {!Array<string>} value
-   * @return {!proto.jspb.test.OptionalFields} returns this
+   * @return {!OptionalFields} returns this
    */
   setARepeatedStringList(value) {
     return jspb.Message.setField(this, 5, value || []);
@@ -1304,7 +1304,7 @@ export class OptionalFields extends jspb.Message {
   /**
    * @param {string} value
    * @param {number=} opt_index
-   * @return {!proto.jspb.test.OptionalFields} returns this
+   * @return {!OptionalFields} returns this
    */
   addARepeatedString(value, opt_index) {
     return jspb.Message.addToRepeatedField(this, 5, value, opt_index);
@@ -1313,7 +1313,7 @@ export class OptionalFields extends jspb.Message {
 
   /**
    * Clears the list making it empty but non-null.
-   * @return {!proto.jspb.test.OptionalFields} returns this
+   * @return {!OptionalFields} returns this
    */
   clearARepeatedStringList() {
     return this.setARepeatedStringList([]);
@@ -1323,7 +1323,7 @@ export class OptionalFields extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.OptionalFields}
+   * @return {!OptionalFields}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -1335,9 +1335,9 @@ export class OptionalFields extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.OptionalFields} msg The message object to deserialize into.
+   * @param {!OptionalFields} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.OptionalFields}
+   * @return {!OptionalFields}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -1391,7 +1391,7 @@ export class OptionalFields extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.OptionalFields} message
+   * @param {!OptionalFields} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -1478,7 +1478,7 @@ OptionalFields.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.OptionalFields} msg The msg instance to transform.
+ * @param {!OptionalFields} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -1525,7 +1525,7 @@ OptionalFields.Nested = class extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.OptionalFields.Nested} returns this
+   * @return {!OptionalFields.Nested} returns this
    */
   setAnInt(value) {
     return jspb.Message.setField(this, 1, value);
@@ -1534,7 +1534,7 @@ OptionalFields.Nested = class extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.OptionalFields.Nested} returns this
+   * @return {!OptionalFields.Nested} returns this
    */
   clearAnInt() {
     return jspb.Message.setField(this, 1, undefined);
@@ -1553,7 +1553,7 @@ OptionalFields.Nested = class extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.OptionalFields.Nested}
+   * @return {!OptionalFields.Nested}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -1565,9 +1565,9 @@ OptionalFields.Nested = class extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.OptionalFields.Nested} msg The message object to deserialize into.
+   * @param {!OptionalFields.Nested} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.OptionalFields.Nested}
+   * @return {!OptionalFields.Nested}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -1603,7 +1603,7 @@ OptionalFields.Nested = class extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.OptionalFields.Nested} message
+   * @param {!OptionalFields.Nested} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -1653,7 +1653,7 @@ OptionalFields.Nested.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.OptionalFields.Nested} msg The msg instance to transform.
+ * @param {!OptionalFields.Nested} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -1695,7 +1695,7 @@ export class HasExtensions extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.HasExtensions} returns this
+   * @return {!HasExtensions} returns this
    */
   setStr1(value) {
     return jspb.Message.setField(this, 1, value);
@@ -1704,7 +1704,7 @@ export class HasExtensions extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.HasExtensions} returns this
+   * @return {!HasExtensions} returns this
    */
   clearStr1() {
     return jspb.Message.setField(this, 1, undefined);
@@ -1731,7 +1731,7 @@ export class HasExtensions extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.HasExtensions} returns this
+   * @return {!HasExtensions} returns this
    */
   setStr2(value) {
     return jspb.Message.setField(this, 2, value);
@@ -1740,7 +1740,7 @@ export class HasExtensions extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.HasExtensions} returns this
+   * @return {!HasExtensions} returns this
    */
   clearStr2() {
     return jspb.Message.setField(this, 2, undefined);
@@ -1767,7 +1767,7 @@ export class HasExtensions extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.HasExtensions} returns this
+   * @return {!HasExtensions} returns this
    */
   setStr3(value) {
     return jspb.Message.setField(this, 3, value);
@@ -1776,7 +1776,7 @@ export class HasExtensions extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.HasExtensions} returns this
+   * @return {!HasExtensions} returns this
    */
   clearStr3() {
     return jspb.Message.setField(this, 3, undefined);
@@ -1795,7 +1795,7 @@ export class HasExtensions extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.HasExtensions}
+   * @return {!HasExtensions}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -1807,9 +1807,9 @@ export class HasExtensions extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.HasExtensions} msg The message object to deserialize into.
+   * @param {!HasExtensions} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.HasExtensions}
+   * @return {!HasExtensions}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -1856,7 +1856,7 @@ export class HasExtensions extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.HasExtensions} message
+   * @param {!HasExtensions} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -1952,7 +1952,7 @@ HasExtensions.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.HasExtensions} msg The msg instance to transform.
+ * @param {!HasExtensions} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -1999,7 +1999,7 @@ export class Complex extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.Complex} returns this
+   * @return {!Complex} returns this
    */
   setAString(value) {
     return jspb.Message.setField(this, 1, value);
@@ -2008,7 +2008,7 @@ export class Complex extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.Complex} returns this
+   * @return {!Complex} returns this
    */
   clearAString() {
     return jspb.Message.setField(this, 1, undefined);
@@ -2035,7 +2035,7 @@ export class Complex extends jspb.Message {
 
   /**
    * @param {boolean} value
-   * @return {!proto.jspb.test.Complex} returns this
+   * @return {!Complex} returns this
    */
   setAnOutOfOrderBool(value) {
     return jspb.Message.setField(this, 9, value);
@@ -2044,7 +2044,7 @@ export class Complex extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.Complex} returns this
+   * @return {!Complex} returns this
    */
   clearAnOutOfOrderBool() {
     return jspb.Message.setField(this, 9, undefined);
@@ -2062,17 +2062,17 @@ export class Complex extends jspb.Message {
 
   /**
    * optional Nested a_nested_message = 4;
-   * @return {?proto.jspb.test.Complex.Nested}
+   * @return {?Complex.Nested}
    */
   getANestedMessage() {
-    return /** @type{?proto.jspb.test.Complex.Nested} */ (
+    return /** @type{?Complex.Nested} */ (
       jspb.Message.getWrapperField(this, Complex.Nested, 4));
   };
 
 
   /**
-   * @param {?proto.jspb.test.Complex.Nested|undefined} value
-   * @return {!proto.jspb.test.Complex} returns this
+   * @param {?Complex.Nested|undefined} value
+   * @return {!Complex} returns this
   */
   setANestedMessage(value) {
     return jspb.Message.setWrapperField(this, 4, value);
@@ -2081,7 +2081,7 @@ export class Complex extends jspb.Message {
 
   /**
    * Clears the message field making it undefined.
-   * @return {!proto.jspb.test.Complex} returns this
+   * @return {!Complex} returns this
    */
   clearANestedMessage() {
     return this.setANestedMessage(undefined);
@@ -2099,17 +2099,17 @@ export class Complex extends jspb.Message {
 
   /**
    * repeated Nested a_repeated_message = 5;
-   * @return {!Array<!proto.jspb.test.Complex.Nested>}
+   * @return {!Array<!Complex.Nested>}
    */
   getARepeatedMessageList() {
-    return /** @type{!Array<!proto.jspb.test.Complex.Nested>} */ (
+    return /** @type{!Array<!Complex.Nested>} */ (
       jspb.Message.getRepeatedWrapperField(this, Complex.Nested, 5));
   };
 
 
   /**
-   * @param {!Array<!proto.jspb.test.Complex.Nested>} value
-   * @return {!proto.jspb.test.Complex} returns this
+   * @param {!Array<!Complex.Nested>} value
+   * @return {!Complex} returns this
   */
   setARepeatedMessageList(value) {
     return jspb.Message.setRepeatedWrapperField(this, 5, value);
@@ -2117,9 +2117,9 @@ export class Complex extends jspb.Message {
 
 
   /**
-   * @param {!proto.jspb.test.Complex.Nested} opt_value
+   * @param {!Complex.Nested} opt_value
    * @param {number=} opt_index
-   * @return {!proto.jspb.test.Complex.Nested}
+   * @return {!Complex.Nested}
    */
   addARepeatedMessage(opt_value, opt_index) {
     return jspb.Message.addToRepeatedWrapperField(this, 5, opt_value, Complex.Nested, opt_index);
@@ -2128,7 +2128,7 @@ export class Complex extends jspb.Message {
 
   /**
    * Clears the list making it empty but non-null.
-   * @return {!proto.jspb.test.Complex} returns this
+   * @return {!Complex} returns this
    */
   clearARepeatedMessageList() {
     return this.setARepeatedMessageList([]);
@@ -2146,7 +2146,7 @@ export class Complex extends jspb.Message {
 
   /**
    * @param {!Array<string>} value
-   * @return {!proto.jspb.test.Complex} returns this
+   * @return {!Complex} returns this
    */
   setARepeatedStringList(value) {
     return jspb.Message.setField(this, 7, value || []);
@@ -2156,7 +2156,7 @@ export class Complex extends jspb.Message {
   /**
    * @param {string} value
    * @param {number=} opt_index
-   * @return {!proto.jspb.test.Complex} returns this
+   * @return {!Complex} returns this
    */
   addARepeatedString(value, opt_index) {
     return jspb.Message.addToRepeatedField(this, 7, value, opt_index);
@@ -2165,7 +2165,7 @@ export class Complex extends jspb.Message {
 
   /**
    * Clears the list making it empty but non-null.
-   * @return {!proto.jspb.test.Complex} returns this
+   * @return {!Complex} returns this
    */
   clearARepeatedStringList() {
     return this.setARepeatedStringList([]);
@@ -2183,7 +2183,7 @@ export class Complex extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.Complex} returns this
+   * @return {!Complex} returns this
    */
   setAFloatingPointField(value) {
     return jspb.Message.setField(this, 10, value);
@@ -2192,7 +2192,7 @@ export class Complex extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.Complex} returns this
+   * @return {!Complex} returns this
    */
   clearAFloatingPointField() {
     return jspb.Message.setField(this, 10, undefined);
@@ -2211,7 +2211,7 @@ export class Complex extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.Complex}
+   * @return {!Complex}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -2223,9 +2223,9 @@ export class Complex extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.Complex} msg The message object to deserialize into.
+   * @param {!Complex} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.Complex}
+   * @return {!Complex}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -2283,7 +2283,7 @@ export class Complex extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.Complex} message
+   * @param {!Complex} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -2377,7 +2377,7 @@ Complex.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.Complex} msg The msg instance to transform.
+ * @param {!Complex} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -2425,7 +2425,7 @@ Complex.Nested = class extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.Complex.Nested} returns this
+   * @return {!Complex.Nested} returns this
    */
   setAnInt(value) {
     return jspb.Message.setField(this, 2, value);
@@ -2434,7 +2434,7 @@ Complex.Nested = class extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.Complex.Nested} returns this
+   * @return {!Complex.Nested} returns this
    */
   clearAnInt() {
     return jspb.Message.setField(this, 2, undefined);
@@ -2453,7 +2453,7 @@ Complex.Nested = class extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.Complex.Nested}
+   * @return {!Complex.Nested}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -2465,9 +2465,9 @@ Complex.Nested = class extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.Complex.Nested} msg The message object to deserialize into.
+   * @param {!Complex.Nested} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.Complex.Nested}
+   * @return {!Complex.Nested}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -2503,7 +2503,7 @@ Complex.Nested = class extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.Complex.Nested} message
+   * @param {!Complex.Nested} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -2553,7 +2553,7 @@ Complex.Nested.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.Complex.Nested} msg The msg instance to transform.
+ * @param {!Complex.Nested} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -2587,7 +2587,7 @@ export class OuterMessage extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.OuterMessage}
+   * @return {!OuterMessage}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -2599,9 +2599,9 @@ export class OuterMessage extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.OuterMessage} msg The message object to deserialize into.
+   * @param {!OuterMessage} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.OuterMessage}
+   * @return {!OuterMessage}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -2633,7 +2633,7 @@ export class OuterMessage extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.OuterMessage} message
+   * @param {!OuterMessage} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -2676,7 +2676,7 @@ OuterMessage.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.OuterMessage} msg The msg instance to transform.
+ * @param {!OuterMessage} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -2718,7 +2718,7 @@ OuterMessage.Complex = class extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.OuterMessage.Complex} returns this
+   * @return {!OuterMessage.Complex} returns this
    */
   setInnerComplexField(value) {
     return jspb.Message.setField(this, 1, value);
@@ -2727,7 +2727,7 @@ OuterMessage.Complex = class extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.OuterMessage.Complex} returns this
+   * @return {!OuterMessage.Complex} returns this
    */
   clearInnerComplexField() {
     return jspb.Message.setField(this, 1, undefined);
@@ -2746,7 +2746,7 @@ OuterMessage.Complex = class extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.OuterMessage.Complex}
+   * @return {!OuterMessage.Complex}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -2758,9 +2758,9 @@ OuterMessage.Complex = class extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.OuterMessage.Complex} msg The message object to deserialize into.
+   * @param {!OuterMessage.Complex} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.OuterMessage.Complex}
+   * @return {!OuterMessage.Complex}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -2796,7 +2796,7 @@ OuterMessage.Complex = class extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.OuterMessage.Complex} message
+   * @param {!OuterMessage.Complex} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -2846,7 +2846,7 @@ OuterMessage.Complex.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.OuterMessage.Complex} msg The msg instance to transform.
+ * @param {!OuterMessage.Complex} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -2888,7 +2888,7 @@ export class MineField extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.MineField} returns this
+   * @return {!MineField} returns this
    */
   setCookie(value) {
     return jspb.Message.setField(this, 1, value);
@@ -2897,7 +2897,7 @@ export class MineField extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.MineField} returns this
+   * @return {!MineField} returns this
    */
   clearCookie() {
     return jspb.Message.setField(this, 1, undefined);
@@ -2916,7 +2916,7 @@ export class MineField extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.MineField}
+   * @return {!MineField}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -2928,9 +2928,9 @@ export class MineField extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.MineField} msg The message object to deserialize into.
+   * @param {!MineField} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.MineField}
+   * @return {!MineField}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -2966,7 +2966,7 @@ export class MineField extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.MineField} message
+   * @param {!MineField} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -3016,7 +3016,7 @@ MineField.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.MineField} msg The msg instance to transform.
+ * @param {!MineField} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -3058,7 +3058,7 @@ export class IsExtension extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.IsExtension} returns this
+   * @return {!IsExtension} returns this
    */
   setExt1(value) {
     return jspb.Message.setField(this, 1, value);
@@ -3067,7 +3067,7 @@ export class IsExtension extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.IsExtension} returns this
+   * @return {!IsExtension} returns this
    */
   clearExt1() {
     return jspb.Message.setField(this, 1, undefined);
@@ -3086,7 +3086,7 @@ export class IsExtension extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.IsExtension}
+   * @return {!IsExtension}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -3098,9 +3098,9 @@ export class IsExtension extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.IsExtension} msg The message object to deserialize into.
+   * @param {!IsExtension} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.IsExtension}
+   * @return {!IsExtension}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -3136,7 +3136,7 @@ export class IsExtension extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.IsExtension} message
+   * @param {!IsExtension} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -3165,7 +3165,7 @@ if (goog.DEBUG && !COMPILED) {
 /**
  * A tuple of {field number, class constructor} for the extension
  * field named `extField`.
- * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.IsExtension>}
+ * @type {!jspb.ExtensionFieldInfo<!IsExtension>}
  */
 IsExtension.extField = new jspb.ExtensionFieldInfo(
     100,
@@ -3199,7 +3199,7 @@ IsExtension.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.IsExtension} msg The msg instance to transform.
+ * @param {!IsExtension} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -3245,7 +3245,7 @@ export class IndirectExtension extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.IndirectExtension}
+   * @return {!IndirectExtension}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -3257,9 +3257,9 @@ export class IndirectExtension extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.IndirectExtension} msg The message object to deserialize into.
+   * @param {!IndirectExtension} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.IndirectExtension}
+   * @return {!IndirectExtension}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -3291,7 +3291,7 @@ export class IndirectExtension extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.IndirectExtension} message
+   * @param {!IndirectExtension} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -3313,7 +3313,7 @@ if (goog.DEBUG && !COMPILED) {
 /**
  * A tuple of {field number, class constructor} for the extension
  * field named `simple`.
- * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.Simple1>}
+ * @type {!jspb.ExtensionFieldInfo<!Simple1>}
  */
 IndirectExtension.simple = new jspb.ExtensionFieldInfo(
     101,
@@ -3352,7 +3352,7 @@ IndirectExtension.repeatedStrList = new jspb.ExtensionFieldInfo(
 /**
  * A tuple of {field number, class constructor} for the extension
  * field named `repeatedSimpleList`.
- * @type {!jspb.ExtensionFieldInfo<!Array<!proto.jspb.test.Simple1>>}
+ * @type {!jspb.ExtensionFieldInfo<!Array<!Simple1>>}
  */
 IndirectExtension.repeatedSimpleList = new jspb.ExtensionFieldInfo(
     104,
@@ -3386,7 +3386,7 @@ IndirectExtension.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.IndirectExtension} msg The msg instance to transform.
+ * @param {!IndirectExtension} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -3476,7 +3476,7 @@ export class DefaultValues extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.DefaultValues} returns this
+   * @return {!DefaultValues} returns this
    */
   setStringField(value) {
     return jspb.Message.setField(this, 1, value);
@@ -3485,7 +3485,7 @@ export class DefaultValues extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.DefaultValues} returns this
+   * @return {!DefaultValues} returns this
    */
   clearStringField() {
     return jspb.Message.setField(this, 1, undefined);
@@ -3512,7 +3512,7 @@ export class DefaultValues extends jspb.Message {
 
   /**
    * @param {boolean} value
-   * @return {!proto.jspb.test.DefaultValues} returns this
+   * @return {!DefaultValues} returns this
    */
   setBoolField(value) {
     return jspb.Message.setField(this, 2, value);
@@ -3521,7 +3521,7 @@ export class DefaultValues extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.DefaultValues} returns this
+   * @return {!DefaultValues} returns this
    */
   clearBoolField() {
     return jspb.Message.setField(this, 2, undefined);
@@ -3548,7 +3548,7 @@ export class DefaultValues extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.DefaultValues} returns this
+   * @return {!DefaultValues} returns this
    */
   setIntField(value) {
     return jspb.Message.setField(this, 3, value);
@@ -3557,7 +3557,7 @@ export class DefaultValues extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.DefaultValues} returns this
+   * @return {!DefaultValues} returns this
    */
   clearIntField() {
     return jspb.Message.setField(this, 3, undefined);
@@ -3575,16 +3575,16 @@ export class DefaultValues extends jspb.Message {
 
   /**
    * optional Enum enum_field = 4;
-   * @return {!proto.jspb.test.DefaultValues.Enum}
+   * @return {!DefaultValues.Enum}
    */
   getEnumField() {
-    return /** @type {!proto.jspb.test.DefaultValues.Enum} */ (jspb.Message.getFieldWithDefault(this, 4, 13));
+    return /** @type {!DefaultValues.Enum} */ (jspb.Message.getFieldWithDefault(this, 4, 13));
   };
 
 
   /**
-   * @param {!proto.jspb.test.DefaultValues.Enum} value
-   * @return {!proto.jspb.test.DefaultValues} returns this
+   * @param {!DefaultValues.Enum} value
+   * @return {!DefaultValues} returns this
    */
   setEnumField(value) {
     return jspb.Message.setField(this, 4, value);
@@ -3593,7 +3593,7 @@ export class DefaultValues extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.DefaultValues} returns this
+   * @return {!DefaultValues} returns this
    */
   clearEnumField() {
     return jspb.Message.setField(this, 4, undefined);
@@ -3620,7 +3620,7 @@ export class DefaultValues extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.DefaultValues} returns this
+   * @return {!DefaultValues} returns this
    */
   setEmptyField(value) {
     return jspb.Message.setField(this, 6, value);
@@ -3629,7 +3629,7 @@ export class DefaultValues extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.DefaultValues} returns this
+   * @return {!DefaultValues} returns this
    */
   clearEmptyField() {
     return jspb.Message.setField(this, 6, undefined);
@@ -3680,7 +3680,7 @@ export class DefaultValues extends jspb.Message {
 
   /**
    * @param {!(string|Uint8Array)} value
-   * @return {!proto.jspb.test.DefaultValues} returns this
+   * @return {!DefaultValues} returns this
    */
   setBytesField(value) {
     return jspb.Message.setField(this, 8, value);
@@ -3689,7 +3689,7 @@ export class DefaultValues extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.DefaultValues} returns this
+   * @return {!DefaultValues} returns this
    */
   clearBytesField() {
     return jspb.Message.setField(this, 8, undefined);
@@ -3708,7 +3708,7 @@ export class DefaultValues extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.DefaultValues}
+   * @return {!DefaultValues}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -3720,9 +3720,9 @@ export class DefaultValues extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.DefaultValues} msg The message object to deserialize into.
+   * @param {!DefaultValues} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.DefaultValues}
+   * @return {!DefaultValues}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -3744,7 +3744,7 @@ export class DefaultValues extends jspb.Message {
         msg.setIntField(value);
         break;
       case 4:
-        var value = /** @type {!proto.jspb.test.DefaultValues.Enum} */ (reader.readEnum());
+        var value = /** @type {!DefaultValues.Enum} */ (reader.readEnum());
         msg.setEnumField(value);
         break;
       case 6:
@@ -3778,7 +3778,7 @@ export class DefaultValues extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.DefaultValues} message
+   * @param {!DefaultValues} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -3805,7 +3805,7 @@ export class DefaultValues extends jspb.Message {
         f
       );
     }
-    f = /** @type {!proto.jspb.test.DefaultValues.Enum} */ (jspb.Message.getField(message, 4));
+    f = /** @type {!DefaultValues.Enum} */ (jspb.Message.getField(message, 4));
     if (f != null) {
       writer.writeEnum(
         4,
@@ -3871,7 +3871,7 @@ DefaultValues.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.DefaultValues} msg The msg instance to transform.
+ * @param {!DefaultValues} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -3918,7 +3918,7 @@ export class FloatingPointFields extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   setOptionalFloatField(value) {
     return jspb.Message.setField(this, 1, value);
@@ -3927,7 +3927,7 @@ export class FloatingPointFields extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   clearOptionalFloatField() {
     return jspb.Message.setField(this, 1, undefined);
@@ -3954,7 +3954,7 @@ export class FloatingPointFields extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   setRequiredFloatField(value) {
     return jspb.Message.setField(this, 2, value);
@@ -3963,7 +3963,7 @@ export class FloatingPointFields extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   clearRequiredFloatField() {
     return jspb.Message.setField(this, 2, undefined);
@@ -3990,7 +3990,7 @@ export class FloatingPointFields extends jspb.Message {
 
   /**
    * @param {!Array<number>} value
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   setRepeatedFloatFieldList(value) {
     return jspb.Message.setField(this, 3, value || []);
@@ -4000,7 +4000,7 @@ export class FloatingPointFields extends jspb.Message {
   /**
    * @param {number} value
    * @param {number=} opt_index
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   addRepeatedFloatField(value, opt_index) {
     return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
@@ -4009,7 +4009,7 @@ export class FloatingPointFields extends jspb.Message {
 
   /**
    * Clears the list making it empty but non-null.
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   clearRepeatedFloatFieldList() {
     return this.setRepeatedFloatFieldList([]);
@@ -4027,7 +4027,7 @@ export class FloatingPointFields extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   setDefaultFloatField(value) {
     return jspb.Message.setField(this, 4, value);
@@ -4036,7 +4036,7 @@ export class FloatingPointFields extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   clearDefaultFloatField() {
     return jspb.Message.setField(this, 4, undefined);
@@ -4063,7 +4063,7 @@ export class FloatingPointFields extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   setOptionalDoubleField(value) {
     return jspb.Message.setField(this, 5, value);
@@ -4072,7 +4072,7 @@ export class FloatingPointFields extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   clearOptionalDoubleField() {
     return jspb.Message.setField(this, 5, undefined);
@@ -4099,7 +4099,7 @@ export class FloatingPointFields extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   setRequiredDoubleField(value) {
     return jspb.Message.setField(this, 6, value);
@@ -4108,7 +4108,7 @@ export class FloatingPointFields extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   clearRequiredDoubleField() {
     return jspb.Message.setField(this, 6, undefined);
@@ -4135,7 +4135,7 @@ export class FloatingPointFields extends jspb.Message {
 
   /**
    * @param {!Array<number>} value
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   setRepeatedDoubleFieldList(value) {
     return jspb.Message.setField(this, 7, value || []);
@@ -4145,7 +4145,7 @@ export class FloatingPointFields extends jspb.Message {
   /**
    * @param {number} value
    * @param {number=} opt_index
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   addRepeatedDoubleField(value, opt_index) {
     return jspb.Message.addToRepeatedField(this, 7, value, opt_index);
@@ -4154,7 +4154,7 @@ export class FloatingPointFields extends jspb.Message {
 
   /**
    * Clears the list making it empty but non-null.
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   clearRepeatedDoubleFieldList() {
     return this.setRepeatedDoubleFieldList([]);
@@ -4172,7 +4172,7 @@ export class FloatingPointFields extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   setDefaultDoubleField(value) {
     return jspb.Message.setField(this, 8, value);
@@ -4181,7 +4181,7 @@ export class FloatingPointFields extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.FloatingPointFields} returns this
+   * @return {!FloatingPointFields} returns this
    */
   clearDefaultDoubleField() {
     return jspb.Message.setField(this, 8, undefined);
@@ -4200,7 +4200,7 @@ export class FloatingPointFields extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.FloatingPointFields}
+   * @return {!FloatingPointFields}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -4212,9 +4212,9 @@ export class FloatingPointFields extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.FloatingPointFields} msg The message object to deserialize into.
+   * @param {!FloatingPointFields} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.FloatingPointFields}
+   * @return {!FloatingPointFields}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -4282,7 +4282,7 @@ export class FloatingPointFields extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.FloatingPointFields} message
+   * @param {!FloatingPointFields} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -4388,7 +4388,7 @@ FloatingPointFields.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.FloatingPointFields} msg The msg instance to transform.
+ * @param {!FloatingPointFields} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -4437,7 +4437,7 @@ export class BooleanFields extends jspb.Message {
 
   /**
    * @param {boolean} value
-   * @return {!proto.jspb.test.BooleanFields} returns this
+   * @return {!BooleanFields} returns this
    */
   setOptionalBooleanField(value) {
     return jspb.Message.setField(this, 1, value);
@@ -4446,7 +4446,7 @@ export class BooleanFields extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.BooleanFields} returns this
+   * @return {!BooleanFields} returns this
    */
   clearOptionalBooleanField() {
     return jspb.Message.setField(this, 1, undefined);
@@ -4473,7 +4473,7 @@ export class BooleanFields extends jspb.Message {
 
   /**
    * @param {boolean} value
-   * @return {!proto.jspb.test.BooleanFields} returns this
+   * @return {!BooleanFields} returns this
    */
   setRequiredBooleanField(value) {
     return jspb.Message.setField(this, 2, value);
@@ -4482,7 +4482,7 @@ export class BooleanFields extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.BooleanFields} returns this
+   * @return {!BooleanFields} returns this
    */
   clearRequiredBooleanField() {
     return jspb.Message.setField(this, 2, undefined);
@@ -4509,7 +4509,7 @@ export class BooleanFields extends jspb.Message {
 
   /**
    * @param {!Array<boolean>} value
-   * @return {!proto.jspb.test.BooleanFields} returns this
+   * @return {!BooleanFields} returns this
    */
   setRepeatedBooleanFieldList(value) {
     return jspb.Message.setField(this, 3, value || []);
@@ -4519,7 +4519,7 @@ export class BooleanFields extends jspb.Message {
   /**
    * @param {boolean} value
    * @param {number=} opt_index
-   * @return {!proto.jspb.test.BooleanFields} returns this
+   * @return {!BooleanFields} returns this
    */
   addRepeatedBooleanField(value, opt_index) {
     return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
@@ -4528,7 +4528,7 @@ export class BooleanFields extends jspb.Message {
 
   /**
    * Clears the list making it empty but non-null.
-   * @return {!proto.jspb.test.BooleanFields} returns this
+   * @return {!BooleanFields} returns this
    */
   clearRepeatedBooleanFieldList() {
     return this.setRepeatedBooleanFieldList([]);
@@ -4546,7 +4546,7 @@ export class BooleanFields extends jspb.Message {
 
   /**
    * @param {boolean} value
-   * @return {!proto.jspb.test.BooleanFields} returns this
+   * @return {!BooleanFields} returns this
    */
   setDefaultBooleanField(value) {
     return jspb.Message.setField(this, 4, value);
@@ -4555,7 +4555,7 @@ export class BooleanFields extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.BooleanFields} returns this
+   * @return {!BooleanFields} returns this
    */
   clearDefaultBooleanField() {
     return jspb.Message.setField(this, 4, undefined);
@@ -4574,7 +4574,7 @@ export class BooleanFields extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.BooleanFields}
+   * @return {!BooleanFields}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -4586,9 +4586,9 @@ export class BooleanFields extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.BooleanFields} msg The message object to deserialize into.
+   * @param {!BooleanFields} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.BooleanFields}
+   * @return {!BooleanFields}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -4638,7 +4638,7 @@ export class BooleanFields extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.BooleanFields} message
+   * @param {!BooleanFields} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -4716,7 +4716,7 @@ BooleanFields.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.BooleanFields} msg The msg instance to transform.
+ * @param {!BooleanFields} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -4761,7 +4761,7 @@ export class TestClone extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.TestClone} returns this
+   * @return {!TestClone} returns this
    */
   setStr(value) {
     return jspb.Message.setField(this, 1, value);
@@ -4770,7 +4770,7 @@ export class TestClone extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestClone} returns this
+   * @return {!TestClone} returns this
    */
   clearStr() {
     return jspb.Message.setField(this, 1, undefined);
@@ -4788,17 +4788,17 @@ export class TestClone extends jspb.Message {
 
   /**
    * optional Simple1 simple1 = 3;
-   * @return {?proto.jspb.test.Simple1}
+   * @return {?Simple1}
    */
   getSimple1() {
-    return /** @type{?proto.jspb.test.Simple1} */ (
+    return /** @type{?Simple1} */ (
       jspb.Message.getWrapperField(this, Simple1, 3));
   };
 
 
   /**
-   * @param {?proto.jspb.test.Simple1|undefined} value
-   * @return {!proto.jspb.test.TestClone} returns this
+   * @param {?Simple1|undefined} value
+   * @return {!TestClone} returns this
   */
   setSimple1(value) {
     return jspb.Message.setWrapperField(this, 3, value);
@@ -4807,7 +4807,7 @@ export class TestClone extends jspb.Message {
 
   /**
    * Clears the message field making it undefined.
-   * @return {!proto.jspb.test.TestClone} returns this
+   * @return {!TestClone} returns this
    */
   clearSimple1() {
     return this.setSimple1(undefined);
@@ -4825,17 +4825,17 @@ export class TestClone extends jspb.Message {
 
   /**
    * repeated Simple1 simple2 = 5;
-   * @return {!Array<!proto.jspb.test.Simple1>}
+   * @return {!Array<!Simple1>}
    */
   getSimple2List() {
-    return /** @type{!Array<!proto.jspb.test.Simple1>} */ (
+    return /** @type{!Array<!Simple1>} */ (
       jspb.Message.getRepeatedWrapperField(this, Simple1, 5));
   };
 
 
   /**
-   * @param {!Array<!proto.jspb.test.Simple1>} value
-   * @return {!proto.jspb.test.TestClone} returns this
+   * @param {!Array<!Simple1>} value
+   * @return {!TestClone} returns this
   */
   setSimple2List(value) {
     return jspb.Message.setRepeatedWrapperField(this, 5, value);
@@ -4843,9 +4843,9 @@ export class TestClone extends jspb.Message {
 
 
   /**
-   * @param {!proto.jspb.test.Simple1} opt_value
+   * @param {!Simple1} opt_value
    * @param {number=} opt_index
-   * @return {!proto.jspb.test.Simple1}
+   * @return {!Simple1}
    */
   addSimple2(opt_value, opt_index) {
     return jspb.Message.addToRepeatedWrapperField(this, 5, opt_value, Simple1, opt_index);
@@ -4854,7 +4854,7 @@ export class TestClone extends jspb.Message {
 
   /**
    * Clears the list making it empty but non-null.
-   * @return {!proto.jspb.test.TestClone} returns this
+   * @return {!TestClone} returns this
    */
   clearSimple2List() {
     return this.setSimple2List([]);
@@ -4896,7 +4896,7 @@ export class TestClone extends jspb.Message {
 
   /**
    * @param {!(string|Uint8Array)} value
-   * @return {!proto.jspb.test.TestClone} returns this
+   * @return {!TestClone} returns this
    */
   setBytesField(value) {
     return jspb.Message.setField(this, 6, value);
@@ -4905,7 +4905,7 @@ export class TestClone extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestClone} returns this
+   * @return {!TestClone} returns this
    */
   clearBytesField() {
     return jspb.Message.setField(this, 6, undefined);
@@ -4932,7 +4932,7 @@ export class TestClone extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.TestClone} returns this
+   * @return {!TestClone} returns this
    */
   setUnused(value) {
     return jspb.Message.setField(this, 7, value);
@@ -4941,7 +4941,7 @@ export class TestClone extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestClone} returns this
+   * @return {!TestClone} returns this
    */
   clearUnused() {
     return jspb.Message.setField(this, 7, undefined);
@@ -4960,7 +4960,7 @@ export class TestClone extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.TestClone}
+   * @return {!TestClone}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -4972,9 +4972,9 @@ export class TestClone extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.TestClone} msg The message object to deserialize into.
+   * @param {!TestClone} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.TestClone}
+   * @return {!TestClone}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -5031,7 +5031,7 @@ export class TestClone extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.TestClone} message
+   * @param {!TestClone} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -5150,7 +5150,7 @@ TestClone.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.TestClone} msg The msg instance to transform.
+ * @param {!TestClone} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -5200,7 +5200,7 @@ export class TestCloneExtension extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.TestCloneExtension} returns this
+   * @return {!TestCloneExtension} returns this
    */
   setF(value) {
     return jspb.Message.setField(this, 1, value);
@@ -5209,7 +5209,7 @@ export class TestCloneExtension extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestCloneExtension} returns this
+   * @return {!TestCloneExtension} returns this
    */
   clearF() {
     return jspb.Message.setField(this, 1, undefined);
@@ -5228,7 +5228,7 @@ export class TestCloneExtension extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.TestCloneExtension}
+   * @return {!TestCloneExtension}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -5240,9 +5240,9 @@ export class TestCloneExtension extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.TestCloneExtension} msg The message object to deserialize into.
+   * @param {!TestCloneExtension} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.TestCloneExtension}
+   * @return {!TestCloneExtension}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -5278,7 +5278,7 @@ export class TestCloneExtension extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.TestCloneExtension} message
+   * @param {!TestCloneExtension} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -5307,7 +5307,7 @@ if (goog.DEBUG && !COMPILED) {
 /**
  * A tuple of {field number, class constructor} for the extension
  * field named `lowExt`.
- * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.TestCloneExtension>}
+ * @type {!jspb.ExtensionFieldInfo<!TestCloneExtension>}
  */
 TestCloneExtension.lowExt = new jspb.ExtensionFieldInfo(
     11,
@@ -5341,7 +5341,7 @@ TestCloneExtension.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.TestCloneExtension} msg The msg instance to transform.
+ * @param {!TestCloneExtension} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -5395,7 +5395,7 @@ export class CloneExtension extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.CloneExtension} returns this
+   * @return {!CloneExtension} returns this
    */
   setExt(value) {
     return jspb.Message.setField(this, 2, value);
@@ -5404,7 +5404,7 @@ export class CloneExtension extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.CloneExtension} returns this
+   * @return {!CloneExtension} returns this
    */
   clearExt() {
     return jspb.Message.setField(this, 2, undefined);
@@ -5423,7 +5423,7 @@ export class CloneExtension extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.CloneExtension}
+   * @return {!CloneExtension}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -5435,9 +5435,9 @@ export class CloneExtension extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.CloneExtension} msg The message object to deserialize into.
+   * @param {!CloneExtension} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.CloneExtension}
+   * @return {!CloneExtension}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -5473,7 +5473,7 @@ export class CloneExtension extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.CloneExtension} message
+   * @param {!CloneExtension} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -5502,7 +5502,7 @@ if (goog.DEBUG && !COMPILED) {
 /**
  * A tuple of {field number, class constructor} for the extension
  * field named `extField`.
- * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.CloneExtension>}
+ * @type {!jspb.ExtensionFieldInfo<!CloneExtension>}
  */
 CloneExtension.extField = new jspb.ExtensionFieldInfo(
     100,
@@ -5536,7 +5536,7 @@ CloneExtension.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.CloneExtension} msg The msg instance to transform.
+ * @param {!CloneExtension} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -5581,17 +5581,17 @@ export class TestGroup extends jspb.Message {
   };
   /**
    * repeated group RepeatedGroup = 1;
-   * @return {!Array<!proto.jspb.test.TestGroup.RepeatedGroup>}
+   * @return {!Array<!TestGroup.RepeatedGroup>}
    */
   getRepeatedGroupList() {
-    return /** @type{!Array<!proto.jspb.test.TestGroup.RepeatedGroup>} */ (
+    return /** @type{!Array<!TestGroup.RepeatedGroup>} */ (
       jspb.Message.getRepeatedWrapperField(this, TestGroup.RepeatedGroup, 1));
   };
 
 
   /**
-   * @param {!Array<!proto.jspb.test.TestGroup.RepeatedGroup>} value
-   * @return {!proto.jspb.test.TestGroup} returns this
+   * @param {!Array<!TestGroup.RepeatedGroup>} value
+   * @return {!TestGroup} returns this
   */
   setRepeatedGroupList(value) {
     return jspb.Message.setRepeatedWrapperField(this, 1, value);
@@ -5599,9 +5599,9 @@ export class TestGroup extends jspb.Message {
 
 
   /**
-   * @param {!proto.jspb.test.TestGroup.RepeatedGroup} opt_value
+   * @param {!TestGroup.RepeatedGroup} opt_value
    * @param {number=} opt_index
-   * @return {!proto.jspb.test.TestGroup.RepeatedGroup}
+   * @return {!TestGroup.RepeatedGroup}
    */
   addRepeatedGroup(opt_value, opt_index) {
     return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, TestGroup.RepeatedGroup, opt_index);
@@ -5610,7 +5610,7 @@ export class TestGroup extends jspb.Message {
 
   /**
    * Clears the list making it empty but non-null.
-   * @return {!proto.jspb.test.TestGroup} returns this
+   * @return {!TestGroup} returns this
    */
   clearRepeatedGroupList() {
     return this.setRepeatedGroupList([]);
@@ -5619,17 +5619,17 @@ export class TestGroup extends jspb.Message {
 
   /**
    * required group RequiredGroup = 2;
-   * @return {!proto.jspb.test.TestGroup.RequiredGroup}
+   * @return {!TestGroup.RequiredGroup}
    */
   getRequiredGroup() {
-    return /** @type{!proto.jspb.test.TestGroup.RequiredGroup} */ (
+    return /** @type{!TestGroup.RequiredGroup} */ (
       jspb.Message.getWrapperField(this, TestGroup.RequiredGroup, 2, 1));
   };
 
 
   /**
-   * @param {!proto.jspb.test.TestGroup.RequiredGroup} value
-   * @return {!proto.jspb.test.TestGroup} returns this
+   * @param {!TestGroup.RequiredGroup} value
+   * @return {!TestGroup} returns this
   */
   setRequiredGroup(value) {
     return jspb.Message.setWrapperField(this, 2, value);
@@ -5638,7 +5638,7 @@ export class TestGroup extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestGroup} returns this
+   * @return {!TestGroup} returns this
    */
   clearRequiredGroup() {
     return jspb.Message.setField(this, 2, undefined);
@@ -5656,17 +5656,17 @@ export class TestGroup extends jspb.Message {
 
   /**
    * optional group OptionalGroup = 3;
-   * @return {?proto.jspb.test.TestGroup.OptionalGroup}
+   * @return {?TestGroup.OptionalGroup}
    */
   getOptionalGroup() {
-    return /** @type{?proto.jspb.test.TestGroup.OptionalGroup} */ (
+    return /** @type{?TestGroup.OptionalGroup} */ (
       jspb.Message.getWrapperField(this, TestGroup.OptionalGroup, 3));
   };
 
 
   /**
-   * @param {?proto.jspb.test.TestGroup.OptionalGroup|undefined} value
-   * @return {!proto.jspb.test.TestGroup} returns this
+   * @param {?TestGroup.OptionalGroup|undefined} value
+   * @return {!TestGroup} returns this
   */
   setOptionalGroup(value) {
     return jspb.Message.setWrapperField(this, 3, value);
@@ -5675,7 +5675,7 @@ export class TestGroup extends jspb.Message {
 
   /**
    * Clears the message field making it undefined.
-   * @return {!proto.jspb.test.TestGroup} returns this
+   * @return {!TestGroup} returns this
    */
   clearOptionalGroup() {
     return this.setOptionalGroup(undefined);
@@ -5702,7 +5702,7 @@ export class TestGroup extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.TestGroup} returns this
+   * @return {!TestGroup} returns this
    */
   setId(value) {
     return jspb.Message.setField(this, 4, value);
@@ -5711,7 +5711,7 @@ export class TestGroup extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestGroup} returns this
+   * @return {!TestGroup} returns this
    */
   clearId() {
     return jspb.Message.setField(this, 4, undefined);
@@ -5729,17 +5729,17 @@ export class TestGroup extends jspb.Message {
 
   /**
    * required Simple2 required_simple = 5;
-   * @return {!proto.jspb.test.Simple2}
+   * @return {!Simple2}
    */
   getRequiredSimple() {
-    return /** @type{!proto.jspb.test.Simple2} */ (
+    return /** @type{!Simple2} */ (
       jspb.Message.getWrapperField(this, Simple2, 5, 1));
   };
 
 
   /**
-   * @param {!proto.jspb.test.Simple2} value
-   * @return {!proto.jspb.test.TestGroup} returns this
+   * @param {!Simple2} value
+   * @return {!TestGroup} returns this
   */
   setRequiredSimple(value) {
     return jspb.Message.setWrapperField(this, 5, value);
@@ -5748,7 +5748,7 @@ export class TestGroup extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestGroup} returns this
+   * @return {!TestGroup} returns this
    */
   clearRequiredSimple() {
     return jspb.Message.setField(this, 5, undefined);
@@ -5766,17 +5766,17 @@ export class TestGroup extends jspb.Message {
 
   /**
    * optional Simple2 optional_simple = 6;
-   * @return {?proto.jspb.test.Simple2}
+   * @return {?Simple2}
    */
   getOptionalSimple() {
-    return /** @type{?proto.jspb.test.Simple2} */ (
+    return /** @type{?Simple2} */ (
       jspb.Message.getWrapperField(this, Simple2, 6));
   };
 
 
   /**
-   * @param {?proto.jspb.test.Simple2|undefined} value
-   * @return {!proto.jspb.test.TestGroup} returns this
+   * @param {?Simple2|undefined} value
+   * @return {!TestGroup} returns this
   */
   setOptionalSimple(value) {
     return jspb.Message.setWrapperField(this, 6, value);
@@ -5785,7 +5785,7 @@ export class TestGroup extends jspb.Message {
 
   /**
    * Clears the message field making it undefined.
-   * @return {!proto.jspb.test.TestGroup} returns this
+   * @return {!TestGroup} returns this
    */
   clearOptionalSimple() {
     return this.setOptionalSimple(undefined);
@@ -5804,7 +5804,7 @@ export class TestGroup extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.TestGroup}
+   * @return {!TestGroup}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -5816,9 +5816,9 @@ export class TestGroup extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.TestGroup} msg The message object to deserialize into.
+   * @param {!TestGroup} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.TestGroup}
+   * @return {!TestGroup}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -5879,7 +5879,7 @@ export class TestGroup extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.TestGroup} message
+   * @param {!TestGroup} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -5976,7 +5976,7 @@ TestGroup.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.TestGroup} msg The msg instance to transform.
+ * @param {!TestGroup} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -6024,7 +6024,7 @@ TestGroup.RepeatedGroup = class extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.TestGroup.RepeatedGroup} returns this
+   * @return {!TestGroup.RepeatedGroup} returns this
    */
   setId(value) {
     return jspb.Message.setField(this, 0, value);
@@ -6033,7 +6033,7 @@ TestGroup.RepeatedGroup = class extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestGroup.RepeatedGroup} returns this
+   * @return {!TestGroup.RepeatedGroup} returns this
    */
   clearId() {
     return jspb.Message.setField(this, 0, undefined);
@@ -6060,7 +6060,7 @@ TestGroup.RepeatedGroup = class extends jspb.Message {
 
   /**
    * @param {!Array<boolean>} value
-   * @return {!proto.jspb.test.TestGroup.RepeatedGroup} returns this
+   * @return {!TestGroup.RepeatedGroup} returns this
    */
   setSomeBoolList(value) {
     return jspb.Message.setField(this, 1, value || []);
@@ -6070,7 +6070,7 @@ TestGroup.RepeatedGroup = class extends jspb.Message {
   /**
    * @param {boolean} value
    * @param {number=} opt_index
-   * @return {!proto.jspb.test.TestGroup.RepeatedGroup} returns this
+   * @return {!TestGroup.RepeatedGroup} returns this
    */
   addSomeBool(value, opt_index) {
     return jspb.Message.addToRepeatedField(this, 1, value, opt_index);
@@ -6079,7 +6079,7 @@ TestGroup.RepeatedGroup = class extends jspb.Message {
 
   /**
    * Clears the list making it empty but non-null.
-   * @return {!proto.jspb.test.TestGroup.RepeatedGroup} returns this
+   * @return {!TestGroup.RepeatedGroup} returns this
    */
   clearSomeBoolList() {
     return this.setSomeBoolList([]);
@@ -6089,7 +6089,7 @@ TestGroup.RepeatedGroup = class extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.TestGroup.RepeatedGroup}
+   * @return {!TestGroup.RepeatedGroup}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -6101,9 +6101,9 @@ TestGroup.RepeatedGroup = class extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.TestGroup.RepeatedGroup} msg The message object to deserialize into.
+   * @param {!TestGroup.RepeatedGroup} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.TestGroup.RepeatedGroup}
+   * @return {!TestGroup.RepeatedGroup}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -6145,7 +6145,7 @@ TestGroup.RepeatedGroup = class extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.TestGroup.RepeatedGroup} message
+   * @param {!TestGroup.RepeatedGroup} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -6209,7 +6209,7 @@ TestGroup.RepeatedGroup.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.TestGroup.RepeatedGroup} msg The msg instance to transform.
+ * @param {!TestGroup.RepeatedGroup} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -6252,7 +6252,7 @@ TestGroup.RequiredGroup = class extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.TestGroup.RequiredGroup} returns this
+   * @return {!TestGroup.RequiredGroup} returns this
    */
   setId(value) {
     return jspb.Message.setField(this, -1, value);
@@ -6261,7 +6261,7 @@ TestGroup.RequiredGroup = class extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestGroup.RequiredGroup} returns this
+   * @return {!TestGroup.RequiredGroup} returns this
    */
   clearId() {
     return jspb.Message.setField(this, -1, undefined);
@@ -6280,7 +6280,7 @@ TestGroup.RequiredGroup = class extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.TestGroup.RequiredGroup}
+   * @return {!TestGroup.RequiredGroup}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -6292,9 +6292,9 @@ TestGroup.RequiredGroup = class extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.TestGroup.RequiredGroup} msg The message object to deserialize into.
+   * @param {!TestGroup.RequiredGroup} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.TestGroup.RequiredGroup}
+   * @return {!TestGroup.RequiredGroup}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -6330,7 +6330,7 @@ TestGroup.RequiredGroup = class extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.TestGroup.RequiredGroup} message
+   * @param {!TestGroup.RequiredGroup} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -6380,7 +6380,7 @@ TestGroup.RequiredGroup.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.TestGroup.RequiredGroup} msg The msg instance to transform.
+ * @param {!TestGroup.RequiredGroup} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -6422,7 +6422,7 @@ TestGroup.OptionalGroup = class extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.TestGroup.OptionalGroup} returns this
+   * @return {!TestGroup.OptionalGroup} returns this
    */
   setId(value) {
     return jspb.Message.setField(this, -2, value);
@@ -6431,7 +6431,7 @@ TestGroup.OptionalGroup = class extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestGroup.OptionalGroup} returns this
+   * @return {!TestGroup.OptionalGroup} returns this
    */
   clearId() {
     return jspb.Message.setField(this, -2, undefined);
@@ -6450,7 +6450,7 @@ TestGroup.OptionalGroup = class extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.TestGroup.OptionalGroup}
+   * @return {!TestGroup.OptionalGroup}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -6462,9 +6462,9 @@ TestGroup.OptionalGroup = class extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.TestGroup.OptionalGroup} msg The message object to deserialize into.
+   * @param {!TestGroup.OptionalGroup} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.TestGroup.OptionalGroup}
+   * @return {!TestGroup.OptionalGroup}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -6500,7 +6500,7 @@ TestGroup.OptionalGroup = class extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.TestGroup.OptionalGroup} message
+   * @param {!TestGroup.OptionalGroup} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -6550,7 +6550,7 @@ TestGroup.OptionalGroup.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.TestGroup.OptionalGroup} msg The msg instance to transform.
+ * @param {!TestGroup.OptionalGroup} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -6583,17 +6583,17 @@ export class TestGroup1 extends jspb.Message {
   };
   /**
    * optional TestGroup.RepeatedGroup group = 1;
-   * @return {?proto.jspb.test.TestGroup.RepeatedGroup}
+   * @return {?TestGroup.RepeatedGroup}
    */
   getGroup() {
-    return /** @type{?proto.jspb.test.TestGroup.RepeatedGroup} */ (
+    return /** @type{?TestGroup.RepeatedGroup} */ (
       jspb.Message.getWrapperField(this, TestGroup.RepeatedGroup, 1));
   };
 
 
   /**
-   * @param {?proto.jspb.test.TestGroup.RepeatedGroup|undefined} value
-   * @return {!proto.jspb.test.TestGroup1} returns this
+   * @param {?TestGroup.RepeatedGroup|undefined} value
+   * @return {!TestGroup1} returns this
   */
   setGroup(value) {
     return jspb.Message.setWrapperField(this, 1, value);
@@ -6602,7 +6602,7 @@ export class TestGroup1 extends jspb.Message {
 
   /**
    * Clears the message field making it undefined.
-   * @return {!proto.jspb.test.TestGroup1} returns this
+   * @return {!TestGroup1} returns this
    */
   clearGroup() {
     return this.setGroup(undefined);
@@ -6621,7 +6621,7 @@ export class TestGroup1 extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.TestGroup1}
+   * @return {!TestGroup1}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -6633,9 +6633,9 @@ export class TestGroup1 extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.TestGroup1} msg The message object to deserialize into.
+   * @param {!TestGroup1} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.TestGroup1}
+   * @return {!TestGroup1}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -6672,7 +6672,7 @@ export class TestGroup1 extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.TestGroup1} message
+   * @param {!TestGroup1} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -6723,7 +6723,7 @@ TestGroup1.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.TestGroup1} msg The msg instance to transform.
+ * @param {!TestGroup1} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -6765,7 +6765,7 @@ export class TestReservedNames extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.TestReservedNames} returns this
+   * @return {!TestReservedNames} returns this
    */
   setExtension$(value) {
     return jspb.Message.setField(this, 1, value);
@@ -6774,7 +6774,7 @@ export class TestReservedNames extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestReservedNames} returns this
+   * @return {!TestReservedNames} returns this
    */
   clearExtension$() {
     return jspb.Message.setField(this, 1, undefined);
@@ -6793,7 +6793,7 @@ export class TestReservedNames extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.TestReservedNames}
+   * @return {!TestReservedNames}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -6805,9 +6805,9 @@ export class TestReservedNames extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.TestReservedNames} msg The message object to deserialize into.
+   * @param {!TestReservedNames} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.TestReservedNames}
+   * @return {!TestReservedNames}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -6846,7 +6846,7 @@ export class TestReservedNames extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.TestReservedNames} message
+   * @param {!TestReservedNames} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -6928,7 +6928,7 @@ TestReservedNames.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.TestReservedNames} msg The msg instance to transform.
+ * @param {!TestReservedNames} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -6965,7 +6965,7 @@ export class TestReservedNamesExtension extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.TestReservedNamesExtension}
+   * @return {!TestReservedNamesExtension}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -6977,9 +6977,9 @@ export class TestReservedNamesExtension extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.TestReservedNamesExtension} msg The message object to deserialize into.
+   * @param {!TestReservedNamesExtension} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.TestReservedNamesExtension}
+   * @return {!TestReservedNamesExtension}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -7011,7 +7011,7 @@ export class TestReservedNamesExtension extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.TestReservedNamesExtension} message
+   * @param {!TestReservedNamesExtension} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -7067,7 +7067,7 @@ TestReservedNamesExtension.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.TestReservedNamesExtension} msg The msg instance to transform.
+ * @param {!TestReservedNamesExtension} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -7112,34 +7112,34 @@ export class TestMessageWithOneof extends jspb.Message {
   };
 
   /**
-   * @return {proto.jspb.test.TestMessageWithOneof.PartialOneofCase}
+   * @return {TestMessageWithOneof.PartialOneofCase}
    */
   getPartialOneofCase() {
-    return /** @type {proto.jspb.test.TestMessageWithOneof.PartialOneofCase} */(jspb.Message.computeOneofCase(this, TestMessageWithOneof.oneofGroups_[0]));
+    return /** @type {TestMessageWithOneof.PartialOneofCase} */(jspb.Message.computeOneofCase(this, TestMessageWithOneof.oneofGroups_[0]));
   };
 
 
   /**
-   * @return {proto.jspb.test.TestMessageWithOneof.RecursiveOneofCase}
+   * @return {TestMessageWithOneof.RecursiveOneofCase}
    */
   getRecursiveOneofCase() {
-    return /** @type {proto.jspb.test.TestMessageWithOneof.RecursiveOneofCase} */(jspb.Message.computeOneofCase(this, TestMessageWithOneof.oneofGroups_[1]));
+    return /** @type {TestMessageWithOneof.RecursiveOneofCase} */(jspb.Message.computeOneofCase(this, TestMessageWithOneof.oneofGroups_[1]));
   };
 
 
   /**
-   * @return {proto.jspb.test.TestMessageWithOneof.DefaultOneofACase}
+   * @return {TestMessageWithOneof.DefaultOneofACase}
    */
   getDefaultOneofACase() {
-    return /** @type {proto.jspb.test.TestMessageWithOneof.DefaultOneofACase} */(jspb.Message.computeOneofCase(this, TestMessageWithOneof.oneofGroups_[2]));
+    return /** @type {TestMessageWithOneof.DefaultOneofACase} */(jspb.Message.computeOneofCase(this, TestMessageWithOneof.oneofGroups_[2]));
   };
 
 
   /**
-   * @return {proto.jspb.test.TestMessageWithOneof.DefaultOneofBCase}
+   * @return {TestMessageWithOneof.DefaultOneofBCase}
    */
   getDefaultOneofBCase() {
-    return /** @type {proto.jspb.test.TestMessageWithOneof.DefaultOneofBCase} */(jspb.Message.computeOneofCase(this, TestMessageWithOneof.oneofGroups_[3]));
+    return /** @type {TestMessageWithOneof.DefaultOneofBCase} */(jspb.Message.computeOneofCase(this, TestMessageWithOneof.oneofGroups_[3]));
   };
 
   /**
@@ -7153,7 +7153,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   setPone(value) {
     return jspb.Message.setOneofField(this, 3, TestMessageWithOneof.oneofGroups_[0], value);
@@ -7162,7 +7162,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   clearPone() {
     return jspb.Message.setOneofField(this, 3, TestMessageWithOneof.oneofGroups_[0], undefined);
@@ -7189,7 +7189,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   setPthree(value) {
     return jspb.Message.setOneofField(this, 5, TestMessageWithOneof.oneofGroups_[0], value);
@@ -7198,7 +7198,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   clearPthree() {
     return jspb.Message.setOneofField(this, 5, TestMessageWithOneof.oneofGroups_[0], undefined);
@@ -7216,17 +7216,17 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * optional TestMessageWithOneof rone = 6;
-   * @return {?proto.jspb.test.TestMessageWithOneof}
+   * @return {?TestMessageWithOneof}
    */
   getRone() {
-    return /** @type{?proto.jspb.test.TestMessageWithOneof} */ (
+    return /** @type{?TestMessageWithOneof} */ (
       jspb.Message.getWrapperField(this, TestMessageWithOneof, 6));
   };
 
 
   /**
-   * @param {?proto.jspb.test.TestMessageWithOneof|undefined} value
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @param {?TestMessageWithOneof|undefined} value
+   * @return {!TestMessageWithOneof} returns this
   */
   setRone(value) {
     return jspb.Message.setOneofWrapperField(this, 6, TestMessageWithOneof.oneofGroups_[1], value);
@@ -7235,7 +7235,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * Clears the message field making it undefined.
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   clearRone() {
     return this.setRone(undefined);
@@ -7262,7 +7262,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   setRtwo(value) {
     return jspb.Message.setOneofField(this, 7, TestMessageWithOneof.oneofGroups_[1], value);
@@ -7271,7 +7271,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   clearRtwo() {
     return jspb.Message.setOneofField(this, 7, TestMessageWithOneof.oneofGroups_[1], undefined);
@@ -7298,7 +7298,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * @param {boolean} value
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   setNormalField(value) {
     return jspb.Message.setField(this, 8, value);
@@ -7307,7 +7307,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   clearNormalField() {
     return jspb.Message.setField(this, 8, undefined);
@@ -7334,7 +7334,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * @param {!Array<string>} value
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   setRepeatedFieldList(value) {
     return jspb.Message.setField(this, 9, value || []);
@@ -7344,7 +7344,7 @@ export class TestMessageWithOneof extends jspb.Message {
   /**
    * @param {string} value
    * @param {number=} opt_index
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   addRepeatedField(value, opt_index) {
     return jspb.Message.addToRepeatedField(this, 9, value, opt_index);
@@ -7353,7 +7353,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * Clears the list making it empty but non-null.
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   clearRepeatedFieldList() {
     return this.setRepeatedFieldList([]);
@@ -7371,7 +7371,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   setAone(value) {
     return jspb.Message.setOneofField(this, 10, TestMessageWithOneof.oneofGroups_[2], value);
@@ -7380,7 +7380,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   clearAone() {
     return jspb.Message.setOneofField(this, 10, TestMessageWithOneof.oneofGroups_[2], undefined);
@@ -7407,7 +7407,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   setAtwo(value) {
     return jspb.Message.setOneofField(this, 11, TestMessageWithOneof.oneofGroups_[2], value);
@@ -7416,7 +7416,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   clearAtwo() {
     return jspb.Message.setOneofField(this, 11, TestMessageWithOneof.oneofGroups_[2], undefined);
@@ -7443,7 +7443,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   setBone(value) {
     return jspb.Message.setOneofField(this, 12, TestMessageWithOneof.oneofGroups_[3], value);
@@ -7452,7 +7452,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   clearBone() {
     return jspb.Message.setOneofField(this, 12, TestMessageWithOneof.oneofGroups_[3], undefined);
@@ -7479,7 +7479,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   setBtwo(value) {
     return jspb.Message.setOneofField(this, 13, TestMessageWithOneof.oneofGroups_[3], value);
@@ -7488,7 +7488,7 @@ export class TestMessageWithOneof extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestMessageWithOneof} returns this
+   * @return {!TestMessageWithOneof} returns this
    */
   clearBtwo() {
     return jspb.Message.setOneofField(this, 13, TestMessageWithOneof.oneofGroups_[3], undefined);
@@ -7507,7 +7507,7 @@ export class TestMessageWithOneof extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.TestMessageWithOneof}
+   * @return {!TestMessageWithOneof}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -7519,9 +7519,9 @@ export class TestMessageWithOneof extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.TestMessageWithOneof} msg The message object to deserialize into.
+   * @param {!TestMessageWithOneof} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.TestMessageWithOneof}
+   * @return {!TestMessageWithOneof}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -7594,7 +7594,7 @@ export class TestMessageWithOneof extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.TestMessageWithOneof} message
+   * @param {!TestMessageWithOneof} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -7757,7 +7757,7 @@ TestMessageWithOneof.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.TestMessageWithOneof} msg The msg instance to transform.
+ * @param {!TestMessageWithOneof} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -7808,7 +7808,7 @@ export class TestEndsWithBytes extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.TestEndsWithBytes} returns this
+   * @return {!TestEndsWithBytes} returns this
    */
   setValue(value) {
     return jspb.Message.setField(this, 1, value);
@@ -7817,7 +7817,7 @@ export class TestEndsWithBytes extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestEndsWithBytes} returns this
+   * @return {!TestEndsWithBytes} returns this
    */
   clearValue() {
     return jspb.Message.setField(this, 1, undefined);
@@ -7868,7 +7868,7 @@ export class TestEndsWithBytes extends jspb.Message {
 
   /**
    * @param {!(string|Uint8Array)} value
-   * @return {!proto.jspb.test.TestEndsWithBytes} returns this
+   * @return {!TestEndsWithBytes} returns this
    */
   setData(value) {
     return jspb.Message.setField(this, 2, value);
@@ -7877,7 +7877,7 @@ export class TestEndsWithBytes extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestEndsWithBytes} returns this
+   * @return {!TestEndsWithBytes} returns this
    */
   clearData() {
     return jspb.Message.setField(this, 2, undefined);
@@ -7896,7 +7896,7 @@ export class TestEndsWithBytes extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.TestEndsWithBytes}
+   * @return {!TestEndsWithBytes}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -7908,9 +7908,9 @@ export class TestEndsWithBytes extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.TestEndsWithBytes} msg The message object to deserialize into.
+   * @param {!TestEndsWithBytes} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.TestEndsWithBytes}
+   * @return {!TestEndsWithBytes}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -7950,7 +7950,7 @@ export class TestEndsWithBytes extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.TestEndsWithBytes} message
+   * @param {!TestEndsWithBytes} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -8007,7 +8007,7 @@ TestEndsWithBytes.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.TestEndsWithBytes} msg The msg instance to transform.
+ * @param {!TestEndsWithBytes} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -8050,7 +8050,7 @@ export class TestLastFieldBeforePivot extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.TestLastFieldBeforePivot} returns this
+   * @return {!TestLastFieldBeforePivot} returns this
    */
   setLastFieldBeforePivot(value) {
     return jspb.Message.setField(this, 1, value);
@@ -8059,7 +8059,7 @@ export class TestLastFieldBeforePivot extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.TestLastFieldBeforePivot} returns this
+   * @return {!TestLastFieldBeforePivot} returns this
    */
   clearLastFieldBeforePivot() {
     return jspb.Message.setField(this, 1, undefined);
@@ -8078,7 +8078,7 @@ export class TestLastFieldBeforePivot extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.TestLastFieldBeforePivot}
+   * @return {!TestLastFieldBeforePivot}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -8090,9 +8090,9 @@ export class TestLastFieldBeforePivot extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.TestLastFieldBeforePivot} msg The message object to deserialize into.
+   * @param {!TestLastFieldBeforePivot} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.TestLastFieldBeforePivot}
+   * @return {!TestLastFieldBeforePivot}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -8131,7 +8131,7 @@ export class TestLastFieldBeforePivot extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.TestLastFieldBeforePivot} message
+   * @param {!TestLastFieldBeforePivot} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -8213,7 +8213,7 @@ TestLastFieldBeforePivot.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.TestLastFieldBeforePivot} msg The msg instance to transform.
+ * @param {!TestLastFieldBeforePivot} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -8258,7 +8258,7 @@ export class Int64Types extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.Int64Types} returns this
+   * @return {!Int64Types} returns this
    */
   setInt64Normal(value) {
     return jspb.Message.setField(this, 1, value);
@@ -8267,7 +8267,7 @@ export class Int64Types extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.Int64Types} returns this
+   * @return {!Int64Types} returns this
    */
   clearInt64Normal() {
     return jspb.Message.setField(this, 1, undefined);
@@ -8294,7 +8294,7 @@ export class Int64Types extends jspb.Message {
 
   /**
    * @param {string} value
-   * @return {!proto.jspb.test.Int64Types} returns this
+   * @return {!Int64Types} returns this
    */
   setInt64String(value) {
     return jspb.Message.setField(this, 2, value);
@@ -8303,7 +8303,7 @@ export class Int64Types extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.Int64Types} returns this
+   * @return {!Int64Types} returns this
    */
   clearInt64String() {
     return jspb.Message.setField(this, 2, undefined);
@@ -8330,7 +8330,7 @@ export class Int64Types extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.Int64Types} returns this
+   * @return {!Int64Types} returns this
    */
   setInt64Number(value) {
     return jspb.Message.setField(this, 3, value);
@@ -8339,7 +8339,7 @@ export class Int64Types extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.Int64Types} returns this
+   * @return {!Int64Types} returns this
    */
   clearInt64Number() {
     return jspb.Message.setField(this, 3, undefined);
@@ -8358,7 +8358,7 @@ export class Int64Types extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.Int64Types}
+   * @return {!Int64Types}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -8370,9 +8370,9 @@ export class Int64Types extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.Int64Types} msg The message object to deserialize into.
+   * @param {!Int64Types} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.Int64Types}
+   * @return {!Int64Types}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -8416,7 +8416,7 @@ export class Int64Types extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.Int64Types} message
+   * @param {!Int64Types} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -8480,7 +8480,7 @@ Int64Types.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.Int64Types} msg The msg instance to transform.
+ * @param {!Int64Types} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -8528,7 +8528,7 @@ export class TestMapFieldsNoBinary extends jspb.Message {
 
   /**
    * Clears values from the map. The map will be non-null.
-   * @return {!proto.jspb.test.TestMapFieldsNoBinary} returns this
+   * @return {!TestMapFieldsNoBinary} returns this
    */
   clearMapStringStringMapfunction() {
     this.getMapStringStringMap().clear();
@@ -8551,7 +8551,7 @@ export class TestMapFieldsNoBinary extends jspb.Message {
 
   /**
    * Clears values from the map. The map will be non-null.
-   * @return {!proto.jspb.test.TestMapFieldsNoBinary} returns this
+   * @return {!TestMapFieldsNoBinary} returns this
    */
   clearMapStringInt32Mapfunction() {
     this.getMapStringInt32Map().clear();
@@ -8574,7 +8574,7 @@ export class TestMapFieldsNoBinary extends jspb.Message {
 
   /**
    * Clears values from the map. The map will be non-null.
-   * @return {!proto.jspb.test.TestMapFieldsNoBinary} returns this
+   * @return {!TestMapFieldsNoBinary} returns this
    */
   clearMapStringInt64Mapfunction() {
     this.getMapStringInt64Map().clear();
@@ -8597,7 +8597,7 @@ export class TestMapFieldsNoBinary extends jspb.Message {
 
   /**
    * Clears values from the map. The map will be non-null.
-   * @return {!proto.jspb.test.TestMapFieldsNoBinary} returns this
+   * @return {!TestMapFieldsNoBinary} returns this
    */
   clearMapStringBoolMapfunction() {
     this.getMapStringBoolMap().clear();
@@ -8620,7 +8620,7 @@ export class TestMapFieldsNoBinary extends jspb.Message {
 
   /**
    * Clears values from the map. The map will be non-null.
-   * @return {!proto.jspb.test.TestMapFieldsNoBinary} returns this
+   * @return {!TestMapFieldsNoBinary} returns this
    */
   clearMapStringDoubleMapfunction() {
     this.getMapStringDoubleMap().clear();
@@ -8632,10 +8632,10 @@ export class TestMapFieldsNoBinary extends jspb.Message {
    * map<string, MapValueEnumNoBinary> map_string_enum = 6;
    * @param {boolean=} opt_noLazyCreate Do not create the map if
    * empty, instead returning `undefined`
-   * @return {!jspb.Map<string,!proto.jspb.test.MapValueEnumNoBinary>}
+   * @return {!jspb.Map<string,!MapValueEnumNoBinary>}
    */
   getMapStringEnumMap(opt_noLazyCreate) {
-    return /** @type {!jspb.Map<string,!proto.jspb.test.MapValueEnumNoBinary>} */ (
+    return /** @type {!jspb.Map<string,!MapValueEnumNoBinary>} */ (
         jspb.Message.getMapField(this, 6, opt_noLazyCreate,
         null));
   };
@@ -8643,7 +8643,7 @@ export class TestMapFieldsNoBinary extends jspb.Message {
 
   /**
    * Clears values from the map. The map will be non-null.
-   * @return {!proto.jspb.test.TestMapFieldsNoBinary} returns this
+   * @return {!TestMapFieldsNoBinary} returns this
    */
   clearMapStringEnumMapfunction() {
     this.getMapStringEnumMap().clear();
@@ -8655,10 +8655,10 @@ export class TestMapFieldsNoBinary extends jspb.Message {
    * map<string, MapValueMessageNoBinary> map_string_msg = 7;
    * @param {boolean=} opt_noLazyCreate Do not create the map if
    * empty, instead returning `undefined`
-   * @return {!jspb.Map<string,!proto.jspb.test.MapValueMessageNoBinary>}
+   * @return {!jspb.Map<string,!MapValueMessageNoBinary>}
    */
   getMapStringMsgMap(opt_noLazyCreate) {
-    return /** @type {!jspb.Map<string,!proto.jspb.test.MapValueMessageNoBinary>} */ (
+    return /** @type {!jspb.Map<string,!MapValueMessageNoBinary>} */ (
         jspb.Message.getMapField(this, 7, opt_noLazyCreate,
         MapValueMessageNoBinary));
   };
@@ -8666,7 +8666,7 @@ export class TestMapFieldsNoBinary extends jspb.Message {
 
   /**
    * Clears values from the map. The map will be non-null.
-   * @return {!proto.jspb.test.TestMapFieldsNoBinary} returns this
+   * @return {!TestMapFieldsNoBinary} returns this
    */
   clearMapStringMsgMapfunction() {
     this.getMapStringMsgMap().clear();
@@ -8689,7 +8689,7 @@ export class TestMapFieldsNoBinary extends jspb.Message {
 
   /**
    * Clears values from the map. The map will be non-null.
-   * @return {!proto.jspb.test.TestMapFieldsNoBinary} returns this
+   * @return {!TestMapFieldsNoBinary} returns this
    */
   clearMapInt32StringMapfunction() {
     this.getMapInt32StringMap().clear();
@@ -8712,7 +8712,7 @@ export class TestMapFieldsNoBinary extends jspb.Message {
 
   /**
    * Clears values from the map. The map will be non-null.
-   * @return {!proto.jspb.test.TestMapFieldsNoBinary} returns this
+   * @return {!TestMapFieldsNoBinary} returns this
    */
   clearMapInt64StringMapfunction() {
     this.getMapInt64StringMap().clear();
@@ -8735,7 +8735,7 @@ export class TestMapFieldsNoBinary extends jspb.Message {
 
   /**
    * Clears values from the map. The map will be non-null.
-   * @return {!proto.jspb.test.TestMapFieldsNoBinary} returns this
+   * @return {!TestMapFieldsNoBinary} returns this
    */
   clearMapBoolStringMapfunction() {
     this.getMapBoolStringMap().clear();
@@ -8745,17 +8745,17 @@ export class TestMapFieldsNoBinary extends jspb.Message {
 
   /**
    * optional TestMapFieldsNoBinary test_map_fields = 11;
-   * @return {?proto.jspb.test.TestMapFieldsNoBinary}
+   * @return {?TestMapFieldsNoBinary}
    */
   getTestMapFields() {
-    return /** @type{?proto.jspb.test.TestMapFieldsNoBinary} */ (
+    return /** @type{?TestMapFieldsNoBinary} */ (
       jspb.Message.getWrapperField(this, TestMapFieldsNoBinary, 11));
   };
 
 
   /**
-   * @param {?proto.jspb.test.TestMapFieldsNoBinary|undefined} value
-   * @return {!proto.jspb.test.TestMapFieldsNoBinary} returns this
+   * @param {?TestMapFieldsNoBinary|undefined} value
+   * @return {!TestMapFieldsNoBinary} returns this
   */
   setTestMapFields(value) {
     return jspb.Message.setWrapperField(this, 11, value);
@@ -8764,7 +8764,7 @@ export class TestMapFieldsNoBinary extends jspb.Message {
 
   /**
    * Clears the message field making it undefined.
-   * @return {!proto.jspb.test.TestMapFieldsNoBinary} returns this
+   * @return {!TestMapFieldsNoBinary} returns this
    */
   clearTestMapFields() {
     return this.setTestMapFields(undefined);
@@ -8784,10 +8784,10 @@ export class TestMapFieldsNoBinary extends jspb.Message {
    * map<string, TestMapFieldsNoBinary> map_string_testmapfields = 12;
    * @param {boolean=} opt_noLazyCreate Do not create the map if
    * empty, instead returning `undefined`
-   * @return {!jspb.Map<string,!proto.jspb.test.TestMapFieldsNoBinary>}
+   * @return {!jspb.Map<string,!TestMapFieldsNoBinary>}
    */
   getMapStringTestmapfieldsMap(opt_noLazyCreate) {
-    return /** @type {!jspb.Map<string,!proto.jspb.test.TestMapFieldsNoBinary>} */ (
+    return /** @type {!jspb.Map<string,!TestMapFieldsNoBinary>} */ (
         jspb.Message.getMapField(this, 12, opt_noLazyCreate,
         TestMapFieldsNoBinary));
   };
@@ -8795,7 +8795,7 @@ export class TestMapFieldsNoBinary extends jspb.Message {
 
   /**
    * Clears values from the map. The map will be non-null.
-   * @return {!proto.jspb.test.TestMapFieldsNoBinary} returns this
+   * @return {!TestMapFieldsNoBinary} returns this
    */
   clearMapStringTestmapfieldsMapfunction() {
     this.getMapStringTestmapfieldsMap().clear();
@@ -8806,7 +8806,7 @@ export class TestMapFieldsNoBinary extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.TestMapFieldsNoBinary}
+   * @return {!TestMapFieldsNoBinary}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -8818,9 +8818,9 @@ export class TestMapFieldsNoBinary extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.TestMapFieldsNoBinary} msg The message object to deserialize into.
+   * @param {!TestMapFieldsNoBinary} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.TestMapFieldsNoBinary}
+   * @return {!TestMapFieldsNoBinary}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -8923,7 +8923,7 @@ export class TestMapFieldsNoBinary extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.TestMapFieldsNoBinary} message
+   * @param {!TestMapFieldsNoBinary} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -9018,7 +9018,7 @@ TestMapFieldsNoBinary.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.TestMapFieldsNoBinary} msg The msg instance to transform.
+ * @param {!TestMapFieldsNoBinary} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -9071,7 +9071,7 @@ export class MapValueMessageNoBinary extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.MapValueMessageNoBinary} returns this
+   * @return {!MapValueMessageNoBinary} returns this
    */
   setFoo(value) {
     return jspb.Message.setField(this, 1, value);
@@ -9080,7 +9080,7 @@ export class MapValueMessageNoBinary extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.MapValueMessageNoBinary} returns this
+   * @return {!MapValueMessageNoBinary} returns this
    */
   clearFoo() {
     return jspb.Message.setField(this, 1, undefined);
@@ -9099,7 +9099,7 @@ export class MapValueMessageNoBinary extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.MapValueMessageNoBinary}
+   * @return {!MapValueMessageNoBinary}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -9111,9 +9111,9 @@ export class MapValueMessageNoBinary extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.MapValueMessageNoBinary} msg The message object to deserialize into.
+   * @param {!MapValueMessageNoBinary} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.MapValueMessageNoBinary}
+   * @return {!MapValueMessageNoBinary}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -9149,7 +9149,7 @@ export class MapValueMessageNoBinary extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.MapValueMessageNoBinary} message
+   * @param {!MapValueMessageNoBinary} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -9199,7 +9199,7 @@ MapValueMessageNoBinary.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.MapValueMessageNoBinary} msg The msg instance to transform.
+ * @param {!MapValueMessageNoBinary} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -9233,7 +9233,7 @@ export class Deeply extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.Deeply}
+   * @return {!Deeply}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -9245,9 +9245,9 @@ export class Deeply extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.Deeply} msg The message object to deserialize into.
+   * @param {!Deeply} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.Deeply}
+   * @return {!Deeply}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -9279,7 +9279,7 @@ export class Deeply extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.Deeply} message
+   * @param {!Deeply} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -9322,7 +9322,7 @@ Deeply.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.Deeply} msg The msg instance to transform.
+ * @param {!Deeply} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -9356,7 +9356,7 @@ Deeply.Nested = class extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.Deeply.Nested}
+   * @return {!Deeply.Nested}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -9368,9 +9368,9 @@ Deeply.Nested = class extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.Deeply.Nested} msg The message object to deserialize into.
+   * @param {!Deeply.Nested} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.Deeply.Nested}
+   * @return {!Deeply.Nested}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -9402,7 +9402,7 @@ Deeply.Nested = class extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.Deeply.Nested} message
+   * @param {!Deeply.Nested} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -9445,7 +9445,7 @@ Deeply.Nested.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.Deeply.Nested} msg The msg instance to transform.
+ * @param {!Deeply.Nested} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -9487,7 +9487,7 @@ Deeply.Nested.Message = class extends jspb.Message {
 
   /**
    * @param {number} value
-   * @return {!proto.jspb.test.Deeply.Nested.Message} returns this
+   * @return {!Deeply.Nested.Message} returns this
    */
   setCount(value) {
     return jspb.Message.setField(this, 1, value);
@@ -9496,7 +9496,7 @@ Deeply.Nested.Message = class extends jspb.Message {
 
   /**
    * Clears the field making it undefined.
-   * @return {!proto.jspb.test.Deeply.Nested.Message} returns this
+   * @return {!Deeply.Nested.Message} returns this
    */
   clearCount() {
     return jspb.Message.setField(this, 1, undefined);
@@ -9515,7 +9515,7 @@ Deeply.Nested.Message = class extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
-   * @return {!proto.jspb.test.Deeply.Nested.Message}
+   * @return {!Deeply.Nested.Message}
    */
   static deserializeBinary(bytes) {
     var reader = new jspb.BinaryReader(bytes);
@@ -9527,9 +9527,9 @@ Deeply.Nested.Message = class extends jspb.Message {
   /**
    * Deserializes binary data (in protobuf wire format) from the
    * given reader into the given message object.
-   * @param {!proto.jspb.test.Deeply.Nested.Message} msg The message object to deserialize into.
+   * @param {!Deeply.Nested.Message} msg The message object to deserialize into.
    * @param {!jspb.BinaryReader} reader The BinaryReader to use.
-   * @return {!proto.jspb.test.Deeply.Nested.Message}
+   * @return {!Deeply.Nested.Message}
    */
   static deserializeBinaryFromReader(msg, reader) {
     while (reader.nextField()) {
@@ -9565,7 +9565,7 @@ Deeply.Nested.Message = class extends jspb.Message {
   /**
    * Serializes the given message to binary data (in protobuf wire
    * format), writing to the given BinaryWriter.
-   * @param {!proto.jspb.test.Deeply.Nested.Message} message
+   * @param {!Deeply.Nested.Message} message
    * @param {!jspb.BinaryWriter} writer
    * @suppress {unusedLocalVariables} f is only used for nested messages
    */
@@ -9615,7 +9615,7 @@ Deeply.Nested.Message.prototype.toObject = function(opt_includeInstance) {
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.jspb.test.Deeply.Nested.Message} msg The msg instance to transform.
+ * @param {!Deeply.Nested.Message} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
@@ -9661,7 +9661,7 @@ export const TestAllowAliasEnum = {
 /**
  * A tuple of {field number, class constructor} for the extension
  * field named `simple1`.
- * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.Simple1>}
+ * @type {!jspb.ExtensionFieldInfo<!Simple1>}
  */
 export const simple1 = new jspb.ExtensionFieldInfo(
     105,
