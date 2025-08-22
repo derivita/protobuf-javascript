@@ -90,6 +90,13 @@ export class Empty extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  Empty.displayName = 'proto.jspb.test.Empty';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -253,6 +260,13 @@ export class EnumContainer extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  EnumContainer.displayName = 'proto.jspb.test.EnumContainer';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -309,13 +323,6 @@ export class Simple1 extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, -1, Simple1.repeatedFields_, null);
   };
-  /**
-   * List of repeated fields within this message type.
-   * @private {!Array<number>}
-   * @const
-   */
-  static repeatedFields_ = [2];
-
   /**
    * required string a_string = 1;
    * @return {string}
@@ -518,6 +525,20 @@ export class Simple1 extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  Simple1.displayName = 'proto.jspb.test.Simple1';
+}
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+Simple1.repeatedFields_ = [2];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -576,13 +597,6 @@ export class Simple2 extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, -1, Simple2.repeatedFields_, null);
   };
-  /**
-   * List of repeated fields within this message type.
-   * @private {!Array<number>}
-   * @const
-   */
-  static repeatedFields_ = [2];
-
   /**
    * required string a_string = 1;
    * @return {string}
@@ -737,6 +751,20 @@ export class Simple2 extends jspb.Message {
 
 
 }
+
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  Simple2.displayName = 'proto.jspb.test.Simple2';
+}
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+Simple2.repeatedFields_ = [2];
 
 
 
@@ -1043,6 +1071,13 @@ export class SpecialCases extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  SpecialCases.displayName = 'proto.jspb.test.SpecialCases';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -1102,13 +1137,6 @@ export class OptionalFields extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, -1, OptionalFields.repeatedFields_, null);
   };
-  /**
-   * List of repeated fields within this message type.
-   * @private {!Array<number>}
-   * @const
-   */
-  static repeatedFields_ = [4,5];
-
   /**
    * optional string a_string = 1;
    * @return {string}
@@ -1412,6 +1440,20 @@ export class OptionalFields extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  OptionalFields.displayName = 'proto.jspb.test.OptionalFields';
+}
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+OptionalFields.repeatedFields_ = [4,5];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -1580,6 +1622,13 @@ OptionalFields.Nested = class extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  OptionalFields.Nested.displayName = 'proto.jspb.test.OptionalFields.Nested';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -1636,36 +1685,6 @@ export class HasExtensions extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, 4, null, null);
   };
-
-  /**
-   * The extensions registered with this message class. This is a map of
-   * extension field number to fieldInfo object.
-   *
-   * For example:
-   *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
-   *
-   * fieldName contains the JsCompiler renamed field name property so that it
-   * works in OPTIMIZED mode.
-   *
-   * @type {!Object<number, jspb.ExtensionFieldInfo>}
-   */
-  static extensions = {};
-
-
-  /**
-   * The extensions registered with this message class. This is a map of
-   * extension field number to fieldInfo object.
-   *
-   * For example:
-   *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
-   *
-   * fieldName contains the JsCompiler renamed field name property so that it
-   * works in OPTIMIZED mode.
-   *
-   * @type {!Object<number, jspb.ExtensionFieldBinaryInfo>}
-   */
-  static extensionsBinary = {};
-
   /**
    * optional string str1 = 1;
    * @return {string}
@@ -1872,6 +1891,43 @@ export class HasExtensions extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  HasExtensions.displayName = 'proto.jspb.test.HasExtensions';
+}
+
+/**
+ * The extensions registered with this message class. This is a map of
+ * extension field number to fieldInfo object.
+ *
+ * For example:
+ *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
+ *
+ * fieldName contains the JsCompiler renamed field name property so that it
+ * works in OPTIMIZED mode.
+ *
+ * @type {!Object<number, jspb.ExtensionFieldInfo>}
+ */
+HasExtensions.extensions = {};
+
+
+/**
+ * The extensions registered with this message class. This is a map of
+ * extension field number to fieldInfo object.
+ *
+ * For example:
+ *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
+ *
+ * fieldName contains the JsCompiler renamed field name property so that it
+ * works in OPTIMIZED mode.
+ *
+ * @type {!Object<number, jspb.ExtensionFieldBinaryInfo>}
+ */
+HasExtensions.extensionsBinary = {};
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -1933,13 +1989,6 @@ export class Complex extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, -1, Complex.repeatedFields_, null);
   };
-  /**
-   * List of repeated fields within this message type.
-   * @private {!Array<number>}
-   * @const
-   */
-  static repeatedFields_ = [5,7];
-
   /**
    * required string a_string = 1;
    * @return {string}
@@ -2290,6 +2339,20 @@ export class Complex extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  Complex.displayName = 'proto.jspb.test.Complex';
+}
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+Complex.repeatedFields_ = [5,7];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -2459,6 +2522,13 @@ Complex.Nested = class extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  Complex.Nested.displayName = 'proto.jspb.test.Complex.Nested';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -2575,6 +2645,13 @@ export class OuterMessage extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  OuterMessage.displayName = 'proto.jspb.test.OuterMessage';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -2738,6 +2815,13 @@ OuterMessage.Complex = class extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  OuterMessage.Complex.displayName = 'proto.jspb.test.OuterMessage.Complex';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -2901,6 +2985,13 @@ export class MineField extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  MineField.displayName = 'proto.jspb.test.MineField';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -2957,19 +3048,6 @@ export class IsExtension extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, -1, null, null);
   };
-
-  /**
-   * A tuple of {field number, class constructor} for the extension
-   * field named `extField`.
-   * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.IsExtension>}
-   */
-  static extField = new jspb.ExtensionFieldInfo(
-      100,
-      {extField: 0},
-      IsExtension,
-       /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
-           IsExtension.toObject),
-      0);
   /**
    * optional string ext1 = 1;
    * @return {string}
@@ -3077,6 +3155,26 @@ export class IsExtension extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  IsExtension.displayName = 'proto.jspb.test.IsExtension';
+}
+
+/**
+ * A tuple of {field number, class constructor} for the extension
+ * field named `extField`.
+ * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.IsExtension>}
+ */
+IsExtension.extField = new jspb.ExtensionFieldInfo(
+    100,
+    {extField: 0},
+    IsExtension,
+     /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
+         IsExtension.toObject),
+    0);
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -3145,58 +3243,6 @@ export class IndirectExtension extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, -1, null, null);
   };
-
-  /**
-   * A tuple of {field number, class constructor} for the extension
-   * field named `simple`.
-   * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.Simple1>}
-   */
-  static simple = new jspb.ExtensionFieldInfo(
-      101,
-      {simple: 0},
-      Simple1,
-       /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
-           Simple1.toObject),
-      0);
-
-  /**
-   * A tuple of {field number, class constructor} for the extension
-   * field named `str`.
-   * @type {!jspb.ExtensionFieldInfo<string>}
-   */
-  static str = new jspb.ExtensionFieldInfo(
-      102,
-      {str: 0},
-      null,
-       /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
-           null),
-      0);
-
-  /**
-   * A tuple of {field number, class constructor} for the extension
-   * field named `repeatedStrList`.
-   * @type {!jspb.ExtensionFieldInfo<!Array<string>>}
-   */
-  static repeatedStrList = new jspb.ExtensionFieldInfo(
-      103,
-      {repeatedStrList: 0},
-      null,
-       /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
-           null),
-      1);
-
-  /**
-   * A tuple of {field number, class constructor} for the extension
-   * field named `repeatedSimpleList`.
-   * @type {!jspb.ExtensionFieldInfo<!Array<!proto.jspb.test.Simple1>>}
-   */
-  static repeatedSimpleList = new jspb.ExtensionFieldInfo(
-      104,
-      {repeatedSimpleList: 0},
-      Simple1,
-       /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
-           Simple1.toObject),
-      1);
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
@@ -3257,6 +3303,65 @@ export class IndirectExtension extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  IndirectExtension.displayName = 'proto.jspb.test.IndirectExtension';
+}
+
+/**
+ * A tuple of {field number, class constructor} for the extension
+ * field named `simple`.
+ * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.Simple1>}
+ */
+IndirectExtension.simple = new jspb.ExtensionFieldInfo(
+    101,
+    {simple: 0},
+    Simple1,
+     /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
+         Simple1.toObject),
+    0);
+
+/**
+ * A tuple of {field number, class constructor} for the extension
+ * field named `str`.
+ * @type {!jspb.ExtensionFieldInfo<string>}
+ */
+IndirectExtension.str = new jspb.ExtensionFieldInfo(
+    102,
+    {str: 0},
+    null,
+     /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
+         null),
+    0);
+
+/**
+ * A tuple of {field number, class constructor} for the extension
+ * field named `repeatedStrList`.
+ * @type {!jspb.ExtensionFieldInfo<!Array<string>>}
+ */
+IndirectExtension.repeatedStrList = new jspb.ExtensionFieldInfo(
+    103,
+    {repeatedStrList: 0},
+    null,
+     /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
+         null),
+    1);
+
+/**
+ * A tuple of {field number, class constructor} for the extension
+ * field named `repeatedSimpleList`.
+ * @type {!jspb.ExtensionFieldInfo<!Array<!proto.jspb.test.Simple1>>}
+ */
+IndirectExtension.repeatedSimpleList = new jspb.ExtensionFieldInfo(
+    104,
+    {repeatedSimpleList: 0},
+    Simple1,
+     /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
+         Simple1.toObject),
+    1);
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -3348,14 +3453,6 @@ HasExtensions.extensionsBinary[104] = new jspb.ExtensionFieldBinaryInfo(
 HasExtensions.extensions[104] = IndirectExtension.repeatedSimpleList;
 
 export class DefaultValues extends jspb.Message {
-  /**
-   * @enum {number}
-   */
-  static Enum = {
-    E1: 13,
-    E2: 77
-  };
-
   /**
    * Generated by JsPbCodeGenerator.
    * @param {Array=} opt_data Optional initial data array, typically from a
@@ -3735,6 +3832,21 @@ export class DefaultValues extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  DefaultValues.displayName = 'proto.jspb.test.DefaultValues';
+}
+/**
+ * @enum {number}
+ */
+DefaultValues.Enum = {
+  E1: 13,
+  E2: 77
+};
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -3796,13 +3908,6 @@ export class FloatingPointFields extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, -1, FloatingPointFields.repeatedFields_, null);
   };
-  /**
-   * List of repeated fields within this message type.
-   * @private {!Array<number>}
-   * @const
-   */
-  static repeatedFields_ = [3,7];
-
   /**
    * optional float optional_float_field = 1;
    * @return {number}
@@ -4245,6 +4350,20 @@ export class FloatingPointFields extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  FloatingPointFields.displayName = 'proto.jspb.test.FloatingPointFields';
+}
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+FloatingPointFields.repeatedFields_ = [3,7];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -4308,13 +4427,6 @@ export class BooleanFields extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, -1, BooleanFields.repeatedFields_, null);
   };
-  /**
-   * List of repeated fields within this message type.
-   * @private {!Array<number>}
-   * @const
-   */
-  static repeatedFields_ = [3];
-
   /**
    * optional bool optional_boolean_field = 1;
    * @return {boolean}
@@ -4566,6 +4678,20 @@ export class BooleanFields extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  BooleanFields.displayName = 'proto.jspb.test.BooleanFields';
+}
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+BooleanFields.repeatedFields_ = [3];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -4625,43 +4751,6 @@ export class TestClone extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, 8, TestClone.repeatedFields_, null);
   };
-
-  /**
-   * The extensions registered with this message class. This is a map of
-   * extension field number to fieldInfo object.
-   *
-   * For example:
-   *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
-   *
-   * fieldName contains the JsCompiler renamed field name property so that it
-   * works in OPTIMIZED mode.
-   *
-   * @type {!Object<number, jspb.ExtensionFieldInfo>}
-   */
-  static extensions = {};
-
-
-  /**
-   * The extensions registered with this message class. This is a map of
-   * extension field number to fieldInfo object.
-   *
-   * For example:
-   *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
-   *
-   * fieldName contains the JsCompiler renamed field name property so that it
-   * works in OPTIMIZED mode.
-   *
-   * @type {!Object<number, jspb.ExtensionFieldBinaryInfo>}
-   */
-  static extensionsBinary = {};
-
-  /**
-   * List of repeated fields within this message type.
-   * @private {!Array<number>}
-   * @const
-   */
-  static repeatedFields_ = [5];
-
   /**
    * optional string str = 1;
    * @return {string}
@@ -4993,6 +5082,50 @@ export class TestClone extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  TestClone.displayName = 'proto.jspb.test.TestClone';
+}
+
+/**
+ * The extensions registered with this message class. This is a map of
+ * extension field number to fieldInfo object.
+ *
+ * For example:
+ *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
+ *
+ * fieldName contains the JsCompiler renamed field name property so that it
+ * works in OPTIMIZED mode.
+ *
+ * @type {!Object<number, jspb.ExtensionFieldInfo>}
+ */
+TestClone.extensions = {};
+
+
+/**
+ * The extensions registered with this message class. This is a map of
+ * extension field number to fieldInfo object.
+ *
+ * For example:
+ *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
+ *
+ * fieldName contains the JsCompiler renamed field name property so that it
+ * works in OPTIMIZED mode.
+ *
+ * @type {!Object<number, jspb.ExtensionFieldBinaryInfo>}
+ */
+TestClone.extensionsBinary = {};
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+TestClone.repeatedFields_ = [5];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -5057,19 +5190,6 @@ export class TestCloneExtension extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, -1, null, null);
   };
-
-  /**
-   * A tuple of {field number, class constructor} for the extension
-   * field named `lowExt`.
-   * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.TestCloneExtension>}
-   */
-  static lowExt = new jspb.ExtensionFieldInfo(
-      11,
-      {lowExt: 0},
-      TestCloneExtension,
-       /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
-           TestCloneExtension.toObject),
-      0);
   /**
    * optional int32 f = 1;
    * @return {number}
@@ -5177,6 +5297,26 @@ export class TestCloneExtension extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  TestCloneExtension.displayName = 'proto.jspb.test.TestCloneExtension';
+}
+
+/**
+ * A tuple of {field number, class constructor} for the extension
+ * field named `lowExt`.
+ * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.TestCloneExtension>}
+ */
+TestCloneExtension.lowExt = new jspb.ExtensionFieldInfo(
+    11,
+    {lowExt: 0},
+    TestCloneExtension,
+     /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
+         TestCloneExtension.toObject),
+    0);
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -5245,19 +5385,6 @@ export class CloneExtension extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, -1, null, null);
   };
-
-  /**
-   * A tuple of {field number, class constructor} for the extension
-   * field named `extField`.
-   * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.CloneExtension>}
-   */
-  static extField = new jspb.ExtensionFieldInfo(
-      100,
-      {extField: 0},
-      CloneExtension,
-       /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
-           CloneExtension.toObject),
-      0);
   /**
    * optional string ext = 2;
    * @return {string}
@@ -5365,6 +5492,26 @@ export class CloneExtension extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  CloneExtension.displayName = 'proto.jspb.test.CloneExtension';
+}
+
+/**
+ * A tuple of {field number, class constructor} for the extension
+ * field named `extField`.
+ * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.CloneExtension>}
+ */
+CloneExtension.extField = new jspb.ExtensionFieldInfo(
+    100,
+    {extField: 0},
+    CloneExtension,
+     /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
+         CloneExtension.toObject),
+    0);
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -5433,13 +5580,6 @@ export class TestGroup extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, -1, TestGroup.repeatedFields_, null);
   };
-  /**
-   * List of repeated fields within this message type.
-   * @private {!Array<number>}
-   * @const
-   */
-  static repeatedFields_ = [1];
-
   /**
    * repeated group RepeatedGroup = 1;
    * @return {!Array<!proto.jspb.test.TestGroup.RepeatedGroup>}
@@ -5798,6 +5938,20 @@ export class TestGroup extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  TestGroup.displayName = 'proto.jspb.test.TestGroup';
+}
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+TestGroup.repeatedFields_ = [1];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -5860,13 +6014,6 @@ TestGroup.RepeatedGroup = class extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, -1, TestGroup.RepeatedGroup.repeatedFields_, null);
   };
-  /**
-   * List of repeated fields within this message type.
-   * @private {!Array<number>}
-   * @const
-   */
-  static repeatedFields_ = [1];
-
   /**
    * required string id = 1;
    * @return {string}
@@ -6023,6 +6170,20 @@ TestGroup.RepeatedGroup = class extends jspb.Message {
 
 
 }
+
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  TestGroup.RepeatedGroup.displayName = 'proto.jspb.test.TestGroup.RepeatedGroup';
+}
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+TestGroup.RepeatedGroup.repeatedFields_ = [1];
 
 
 
@@ -6188,6 +6349,13 @@ TestGroup.RequiredGroup = class extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  TestGroup.RequiredGroup.displayName = 'proto.jspb.test.TestGroup.RequiredGroup';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -6351,6 +6519,13 @@ TestGroup.OptionalGroup = class extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  TestGroup.OptionalGroup.displayName = 'proto.jspb.test.TestGroup.OptionalGroup';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -6517,6 +6692,13 @@ export class TestGroup1 extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  TestGroup1.displayName = 'proto.jspb.test.TestGroup1';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -6573,36 +6755,6 @@ export class TestReservedNames extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, 2, null, null);
   };
-
-  /**
-   * The extensions registered with this message class. This is a map of
-   * extension field number to fieldInfo object.
-   *
-   * For example:
-   *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
-   *
-   * fieldName contains the JsCompiler renamed field name property so that it
-   * works in OPTIMIZED mode.
-   *
-   * @type {!Object<number, jspb.ExtensionFieldInfo>}
-   */
-  static extensions = {};
-
-
-  /**
-   * The extensions registered with this message class. This is a map of
-   * extension field number to fieldInfo object.
-   *
-   * For example:
-   *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
-   *
-   * fieldName contains the JsCompiler renamed field name property so that it
-   * works in OPTIMIZED mode.
-   *
-   * @type {!Object<number, jspb.ExtensionFieldBinaryInfo>}
-   */
-  static extensionsBinary = {};
-
   /**
    * optional int32 extension = 1;
    * @return {number}
@@ -6715,6 +6867,43 @@ export class TestReservedNames extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  TestReservedNames.displayName = 'proto.jspb.test.TestReservedNames';
+}
+
+/**
+ * The extensions registered with this message class. This is a map of
+ * extension field number to fieldInfo object.
+ *
+ * For example:
+ *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
+ *
+ * fieldName contains the JsCompiler renamed field name property so that it
+ * works in OPTIMIZED mode.
+ *
+ * @type {!Object<number, jspb.ExtensionFieldInfo>}
+ */
+TestReservedNames.extensions = {};
+
+
+/**
+ * The extensions registered with this message class. This is a map of
+ * extension field number to fieldInfo object.
+ *
+ * For example:
+ *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
+ *
+ * fieldName contains the JsCompiler renamed field name property so that it
+ * works in OPTIMIZED mode.
+ *
+ * @type {!Object<number, jspb.ExtensionFieldBinaryInfo>}
+ */
+TestReservedNames.extensionsBinary = {};
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -6774,19 +6963,6 @@ export class TestReservedNamesExtension extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, -1, null, null);
   };
-
-  /**
-   * A tuple of {field number, class constructor} for the extension
-   * field named `foo`.
-   * @type {!jspb.ExtensionFieldInfo<number>}
-   */
-  static foo = new jspb.ExtensionFieldInfo(
-      10,
-      {foo: 0},
-      null,
-       /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
-           null),
-      0);
   /**
    * Deserializes binary data (in protobuf wire format).
    * @param {jspb.ByteSource} bytes The bytes to deserialize.
@@ -6847,6 +7023,26 @@ export class TestReservedNamesExtension extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  TestReservedNamesExtension.displayName = 'proto.jspb.test.TestReservedNamesExtension';
+}
+
+/**
+ * A tuple of {field number, class constructor} for the extension
+ * field named `foo`.
+ * @type {!jspb.ExtensionFieldInfo<number>}
+ */
+TestReservedNamesExtension.foo = new jspb.ExtensionFieldInfo(
+    10,
+    {foo: 0},
+    null,
+     /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
+         null),
+    0);
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -6915,31 +7111,6 @@ export class TestMessageWithOneof extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, -1, TestMessageWithOneof.repeatedFields_, TestMessageWithOneof.oneofGroups_);
   };
-  /**
-   * List of repeated fields within this message type.
-   * @private {!Array<number>}
-   * @const
-   */
-  static repeatedFields_ = [9];
-
-  /**
-   * Oneof group definitions for this message. Each group defines the field
-   * numbers belonging to that group. When of these fields' value is set, all
-   * other fields in the group are cleared. During deserialization, if multiple
-   * fields are encountered for a group, only the last value seen will be kept.
-   * @private {!Array<!Array<number>>}
-   * @const
-   */
-  static oneofGroups_ = [[3,5],[6,7],[10,11],[12,13]];
-
-  /**
-   * @enum {number}
-   */
-  static PartialOneofCase = {
-    PARTIAL_ONEOF_NOT_SET: 0,
-    PONE: 3,
-    PTHREE: 5
-  };
 
   /**
    * @return {proto.jspb.test.TestMessageWithOneof.PartialOneofCase}
@@ -6948,14 +7119,6 @@ export class TestMessageWithOneof extends jspb.Message {
     return /** @type {proto.jspb.test.TestMessageWithOneof.PartialOneofCase} */(jspb.Message.computeOneofCase(this, TestMessageWithOneof.oneofGroups_[0]));
   };
 
-  /**
-   * @enum {number}
-   */
-  static RecursiveOneofCase = {
-    RECURSIVE_ONEOF_NOT_SET: 0,
-    RONE: 6,
-    RTWO: 7
-  };
 
   /**
    * @return {proto.jspb.test.TestMessageWithOneof.RecursiveOneofCase}
@@ -6964,14 +7127,6 @@ export class TestMessageWithOneof extends jspb.Message {
     return /** @type {proto.jspb.test.TestMessageWithOneof.RecursiveOneofCase} */(jspb.Message.computeOneofCase(this, TestMessageWithOneof.oneofGroups_[1]));
   };
 
-  /**
-   * @enum {number}
-   */
-  static DefaultOneofACase = {
-    DEFAULT_ONEOF_A_NOT_SET: 0,
-    AONE: 10,
-    ATWO: 11
-  };
 
   /**
    * @return {proto.jspb.test.TestMessageWithOneof.DefaultOneofACase}
@@ -6980,14 +7135,6 @@ export class TestMessageWithOneof extends jspb.Message {
     return /** @type {proto.jspb.test.TestMessageWithOneof.DefaultOneofACase} */(jspb.Message.computeOneofCase(this, TestMessageWithOneof.oneofGroups_[2]));
   };
 
-  /**
-   * @enum {number}
-   */
-  static DefaultOneofBCase = {
-    DEFAULT_ONEOF_B_NOT_SET: 0,
-    BONE: 12,
-    BTWO: 13
-  };
 
   /**
    * @return {proto.jspb.test.TestMessageWithOneof.DefaultOneofBCase}
@@ -7530,6 +7677,62 @@ export class TestMessageWithOneof extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  TestMessageWithOneof.displayName = 'proto.jspb.test.TestMessageWithOneof';
+}
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+TestMessageWithOneof.repeatedFields_ = [9];
+
+/**
+ * Oneof group definitions for this message. Each group defines the field
+ * numbers belonging to that group. When of these fields' value is set, all
+ * other fields in the group are cleared. During deserialization, if multiple
+ * fields are encountered for a group, only the last value seen will be kept.
+ * @private {!Array<!Array<number>>}
+ * @const
+ */
+TestMessageWithOneof.oneofGroups_ = [[3,5],[6,7],[10,11],[12,13]];
+
+/**
+ * @enum {number}
+ */
+TestMessageWithOneof.PartialOneofCase = {
+  PARTIAL_ONEOF_NOT_SET: 0,
+  PONE: 3,
+  PTHREE: 5
+};
+/**
+ * @enum {number}
+ */
+TestMessageWithOneof.RecursiveOneofCase = {
+  RECURSIVE_ONEOF_NOT_SET: 0,
+  RONE: 6,
+  RTWO: 7
+};
+/**
+ * @enum {number}
+ */
+TestMessageWithOneof.DefaultOneofACase = {
+  DEFAULT_ONEOF_A_NOT_SET: 0,
+  AONE: 10,
+  ATWO: 11
+};
+/**
+ * @enum {number}
+ */
+TestMessageWithOneof.DefaultOneofBCase = {
+  DEFAULT_ONEOF_B_NOT_SET: 0,
+  BONE: 12,
+  BTWO: 13
+};
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -7773,6 +7976,13 @@ export class TestEndsWithBytes extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  TestEndsWithBytes.displayName = 'proto.jspb.test.TestEndsWithBytes';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -7830,36 +8040,6 @@ export class TestLastFieldBeforePivot extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, 2, null, null);
   };
-
-  /**
-   * The extensions registered with this message class. This is a map of
-   * extension field number to fieldInfo object.
-   *
-   * For example:
-   *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
-   *
-   * fieldName contains the JsCompiler renamed field name property so that it
-   * works in OPTIMIZED mode.
-   *
-   * @type {!Object<number, jspb.ExtensionFieldInfo>}
-   */
-  static extensions = {};
-
-
-  /**
-   * The extensions registered with this message class. This is a map of
-   * extension field number to fieldInfo object.
-   *
-   * For example:
-   *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
-   *
-   * fieldName contains the JsCompiler renamed field name property so that it
-   * works in OPTIMIZED mode.
-   *
-   * @type {!Object<number, jspb.ExtensionFieldBinaryInfo>}
-   */
-  static extensionsBinary = {};
-
   /**
    * optional int32 last_field_before_pivot = 1;
    * @return {number}
@@ -7971,6 +8151,43 @@ export class TestLastFieldBeforePivot extends jspb.Message {
 
 
 }
+
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  TestLastFieldBeforePivot.displayName = 'proto.jspb.test.TestLastFieldBeforePivot';
+}
+
+/**
+ * The extensions registered with this message class. This is a map of
+ * extension field number to fieldInfo object.
+ *
+ * For example:
+ *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
+ *
+ * fieldName contains the JsCompiler renamed field name property so that it
+ * works in OPTIMIZED mode.
+ *
+ * @type {!Object<number, jspb.ExtensionFieldInfo>}
+ */
+TestLastFieldBeforePivot.extensions = {};
+
+
+/**
+ * The extensions registered with this message class. This is a map of
+ * extension field number to fieldInfo object.
+ *
+ * For example:
+ *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
+ *
+ * fieldName contains the JsCompiler renamed field name property so that it
+ * works in OPTIMIZED mode.
+ *
+ * @type {!Object<number, jspb.ExtensionFieldBinaryInfo>}
+ */
+TestLastFieldBeforePivot.extensionsBinary = {};
 
 
 
@@ -8232,6 +8449,13 @@ export class Int64Types extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  Int64Types.displayName = 'proto.jspb.test.Int64Types';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -8763,6 +8987,13 @@ export class TestMapFieldsNoBinary extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  TestMapFieldsNoBinary.displayName = 'proto.jspb.test.TestMapFieldsNoBinary';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -8937,6 +9168,13 @@ export class MapValueMessageNoBinary extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  MapValueMessageNoBinary.displayName = 'proto.jspb.test.MapValueMessageNoBinary';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -9053,6 +9291,13 @@ export class Deeply extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  Deeply.displayName = 'proto.jspb.test.Deeply';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -9169,6 +9414,13 @@ Deeply.Nested = class extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  Deeply.Nested.displayName = 'proto.jspb.test.Deeply.Nested';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -9332,6 +9584,13 @@ Deeply.Nested.Message = class extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  Deeply.Nested.Message.displayName = 'proto.jspb.test.Deeply.Nested.Message';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {

@@ -11,6 +11,10 @@ export class Empty extends jspb.Message {
   static serializeBinaryToWriter(message: Empty, writer: jspb.BinaryWriter): void;
 }
 
+export declare namespace Empty {
+  const displayName: string | undefined;
+}
+
 export class EnumContainer extends jspb.Message {
   constructor(data?: any[] | null);
   toObject(includeInstance?: boolean): { [key: string]: unknown };
@@ -23,6 +27,10 @@ export class EnumContainer extends jspb.Message {
   setOuterEnum(value: OuterEnum): EnumContainer;
   clearOuterEnum(): EnumContainer;
   hasOuterEnum(): boolean;
+}
+
+export declare namespace EnumContainer {
+  const displayName: string | undefined;
 }
 
 export class Simple1 extends jspb.Message {
@@ -47,6 +55,10 @@ export class Simple1 extends jspb.Message {
   hasABoolean(): boolean;
 }
 
+export declare namespace Simple1 {
+  const displayName: string | undefined;
+}
+
 export class Simple2 extends jspb.Message {
   constructor(data?: any[] | null);
   toObject(includeInstance?: boolean): { [key: string]: unknown };
@@ -63,6 +75,10 @@ export class Simple2 extends jspb.Message {
   setARepeatedStringList(value: string[]): Simple2;
   addARepeatedString(value: string, index?: number): Simple2;
   clearARepeatedStringList(): Simple2;
+}
+
+export declare namespace Simple2 {
+  const displayName: string | undefined;
 }
 
 export class SpecialCases extends jspb.Message {
@@ -89,6 +105,10 @@ export class SpecialCases extends jspb.Message {
   setVar(value: string): SpecialCases;
   clearVar(): SpecialCases;
   hasVar(): boolean;
+}
+
+export declare namespace SpecialCases {
+  const displayName: string | undefined;
 }
 
 export class OptionalFields extends jspb.Message {
@@ -121,6 +141,10 @@ export class OptionalFields extends jspb.Message {
   clearARepeatedStringList(): OptionalFields;
 }
 
+export declare namespace OptionalFields {
+  const displayName: string | undefined;
+}
+
 export namespace OptionalFields {
   class Nested extends jspb.Message {
     constructor(data?: any[] | null);
@@ -134,6 +158,10 @@ export namespace OptionalFields {
     setAnInt(value: number): OptionalFields.Nested;
     clearAnInt(): OptionalFields.Nested;
     hasAnInt(): boolean;
+  }
+
+  namespace Nested {
+    const displayName: string | undefined;
   }
 
 }
@@ -158,6 +186,10 @@ export class HasExtensions extends jspb.Message {
   setStr3(value: string): HasExtensions;
   clearStr3(): HasExtensions;
   hasStr3(): boolean;
+}
+
+export declare namespace HasExtensions {
+  const displayName: string | undefined;
 }
 
 export class Complex extends jspb.Message {
@@ -194,6 +226,10 @@ export class Complex extends jspb.Message {
   hasAFloatingPointField(): boolean;
 }
 
+export declare namespace Complex {
+  const displayName: string | undefined;
+}
+
 export namespace Complex {
   class Nested extends jspb.Message {
     constructor(data?: any[] | null);
@@ -209,6 +245,10 @@ export namespace Complex {
     hasAnInt(): boolean;
   }
 
+  namespace Nested {
+    const displayName: string | undefined;
+  }
+
 }
 
 export class OuterMessage extends jspb.Message {
@@ -219,6 +259,10 @@ export class OuterMessage extends jspb.Message {
   static deserializeBinaryFromReader(msg: OuterMessage, reader: jspb.BinaryReader): OuterMessage;
   serializeBinary(): Uint8Array;
   static serializeBinaryToWriter(message: OuterMessage, writer: jspb.BinaryWriter): void;
+}
+
+export declare namespace OuterMessage {
+  const displayName: string | undefined;
 }
 
 export namespace OuterMessage {
@@ -234,6 +278,10 @@ export namespace OuterMessage {
     setInnerComplexField(value: number): OuterMessage.Complex;
     clearInnerComplexField(): OuterMessage.Complex;
     hasInnerComplexField(): boolean;
+  }
+
+  namespace Complex {
+    const displayName: string | undefined;
   }
 
 }
@@ -252,6 +300,10 @@ export class MineField extends jspb.Message {
   hasCookie(): boolean;
 }
 
+export declare namespace MineField {
+  const displayName: string | undefined;
+}
+
 export class IsExtension extends jspb.Message {
   constructor(data?: any[] | null);
   toObject(includeInstance?: boolean): { [key: string]: unknown };
@@ -266,6 +318,10 @@ export class IsExtension extends jspb.Message {
   hasExt1(): boolean;
 }
 
+export declare namespace IsExtension {
+  const displayName: string | undefined;
+}
+
 export class IndirectExtension extends jspb.Message {
   constructor(data?: any[] | null);
   toObject(includeInstance?: boolean): { [key: string]: unknown };
@@ -274,6 +330,10 @@ export class IndirectExtension extends jspb.Message {
   static deserializeBinaryFromReader(msg: IndirectExtension, reader: jspb.BinaryReader): IndirectExtension;
   serializeBinary(): Uint8Array;
   static serializeBinaryToWriter(message: IndirectExtension, writer: jspb.BinaryWriter): void;
+}
+
+export declare namespace IndirectExtension {
+  const displayName: string | undefined;
 }
 
 export class DefaultValues extends jspb.Message {
@@ -310,6 +370,10 @@ export class DefaultValues extends jspb.Message {
   setBytesField(value: (string|Uint8Array)): DefaultValues;
   clearBytesField(): DefaultValues;
   hasBytesField(): boolean;
+}
+
+export declare namespace DefaultValues {
+  const displayName: string | undefined;
 }
 
 export namespace DefaultValues {
@@ -362,6 +426,10 @@ export class FloatingPointFields extends jspb.Message {
   hasDefaultDoubleField(): boolean;
 }
 
+export declare namespace FloatingPointFields {
+  const displayName: string | undefined;
+}
+
 export class BooleanFields extends jspb.Message {
   constructor(data?: any[] | null);
   toObject(includeInstance?: boolean): { [key: string]: unknown };
@@ -386,6 +454,10 @@ export class BooleanFields extends jspb.Message {
   setDefaultBooleanField(value: boolean): BooleanFields;
   clearDefaultBooleanField(): BooleanFields;
   hasDefaultBooleanField(): boolean;
+}
+
+export declare namespace BooleanFields {
+  const displayName: string | undefined;
 }
 
 export class TestClone extends jspb.Message {
@@ -420,6 +492,10 @@ export class TestClone extends jspb.Message {
   hasUnused(): boolean;
 }
 
+export declare namespace TestClone {
+  const displayName: string | undefined;
+}
+
 export class TestCloneExtension extends jspb.Message {
   constructor(data?: any[] | null);
   toObject(includeInstance?: boolean): { [key: string]: unknown };
@@ -434,6 +510,10 @@ export class TestCloneExtension extends jspb.Message {
   hasF(): boolean;
 }
 
+export declare namespace TestCloneExtension {
+  const displayName: string | undefined;
+}
+
 export class CloneExtension extends jspb.Message {
   constructor(data?: any[] | null);
   toObject(includeInstance?: boolean): { [key: string]: unknown };
@@ -446,6 +526,10 @@ export class CloneExtension extends jspb.Message {
   setExt(value: string): CloneExtension;
   clearExt(): CloneExtension;
   hasExt(): boolean;
+}
+
+export declare namespace CloneExtension {
+  const displayName: string | undefined;
 }
 
 export class TestGroup extends jspb.Message {
@@ -482,6 +566,10 @@ export class TestGroup extends jspb.Message {
   hasOptionalSimple(): boolean;
 }
 
+export declare namespace TestGroup {
+  const displayName: string | undefined;
+}
+
 export namespace TestGroup {
   class RepeatedGroup extends jspb.Message {
     constructor(data?: any[] | null);
@@ -501,6 +589,10 @@ export namespace TestGroup {
     clearSomeBoolList(): TestGroup.RepeatedGroup;
   }
 
+  namespace RepeatedGroup {
+    const displayName: string | undefined;
+  }
+
   class RequiredGroup extends jspb.Message {
     constructor(data?: any[] | null);
     toObject(includeInstance?: boolean): { [key: string]: unknown };
@@ -515,6 +607,10 @@ export namespace TestGroup {
     hasId(): boolean;
   }
 
+  namespace RequiredGroup {
+    const displayName: string | undefined;
+  }
+
   class OptionalGroup extends jspb.Message {
     constructor(data?: any[] | null);
     toObject(includeInstance?: boolean): { [key: string]: unknown };
@@ -527,6 +623,10 @@ export namespace TestGroup {
     setId(value: string): TestGroup.OptionalGroup;
     clearId(): TestGroup.OptionalGroup;
     hasId(): boolean;
+  }
+
+  namespace OptionalGroup {
+    const displayName: string | undefined;
   }
 
 }
@@ -545,6 +645,10 @@ export class TestGroup1 extends jspb.Message {
   hasGroup(): boolean;
 }
 
+export declare namespace TestGroup1 {
+  const displayName: string | undefined;
+}
+
 export class TestReservedNames extends jspb.Message {
   constructor(data?: any[] | null);
   toObject(includeInstance?: boolean): { [key: string]: unknown };
@@ -559,6 +663,10 @@ export class TestReservedNames extends jspb.Message {
   hasExtension$(): boolean;
 }
 
+export declare namespace TestReservedNames {
+  const displayName: string | undefined;
+}
+
 export class TestReservedNamesExtension extends jspb.Message {
   constructor(data?: any[] | null);
   toObject(includeInstance?: boolean): { [key: string]: unknown };
@@ -567,6 +675,10 @@ export class TestReservedNamesExtension extends jspb.Message {
   static deserializeBinaryFromReader(msg: TestReservedNamesExtension, reader: jspb.BinaryReader): TestReservedNamesExtension;
   serializeBinary(): Uint8Array;
   static serializeBinaryToWriter(message: TestReservedNamesExtension, writer: jspb.BinaryWriter): void;
+}
+
+export declare namespace TestReservedNamesExtension {
+  const displayName: string | undefined;
 }
 
 export class TestMessageWithOneof extends jspb.Message {
@@ -623,6 +735,10 @@ export class TestMessageWithOneof extends jspb.Message {
   hasBtwo(): boolean;
 }
 
+export declare namespace TestMessageWithOneof {
+  const displayName: string | undefined;
+}
+
 export namespace TestMessageWithOneof {
   enum PartialOneofCase {
     PARTIAL_ONEOF_NOT_SET = 0,
@@ -666,6 +782,10 @@ export class TestEndsWithBytes extends jspb.Message {
   hasData(): boolean;
 }
 
+export declare namespace TestEndsWithBytes {
+  const displayName: string | undefined;
+}
+
 export class TestLastFieldBeforePivot extends jspb.Message {
   constructor(data?: any[] | null);
   toObject(includeInstance?: boolean): { [key: string]: unknown };
@@ -678,6 +798,10 @@ export class TestLastFieldBeforePivot extends jspb.Message {
   setLastFieldBeforePivot(value: number): TestLastFieldBeforePivot;
   clearLastFieldBeforePivot(): TestLastFieldBeforePivot;
   hasLastFieldBeforePivot(): boolean;
+}
+
+export declare namespace TestLastFieldBeforePivot {
+  const displayName: string | undefined;
 }
 
 export class Int64Types extends jspb.Message {
@@ -700,6 +824,10 @@ export class Int64Types extends jspb.Message {
   setInt64Number(value: number): Int64Types;
   clearInt64Number(): Int64Types;
   hasInt64Number(): boolean;
+}
+
+export declare namespace Int64Types {
+  const displayName: string | undefined;
 }
 
 export class TestMapFieldsNoBinary extends jspb.Message {
@@ -738,6 +866,10 @@ export class TestMapFieldsNoBinary extends jspb.Message {
   clearMapStringTestmapfieldsMap(): TestMapFieldsNoBinary;
 }
 
+export declare namespace TestMapFieldsNoBinary {
+  const displayName: string | undefined;
+}
+
 export class MapValueMessageNoBinary extends jspb.Message {
   constructor(data?: any[] | null);
   toObject(includeInstance?: boolean): { [key: string]: unknown };
@@ -752,6 +884,10 @@ export class MapValueMessageNoBinary extends jspb.Message {
   hasFoo(): boolean;
 }
 
+export declare namespace MapValueMessageNoBinary {
+  const displayName: string | undefined;
+}
+
 export class Deeply extends jspb.Message {
   constructor(data?: any[] | null);
   toObject(includeInstance?: boolean): { [key: string]: unknown };
@@ -760,6 +896,10 @@ export class Deeply extends jspb.Message {
   static deserializeBinaryFromReader(msg: Deeply, reader: jspb.BinaryReader): Deeply;
   serializeBinary(): Uint8Array;
   static serializeBinaryToWriter(message: Deeply, writer: jspb.BinaryWriter): void;
+}
+
+export declare namespace Deeply {
+  const displayName: string | undefined;
 }
 
 export namespace Deeply {
@@ -771,6 +911,10 @@ export namespace Deeply {
     static deserializeBinaryFromReader(msg: Deeply.Nested, reader: jspb.BinaryReader): Deeply.Nested;
     serializeBinary(): Uint8Array;
     static serializeBinaryToWriter(message: Deeply.Nested, writer: jspb.BinaryWriter): void;
+  }
+
+  namespace Nested {
+    const displayName: string | undefined;
   }
 
   namespace Nested {
@@ -786,6 +930,10 @@ export namespace Deeply {
       setCount(value: number): Deeply.Nested.Message;
       clearCount(): Deeply.Nested.Message;
       hasCount(): boolean;
+    }
+
+    namespace Message {
+      const displayName: string | undefined;
     }
 
   }

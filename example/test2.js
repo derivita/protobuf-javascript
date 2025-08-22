@@ -30,36 +30,6 @@ export class TestExtensionsMessage extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, 2, null, null);
   };
-
-  /**
-   * The extensions registered with this message class. This is a map of
-   * extension field number to fieldInfo object.
-   *
-   * For example:
-   *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
-   *
-   * fieldName contains the JsCompiler renamed field name property so that it
-   * works in OPTIMIZED mode.
-   *
-   * @type {!Object<number, jspb.ExtensionFieldInfo>}
-   */
-  static extensions = {};
-
-
-  /**
-   * The extensions registered with this message class. This is a map of
-   * extension field number to fieldInfo object.
-   *
-   * For example:
-   *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
-   *
-   * fieldName contains the JsCompiler renamed field name property so that it
-   * works in OPTIMIZED mode.
-   *
-   * @type {!Object<number, jspb.ExtensionFieldBinaryInfo>}
-   */
-  static extensionsBinary = {};
-
   /**
    * optional int32 intfield = 1;
    * @return {number}
@@ -172,6 +142,43 @@ export class TestExtensionsMessage extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  TestExtensionsMessage.displayName = 'proto.jspb.test.TestExtensionsMessage';
+}
+
+/**
+ * The extensions registered with this message class. This is a map of
+ * extension field number to fieldInfo object.
+ *
+ * For example:
+ *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
+ *
+ * fieldName contains the JsCompiler renamed field name property so that it
+ * works in OPTIMIZED mode.
+ *
+ * @type {!Object<number, jspb.ExtensionFieldInfo>}
+ */
+TestExtensionsMessage.extensions = {};
+
+
+/**
+ * The extensions registered with this message class. This is a map of
+ * extension field number to fieldInfo object.
+ *
+ * For example:
+ *     { 123: {fieldIndex: 123, fieldName: {my_field_name: 0}, ctor: proto.example.MyMessage} }
+ *
+ * fieldName contains the JsCompiler renamed field name property so that it
+ * works in OPTIMIZED mode.
+ *
+ * @type {!Object<number, jspb.ExtensionFieldBinaryInfo>}
+ */
+TestExtensionsMessage.extensionsBinary = {};
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -231,19 +238,6 @@ export class ExtensionMessage extends jspb.Message {
   constructor(opt_data) {
     jspb.Message.initialize(this, opt_data, 0, -1, null, null);
   };
-
-  /**
-   * A tuple of {field number, class constructor} for the extension
-   * field named `extField`.
-   * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.ExtensionMessage>}
-   */
-  static extField = new jspb.ExtensionFieldInfo(
-      100,
-      {extField: 0},
-      ExtensionMessage,
-       /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
-           ExtensionMessage.toObject),
-      0);
   /**
    * optional string ext1 = 1;
    * @return {string}
@@ -351,6 +345,26 @@ export class ExtensionMessage extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  ExtensionMessage.displayName = 'proto.jspb.test.ExtensionMessage';
+}
+
+/**
+ * A tuple of {field number, class constructor} for the extension
+ * field named `extField`.
+ * @type {!jspb.ExtensionFieldInfo<!proto.jspb.test.ExtensionMessage>}
+ */
+ExtensionMessage.extField = new jspb.ExtensionFieldInfo(
+    100,
+    {extField: 0},
+    ExtensionMessage,
+     /** @type {?function((boolean|undefined),!jspb.Message=): !Object} */ (
+         ExtensionMessage.toObject),
+    0);
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -529,6 +543,13 @@ export class ForeignNestedFieldMessage extends jspb.Message {
 
 }
 
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  ForeignNestedFieldMessage.displayName = 'proto.jspb.test.ForeignNestedFieldMessage';
+}
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {

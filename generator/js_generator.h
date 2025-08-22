@@ -282,6 +282,9 @@ class Generator : public CodeGenerator {
   void GenerateClassConstructor(const GeneratorOptions& options,
                                 io::Printer* printer,
                                 const Descriptor* desc) const;
+  void GenerateDisplayName(const GeneratorOptions& options,
+                           io::Printer* printer,
+                           const Descriptor* desc) const;
   void GenerateClassFieldInfo(const GeneratorOptions& options,
                               io::Printer* printer,
                               const Descriptor* desc) const;
@@ -293,6 +296,12 @@ class Generator : public CodeGenerator {
   void GenerateOneofCaseDefinition(const GeneratorOptions& options,
                                    io::Printer* printer,
                                    const OneofDescriptor* oneof) const;
+  void GenerateOneofCaseGetter(const GeneratorOptions& options,
+                                  io::Printer* printer,
+                                  const OneofDescriptor* oneof) const;
+  void GenerateES6OneOfCaseGetters(const GeneratorOptions& options,
+                                   io::Printer* printer,
+                                   const Descriptor* desc) const;
   void GenerateObjectTypedef(const GeneratorOptions& options,
                              io::Printer* printer,
                              const Descriptor* desc) const;

@@ -20,6 +20,10 @@ export class TestExtensionsMessage extends jspb.Message {
   hasIntfield(): boolean;
 }
 
+export declare namespace TestExtensionsMessage {
+  const displayName: string | undefined;
+}
+
 export class ExtensionMessage extends jspb.Message {
   constructor(data?: any[] | null);
   toObject(includeInstance?: boolean): { [key: string]: unknown };
@@ -34,6 +38,10 @@ export class ExtensionMessage extends jspb.Message {
   hasExt1(): boolean;
 }
 
+export declare namespace ExtensionMessage {
+  const displayName: string | undefined;
+}
+
 export class ForeignNestedFieldMessage extends jspb.Message {
   constructor(data?: any[] | null);
   toObject(includeInstance?: boolean): { [key: string]: unknown };
@@ -46,5 +54,9 @@ export class ForeignNestedFieldMessage extends jspb.Message {
   setDeeplyNestedMessage(value: protos_test_pb.Deeply.Nested.Message | null | undefined): ForeignNestedFieldMessage;
   clearDeeplyNestedMessage(): ForeignNestedFieldMessage;
   hasDeeplyNestedMessage(): boolean;
+}
+
+export declare namespace ForeignNestedFieldMessage {
+  const displayName: string | undefined;
 }
 
