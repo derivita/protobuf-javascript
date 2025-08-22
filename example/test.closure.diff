@@ -1,0 +1,16 @@
+2413c2413
+<  * @param {!proto.jspb.test.OptionalFields.Nested} opt_value
+---
+>  * @param {!proto.jspb.test.OptionalFields.Nested=} opt_value
+3181c3181
+<  * @param {!proto.jspb.test.Complex.Nested} opt_value
+---
+>  * @param {!proto.jspb.test.Complex.Nested=} opt_value
+5535c5535
+<  * @param {!proto.jspb.test.Simple1} opt_value
+---
+>  * @param {!proto.jspb.test.Simple1=} opt_value
+6707c6707
+<  * @param {!proto.jspb.test.TestGroup.RepeatedGroup} opt_value
+---
+>  * @param {!proto.jspb.test.TestGroup.RepeatedGroup=} opt_value

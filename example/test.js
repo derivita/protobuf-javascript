@@ -12,8 +12,7 @@
 // @ts-nocheck
 
 import * as jspb from 'google-protobuf';
-var goog = jspb;
-var proto = {};
+import * as goog from 'closure-library/closure/goog';
 
 import * as google_protobuf_descriptor_pb from 'google-protobuf/google/protobuf/descriptor.js';
 export class Empty extends jspb.Message {
@@ -1266,7 +1265,7 @@ export class OptionalFields extends jspb.Message {
 
 
   /**
-   * @param {!proto.jspb.test.OptionalFields.Nested=} opt_value
+   * @param {!proto.jspb.test.OptionalFields.Nested} opt_value
    * @param {number=} opt_index
    * @return {!proto.jspb.test.OptionalFields.Nested}
    */
@@ -2118,7 +2117,7 @@ export class Complex extends jspb.Message {
 
 
   /**
-   * @param {!proto.jspb.test.Complex.Nested=} opt_value
+   * @param {!proto.jspb.test.Complex.Nested} opt_value
    * @param {number=} opt_index
    * @return {!proto.jspb.test.Complex.Nested}
    */
@@ -4844,7 +4843,7 @@ export class TestClone extends jspb.Message {
 
 
   /**
-   * @param {!proto.jspb.test.Simple1=} opt_value
+   * @param {!proto.jspb.test.Simple1} opt_value
    * @param {number=} opt_index
    * @return {!proto.jspb.test.Simple1}
    */
@@ -5600,7 +5599,7 @@ export class TestGroup extends jspb.Message {
 
 
   /**
-   * @param {!proto.jspb.test.TestGroup.RepeatedGroup=} opt_value
+   * @param {!proto.jspb.test.TestGroup.RepeatedGroup} opt_value
    * @param {number=} opt_index
    * @return {!proto.jspb.test.TestGroup.RepeatedGroup}
    */

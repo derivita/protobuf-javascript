@@ -2410,7 +2410,7 @@ proto.jspb.test.OptionalFields.prototype.setARepeatedMessageList = function(valu
 
 
 /**
- * @param {!proto.jspb.test.OptionalFields.Nested=} opt_value
+ * @param {!proto.jspb.test.OptionalFields.Nested} opt_value
  * @param {number=} opt_index
  * @return {!proto.jspb.test.OptionalFields.Nested}
  */
@@ -3178,7 +3178,7 @@ proto.jspb.test.Complex.prototype.setARepeatedMessageList = function(value) {
 
 
 /**
- * @param {!proto.jspb.test.Complex.Nested=} opt_value
+ * @param {!proto.jspb.test.Complex.Nested} opt_value
  * @param {number=} opt_index
  * @return {!proto.jspb.test.Complex.Nested}
  */
@@ -5532,7 +5532,7 @@ proto.jspb.test.TestClone.prototype.setSimple2List = function(value) {
 
 
 /**
- * @param {!proto.jspb.test.Simple1=} opt_value
+ * @param {!proto.jspb.test.Simple1} opt_value
  * @param {number=} opt_index
  * @return {!proto.jspb.test.Simple1}
  */
@@ -6704,7 +6704,7 @@ proto.jspb.test.TestGroup.prototype.setRepeatedGroupList = function(value) {
 
 
 /**
- * @param {!proto.jspb.test.TestGroup.RepeatedGroup=} opt_value
+ * @param {!proto.jspb.test.TestGroup.RepeatedGroup} opt_value
  * @param {number=} opt_index
  * @return {!proto.jspb.test.TestGroup.RepeatedGroup}
  */

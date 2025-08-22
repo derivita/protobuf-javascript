@@ -3265,7 +3265,7 @@ void Generator::GenerateRepeatedMessageHelperMethods(
   std::string addername = "add" + JSGetterName(options, field, BYTES_DEFAULT, /* drop_list = */ true);
   printer->Print(
       "/**\n"
-      " * @param {$optionaltype$=} opt_value\n"
+      " * @param {$optionaltype$} opt_value\n"
       " * @param {number=} opt_index\n"
       " * @return {$optionaltype$}\n"
       " */\n",
@@ -4039,16 +4039,16 @@ void Generator::GenerateFile(const GeneratorOptions& options,
        options.import_style == GeneratorOptions::kImportEs6)) {
     if (options.import_style == GeneratorOptions::kImportEs6) {
       printer->Print("import * as jspb from 'google-protobuf';\n");
+      printer->Print("import * as goog from 'closure-library/closure/goog';\n\n");
     } else {
       printer->Print("var jspb = require('google-protobuf');\n");
+      printer->Print("var goog = jspb;\n");
     }
-    printer->Print("var goog = jspb;\n");
 
     // Do not use global scope in strict mode or with ES6
-    if (options.import_style == GeneratorOptions::kImportCommonJsStrict ||
-        options.import_style == GeneratorOptions::kImportEs6) {
+    if (options.import_style == GeneratorOptions::kImportCommonJsStrict) {
       printer->Print("var proto = {};\n\n");
-    } else {
+    } else if (options.import_style != GeneratorOptions::kImportEs6) {
       // To get the global object we call a function with .call(null), this will
       // set "this" inside the function to the global object. This does not work
       // if we are running in strict mode ("use strict"), so we fallback to the

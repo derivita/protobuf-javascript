@@ -12,8 +12,7 @@
 // @ts-nocheck
 
 import * as jspb from 'google-protobuf';
-var goog = jspb;
-var proto = {};
+import * as goog from 'closure-library/closure/goog';
 
 import * as protos_test_pb from '../protos/test.js';
 export class TestExtensionsMessage extends jspb.Message {
