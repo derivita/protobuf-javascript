@@ -2202,18 +2202,10 @@ void Generator::GenerateES6Class(const GeneratorOptions& options,
   printer->Annotate("classname", desc);
   printer->Indent();
 
-  for (int i = 0; i < desc->enum_type_count(); i++) {
-    GenerateEnum(options, printer, desc->enum_type(i));
-  }
+
 
   GenerateClassConstructor(options, printer, desc);
 
-  if (IsExtendable(desc) && desc->full_name() != "google.protobuf.bridge.MessageSet") {
-    GenerateClassExtensionFieldInfo(options, printer, desc);
-  }
-
-  GenerateClassExtensionDeclarations(options, printer, desc);
-  GenerateClassFieldInfo(options, printer, desc);
   GenerateClassFields(options, printer, desc);
   GenerateClassDeserializeBinary(options, printer, desc);
   GenerateClassSerializeBinary(options, printer, desc);
@@ -2221,6 +2213,15 @@ void Generator::GenerateES6Class(const GeneratorOptions& options,
   printer->Outdent();
   printer->Print("}\n\n");
 
+  for (int i = 0; i < desc->enum_type_count(); i++) {
+    GenerateEnum(options, printer, desc->enum_type(i));
+  }
+  if (IsExtendable(desc) && desc->full_name() != "google.protobuf.bridge.MessageSet") {
+    GenerateClassExtensionFieldInfo(options, printer, desc);
+  }
+
+  GenerateClassExtensionDeclarations(options, printer, desc);
+  GenerateClassFieldInfo(options, printer, desc);
   GenerateClassToObject(options, printer, desc);
   GenerateClassExtensionRegistration(options, printer, desc);
 
@@ -2257,17 +2258,12 @@ void Generator::GenerateClassFieldInfo(const GeneratorOptions& options,
         " * @private {!Array<number>}\n"
         " * @const\n"
         " */\n");
-    if (options.import_style == GeneratorOptions::kImportEs6) {
-      printer->Print("static repeatedFields_ = $rptfields$;\n\n",
-          "rptfields", RepeatedFieldNumberList(options, desc));
-    } else {
-      printer->Print(
-          "$classname$$rptfieldarray$ = $rptfields$;\n"
-          "\n",
-          "classname", LocalMessageRef(options, desc), "rptfieldarray",
-          kRepeatedFieldArrayName, "rptfields",
-          RepeatedFieldNumberList(options, desc));
-    }
+    printer->Print(
+        "$classname$$rptfieldarray$ = $rptfields$;\n"
+        "\n",
+        "classname", LocalMessageRef(options, desc), "rptfieldarray",
+        kRepeatedFieldArrayName, "rptfields",
+        RepeatedFieldNumberList(options, desc));
   }
 
   if (HasOneofFields(desc)) {
@@ -2284,15 +2280,10 @@ void Generator::GenerateClassFieldInfo(const GeneratorOptions& options,
         " * @private {!Array<!Array<number>>}\n"
         " * @const\n"
         " */\n");
-    if (options.import_style == GeneratorOptions::kImportEs6) {
-      printer->Print("static oneofGroups_ = $oneofgroups$;\n\n",
-          "oneofgroups", OneofGroupList(desc));
-    } else {
-      printer->Print("$classname$$oneofgrouparray$ = $oneofgroups$;\n"
-          "\n",
-          "classname", LocalMessageRef(options, desc), "oneofgrouparray",
-          kOneofGroupArrayName, "oneofgroups", OneofGroupList(desc));
-    }
+    printer->Print("$classname$$oneofgrouparray$ = $oneofgroups$;\n"
+        "\n",
+        "classname", LocalMessageRef(options, desc), "oneofgrouparray",
+        kOneofGroupArrayName, "oneofgroups", OneofGroupList(desc));
 
     for (int i = 0; i < desc->oneof_decl_count(); i++) {
       if (IgnoreOneof(desc->oneof_decl(i))) {
@@ -2321,14 +2312,10 @@ void Generator::GenerateOneofCaseDefinition(
       "/**\n"
       " * @enum {number}\n"
       " */\n");
-  if (options.import_style == GeneratorOptions::kImportEs6) {
-    printer->Print("static $oneof$Case = {\n",
-        "oneof", JSOneofName(oneof));
-  } else {
-    printer->Print("$classname$.$oneof$Case = {\n",
-        "classname", LocalMessageRef(options, oneof->containing_type()),
-        "oneof", JSOneofName(oneof));
-  }
+
+  printer->Print("$classname$.$oneof$Case = {\n",
+      "classname", LocalMessageRef(options, oneof->containing_type()),
+      "oneof", JSOneofName(oneof));
   printer->Print("  $upcase$_NOT_SET: 0", "upcase", ToEnumCase(oneof->name()));
 
   for (int i = 0; i < oneof->field_count(); i++) {
@@ -3297,13 +3284,10 @@ void Generator::GenerateClassExtensionFieldInfo(const GeneratorOptions& options,
         " *\n"
         " * @type {!Object<number, jspb.ExtensionFieldInfo>}\n"
         " */\n");
-    if (options.import_style == GeneratorOptions::kImportEs6) {
-      printer->Print("static extensions = {};\n\n");
-    } else {
-      printer->Print("$class$.extensions = {};\n"
-          "\n",
-          "class", LocalMessageRef(options, desc));
-    }
+
+    printer->Print("$class$.extensions = {};\n"
+        "\n",
+        "class", LocalMessageRef(options, desc));
 
     printer->Print(
         "\n"
@@ -3322,13 +3306,10 @@ void Generator::GenerateClassExtensionFieldInfo(const GeneratorOptions& options,
         " *\n"
         " * @type {!Object<number, jspb.ExtensionFieldBinaryInfo>}\n"
         " */\n");
-    if (options.import_style == GeneratorOptions::kImportEs6) {
-      printer->Print("static extensionsBinary = {};\n\n");
-    } else {
-      printer->Print("$class$.extensionsBinary = {};\n"
-          "\n",
-          "class", LocalMessageRef(options, desc));
-    }
+
+    printer->Print("$class$.extensionsBinary = {};\n"
+        "\n",
+        "class", LocalMessageRef(options, desc));
   }
 }
 
@@ -3689,9 +3670,6 @@ void Generator::GenerateEnum(const GeneratorOptions& options,
   if (IsExportedEnum(options, enumdesc)) {
     printer->Print("export const $enumname$ = {\n", "enumname",
                    LocalEnumRef(options, enumdesc));
-  } else if (options.import_style == GeneratorOptions::kImportEs6) {
-    printer->Print("static $enumname$ = {\n",
-        "enumname", enumdesc->name());
   } else {
     printer->Print("$enumname$ = {\n", "enumname",
                    LocalEnumRef(options, enumdesc));
@@ -3751,9 +3729,6 @@ void Generator::GenerateExtensionDeclaration(
   if (!scope_desc && options.import_style == GeneratorOptions::kImportEs6) {
     extension_scope = "";
     printer->Print("export const $name$ = new jspb.ExtensionFieldInfo(\n",
-        "name", extension_object_name);
-  } else if (options.import_style == GeneratorOptions::kImportEs6) {
-    printer->Print("static $name$ = new jspb.ExtensionFieldInfo(\n",
         "name", extension_object_name);
   } else {
     extension_scope += ".";
