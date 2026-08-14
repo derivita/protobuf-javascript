@@ -1,0 +1,26 @@
+version = 1
+
+[merge]
+automerge_label = "automerge"
+method = "squash"
+delete_branch_on_merge = true
+blocking_labels = ["wip", "do-not-merge"]
+
+[approve]
+# Dedicated label, not the general-purpose `automerge` merge-queue label:
+# auto_approve_labels grants Kodiak's own bot approval to anything carrying
+# this label regardless of author. Reusing `automerge` would let any
+# contributor with label-write access get an unreviewed PR auto-approved
+# just by attaching it.
+#
+# dependabot-automerge is only *intended* to be applied by
+# dependabot-automerge-label.yml, after its own semver/ecosystem check
+# confirms the PR is a provable patch/minor dependency bump — never by
+# hand. GitHub doesn't restrict which repo collaborators can attach an
+# *existing* label, and Kodiak's evaluation here only checks label
+# presence, not who added it or the PR's author, so anyone with
+# Triage/Write access could still self-apply it to their own PR for an
+# unreviewed auto-approval. Accepted risk, matching derivita/infrastructure
+# #1716: this repo's collaborators are trusted, and required status checks
+# still gate every PR regardless of label.
+auto_approve_labels = ["dependabot-automerge"]

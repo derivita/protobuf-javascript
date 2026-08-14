@@ -1,0 +1,10 @@
+# Merge-governance surface. Any change under /.github/ — including a NEW
+# workflow file, which can run on its own PR with GITHUB_TOKEN write
+# permissions — requires a human code-owner review to merge. Pairs with
+# branch protection "Require review from Code Owners".
+/.github/ @derivita/engineering
+
+# Kodiak's merge-queue config — an unreviewed edit here could weaken or
+# disable branch-protection-equivalent merge gating (e.g. the automerge
+# label, blocking labels, or merge method).
+/.kodiak.toml @derivita/engineering
