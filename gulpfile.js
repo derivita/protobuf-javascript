@@ -216,9 +216,13 @@ function remove_gen_files(cb) {
 }
 
 exports.build_protoc_plugin = function (cb) {
-  exec('bazel build generator:protoc-gen-js',
-       make_exec_logging_callback(cb));
-  exec('bazel build @com_google_protobuf//:protoc',
+  // Both bazel builds ran as separate async exec() calls sharing one cb,
+  // so cb() fired after whichever finished first -- gulp would advance
+  // to the next task (which invokes bazel-bin/generator/protoc-gen-js)
+  // before that build was necessarily done, intermittently failing with
+  // "program not found or is not executable". Joined into one shell
+  // command so cb() only fires once, after both have actually finished.
+  exec('bazel build generator:protoc-gen-js && bazel build @com_google_protobuf//:protoc',
        make_exec_logging_callback(cb));
 }
 
