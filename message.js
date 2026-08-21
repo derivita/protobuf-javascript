@@ -35,9 +35,9 @@
  * @author mwr@google.com (Mark Rawling)
  */
 
-import * as googArray from '../closure-library/closure/goog/array/array.js';
+import googArray from 'goog:goog.array';
 
-import * as base64 from '../closure-library/closure/goog/crypt/base64.js';
+import base64 from 'goog:goog.crypt.base64';
 import * as asserts from './asserts.js';
 import { BinaryReader } from './binary/reader.js';
 import { BinaryWriter } from './binary/writer.js';

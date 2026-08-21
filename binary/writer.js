@@ -56,7 +56,7 @@
  * @author aappleby@google.com (Austin Appleby)
  */
 
-import * as base64 from '../../closure-library/closure/goog/crypt/base64.js';
+import base64 from 'goog:goog.crypt.base64';
 
 import * as asserts from '../asserts.js';
 import * as BinaryConstants from './constants.js';

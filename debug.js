@@ -32,10 +32,8 @@
  * @fileoverview Utilities to debug JSPB based proto objects.
  */
 
-import '../closure-library/closure/goog/array/array.js';
-
-import * as googArray from '../closure-library/closure/goog/array/array.js';
-import googObject from '../closure-library/closure/goog/object/object.js';
+import googArray from 'goog:goog.array';
+import googObject from 'goog:goog.object';
 import * as asserts from './asserts.js';
 import { Map } from './map.js';
 import { Message } from './message.js';
