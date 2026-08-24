@@ -1,6 +1,8 @@
 const {series} = require('gulp');
 const execFile = require('child_process').execFile;
 const glob = require('glob');
+const fs = require('fs');
+const path = require('path');
 
 function exec(command, cb) {
   execFile('sh', ['-c', command], cb);
@@ -9,6 +11,7 @@ function exec(command, cb) {
 const plugin =   '--plugin=protoc-gen-js=bazel-bin/generator/protoc-gen-js';
 const protoc = [(process.env.PROTOC || 'bazel-bin/external/com_google_protobuf/protoc'), plugin].join(' ');
 const protocInc = process.env.PROTOC_INC || 'bazel-protobuf-javascript/external/com_google_protobuf/src';
+const closureLib = '../closure-library';
 
 // See https://github.com/google/closure-compiler/wiki/Flags-and-Options
 let compilationLevel = 'SIMPLE';
@@ -130,8 +133,26 @@ function genproto_group3_commonjs_strict(cb) {
 }
 
 
+function linkClosureLibrary() {
+  // lstat sees the link itself and exists() resolves it, so they disagree
+  // exactly when the link is dangling -- replace it rather than leave it broken.
+  // A real sibling checkout (the pre-existing convention) is left alone.
+  try {
+    fs.lstatSync(closureLib);
+    if (fs.existsSync(closureLib)) return;
+    fs.unlinkSync(closureLib);
+  } catch (e) {
+    if (e.code !== 'ENOENT') throw e;
+  }
+  // Symlink targets resolve relative to the link's location, not the process's
+  // cwd, so the target has to be absolute.
+  fs.symlinkSync(path.resolve('node_modules/google-closure-library'), closureLib, 'dir');
+}
+
 function getClosureCompilerCommand(exportsFile, outputFile) {
-  const closureLib = '../closure-library';
+  // The --js= globs below read from '../closure-library', not the npm install
+  // path (node_modules/google-closure-library) -- symlink it so they resolve.
+  linkClosureLibrary();
   return [
     'node_modules/.bin/google-closure-compiler',
     `--js=${closureLib}/closure/goog/**.js`,
@@ -211,14 +232,25 @@ function test_commonjs(cb) {
 }
 
 function remove_gen_files(cb) {
+  // Only the symlink linkClosureLibrary() made is ours to delete; ../closure-library
+  // may be a real sibling checkout, which rm -rf would take out recursively.
+  try {
+    if (fs.lstatSync(closureLib).isSymbolicLink()) fs.unlinkSync(closureLib);
+  } catch (e) {
+    if (e.code !== 'ENOENT') throw e;
+  }
   exec('rm -rf commonjs_out google-protobuf.js deps.js',
        make_exec_logging_callback(cb));
 }
 
 exports.build_protoc_plugin = function (cb) {
-  exec('bazel build generator:protoc-gen-js',
-       make_exec_logging_callback(cb));
-  exec('bazel build @com_google_protobuf//:protoc',
+  // Both bazel builds ran as separate async exec() calls sharing one cb,
+  // so cb() fired after whichever finished first -- gulp would advance
+  // to the next task (which invokes bazel-bin/generator/protoc-gen-js)
+  // before that build was necessarily done, intermittently failing with
+  // "program not found or is not executable". Joined into one shell
+  // command so cb() only fires once, after both have actually finished.
+  exec('bazel build generator:protoc-gen-js && bazel build @com_google_protobuf//:protoc',
        make_exec_logging_callback(cb));
 }
 

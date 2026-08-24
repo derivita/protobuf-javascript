@@ -7,12 +7,12 @@
  * export_asserts.js.
  */
 
-import { byteArrayToString, byteArrayToHex } from '../../closure-library/closure/goog/crypt/crypt.js';
-import * as base64 from '../../closure-library/closure/goog/crypt/base64.js';
-import { PropertyReplacer } from '../../closure-library/closure/goog/testing/propertyreplacer.js';
-import * as userAgent from '../../closure-library/closure/goog/useragent/useragent.js';
-import * as googArray from '../../closure-library/closure/goog/array/array.js';
-import googObject from '../../closure-library/closure/goog/object/object.js';
+import { byteArrayToString, byteArrayToHex } from 'goog:goog.crypt';
+import base64 from 'goog:goog.crypt.base64';
+import PropertyReplacer from 'goog:goog.testing.PropertyReplacer';
+import userAgent from 'goog:goog.userAgent';
+import googArray from 'goog:goog.array';
+import googObject from 'goog:goog.object';
 
 import * as debug from '../debug.js'
 import { BinaryReader } from '../binary/reader.js';
