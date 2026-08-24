@@ -11,6 +11,7 @@ function exec(command, cb) {
 const plugin =   '--plugin=protoc-gen-js=bazel-bin/generator/protoc-gen-js';
 const protoc = [(process.env.PROTOC || 'bazel-bin/external/com_google_protobuf/protoc'), plugin].join(' ');
 const protocInc = process.env.PROTOC_INC || 'bazel-protobuf-javascript/external/com_google_protobuf/src';
+const closureLib = '../closure-library';
 
 // See https://github.com/google/closure-compiler/wiki/Flags-and-Options
 let compilationLevel = 'SIMPLE';
@@ -132,19 +133,26 @@ function genproto_group3_commonjs_strict(cb) {
 }
 
 
-function getClosureCompilerCommand(exportsFile, outputFile) {
-  // Source files import from '../closure-library', not the npm install path
-  // (node_modules/google-closure-library) -- symlink it so the --js= globs
-  // below reach it.
-  const closureLib = '../closure-library';
+function linkClosureLibrary() {
+  // lstat sees the link itself and exists() resolves it, so they disagree
+  // exactly when the link is dangling -- replace it rather than leave it broken.
+  // A real sibling checkout (the pre-existing convention) is left alone.
   try {
     fs.lstatSync(closureLib);
+    if (fs.existsSync(closureLib)) return;
+    fs.unlinkSync(closureLib);
   } catch (e) {
-    // Target must be absolute (or relative to closureLib's own directory,
-    // one level up from cwd) -- symlink targets resolve relative to the
-    // link's location, not the process's cwd.
-    fs.symlinkSync(path.resolve('node_modules/google-closure-library'), closureLib, 'dir');
+    if (e.code !== 'ENOENT') throw e;
   }
+  // Symlink targets resolve relative to the link's location, not the process's
+  // cwd, so the target has to be absolute.
+  fs.symlinkSync(path.resolve('node_modules/google-closure-library'), closureLib, 'dir');
+}
+
+function getClosureCompilerCommand(exportsFile, outputFile) {
+  // The --js= globs below read from '../closure-library', not the npm install
+  // path (node_modules/google-closure-library) -- symlink it so they resolve.
+  linkClosureLibrary();
   return [
     'node_modules/.bin/google-closure-compiler',
     `--js=${closureLib}/closure/goog/**.js`,
@@ -224,7 +232,14 @@ function test_commonjs(cb) {
 }
 
 function remove_gen_files(cb) {
-  exec('rm -rf commonjs_out google-protobuf.js deps.js ../closure-library',
+  // Only the symlink linkClosureLibrary() made is ours to delete; ../closure-library
+  // may be a real sibling checkout, which rm -rf would take out recursively.
+  try {
+    if (fs.lstatSync(closureLib).isSymbolicLink()) fs.unlinkSync(closureLib);
+  } catch (e) {
+    if (e.code !== 'ENOENT') throw e;
+  }
+  exec('rm -rf commonjs_out google-protobuf.js deps.js',
        make_exec_logging_callback(cb));
 }
 
