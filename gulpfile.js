@@ -133,22 +133,13 @@ function genproto_group3_commonjs_strict(cb) {
 
 
 function getClosureCompilerCommand(exportsFile, outputFile) {
-  // Every source file's own `import ... from '../closure-library/...'` (or
-  // '../../closure-library/...' one level down, e.g. binary/utils.js) is
-  // hardcoded to a sibling checkout one directory above the repo root --
-  // not where npm actually installs google-closure-library
-  // (node_modules/google-closure-library, per package.json). Changing
-  // closureLib itself to the node_modules path would only fix the --js=
-  // include globs below; it wouldn't fix module resolution, since
-  // closure-compiler links imports by the path string written in the
-  // importing file, not by content match against whatever --js= happens
-  // to include. So instead of rewriting every import across every source
-  // file, make the path they already expect resolve: symlink it to the
-  // real npm-installed location, idempotently, right before every
-  // invocation of this command (local dev and CI both hit this the same
-  // way; neither has ever had a working '../closure-library').
+  // Source files import from '../closure-library', not the npm install path
+  // (node_modules/google-closure-library) -- symlink it so the --js= globs
+  // below reach it.
   const closureLib = '../closure-library';
-  if (!fs.existsSync(closureLib)) {
+  try {
+    fs.lstatSync(closureLib);
+  } catch (e) {
     // Target must be absolute (or relative to closureLib's own directory,
     // one level up from cwd) -- symlink targets resolve relative to the
     // link's location, not the process's cwd.
@@ -233,7 +224,7 @@ function test_commonjs(cb) {
 }
 
 function remove_gen_files(cb) {
-  exec('rm -rf commonjs_out google-protobuf.js deps.js',
+  exec('rm -rf commonjs_out google-protobuf.js deps.js ../closure-library',
        make_exec_logging_callback(cb));
 }
 

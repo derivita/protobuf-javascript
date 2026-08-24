@@ -9,7 +9,7 @@
 
 import { byteArrayToString, byteArrayToHex } from 'goog:goog.crypt';
 import base64 from 'goog:goog.crypt.base64';
-import { PropertyReplacer } from 'goog:goog.testing.PropertyReplacer';
+import PropertyReplacer from 'goog:goog.testing.PropertyReplacer';
 import userAgent from 'goog:goog.userAgent';
 import googArray from 'goog:goog.array';
 import googObject from 'goog:goog.object';
