@@ -81,7 +81,8 @@ struct GeneratorOptions {
         library(""),
         extension(".js"),
         one_output_file_per_input_file(false),
-        annotate_code(false) {}
+        annotate_code(false),
+        generate_dts(false) {}
 
   bool ParseFromOptions(
       const std::vector<std::pair<std::string, std::string> >& options,
@@ -89,7 +90,10 @@ struct GeneratorOptions {
 
   // Returns the file name extension to use for generated code.
   std::string GetFileNameExtension() const {
-    return import_style == kImportClosure ? extension : "_pb.js";
+    return (import_style == kImportClosure ||
+            (import_style == kImportEs6 && !library.empty()))
+               ? extension
+               : "_pb.js";
   }
 
   enum OutputMode {
@@ -124,6 +128,9 @@ struct GeneratorOptions {
   // are encoded as base64 proto of GeneratedCodeInfo message (see
   // descriptor.proto).
   bool annotate_code;
+  // If true, generate a .d.ts output in addition to library output. Only valid
+  // with import_style=es6 and library.
+  bool generate_dts;
 };
 
 // CodeGenerator implementation which generates a JavaScript source file and
@@ -220,9 +227,31 @@ class Generator : public CodeGenerator {
   // If use_short_name is true, the generated file's name will only be short
   // name that without directory, otherwise filename equals file->name()
   bool GenerateFile(const FileDescriptor* file, const GeneratorOptions& options,
-                    GeneratorContext* context, bool use_short_name) const;
+                    GeneratorContext* context,
+                    const std::string& filename) const;
   void GenerateFile(const GeneratorOptions& options, io::Printer* printer,
                     const FileDescriptor* file) const;
+
+  // Generate declarations for all things in a proto file into one .d.ts file.
+  // If use_short_name is true, the generated file's name will only be short
+  // name that without directory, otherwise filename equals file->name()
+  bool GenerateDTS(const FileDescriptor* file, const GeneratorOptions& options,
+                   GeneratorContext* context,
+                   const std::string& filename) const;
+  void GenerateDTS(const GeneratorOptions& options, io::Printer* printer,
+                   const FileDescriptor* file) const;
+  void GenerateMessageDTS(const GeneratorOptions& options, io::Printer* printer,
+                          const Descriptor* desc) const;
+  void GenerateOneofMethodDTS(const GeneratorOptions& options,
+                              io::Printer* printer,
+                              const OneofDescriptor* oneof) const;
+  void GenerateOneofEnumDTS(const GeneratorOptions& options,
+                            io::Printer* printer,
+                            const OneofDescriptor* oneof) const;
+  void GenerateFieldDTS(const GeneratorOptions& options, io::Printer* printer,
+                        const FieldDescriptor* field) const;
+  void GenerateEnumDTS(const GeneratorOptions& options, io::Printer* printer,
+                       const EnumDescriptor* enumdesc) const;
 
   // Generate definitions for all message classes and enums in all files,
   // processing the files in dependence order.
@@ -248,9 +277,14 @@ class Generator : public CodeGenerator {
   // Generate definition for one class.
   void GenerateClass(const GeneratorOptions& options, io::Printer* printer,
                      const Descriptor* desc) const;
+  void GenerateES6Class(const GeneratorOptions& options, io::Printer* printer,
+                        const Descriptor* desc) const;
   void GenerateClassConstructor(const GeneratorOptions& options,
                                 io::Printer* printer,
                                 const Descriptor* desc) const;
+  void GenerateDisplayName(const GeneratorOptions& options,
+                           io::Printer* printer,
+                           const Descriptor* desc) const;
   void GenerateClassFieldInfo(const GeneratorOptions& options,
                               io::Printer* printer,
                               const Descriptor* desc) const;
@@ -262,6 +296,12 @@ class Generator : public CodeGenerator {
   void GenerateOneofCaseDefinition(const GeneratorOptions& options,
                                    io::Printer* printer,
                                    const OneofDescriptor* oneof) const;
+  void GenerateOneofCaseGetter(const GeneratorOptions& options,
+                                  io::Printer* printer,
+                                  const OneofDescriptor* oneof) const;
+  void GenerateES6OneOfCaseGetters(const GeneratorOptions& options,
+                                   io::Printer* printer,
+                                   const Descriptor* desc) const;
   void GenerateObjectTypedef(const GeneratorOptions& options,
                              io::Printer* printer,
                              const Descriptor* desc) const;
@@ -280,6 +320,13 @@ class Generator : public CodeGenerator {
   void GenerateClassRegistration(const GeneratorOptions& options,
                                  io::Printer* printer,
                                  const Descriptor* desc) const;
+  void GenerateClassExtensionDeclarations(const GeneratorOptions& options,
+                                          io::Printer* printer,
+                                          const Descriptor* desc) const;
+  void GenerateClassExtensionRegistration(const GeneratorOptions& options,
+                                          io::Printer* printer,
+                                          const Descriptor* desc) const;
+
   void GenerateClassFields(const GeneratorOptions& options,
                            io::Printer* printer, const Descriptor* desc) const;
   void GenerateClassField(const GeneratorOptions& options, io::Printer* printer,
@@ -310,6 +357,12 @@ class Generator : public CodeGenerator {
   // Generate an extension definition.
   void GenerateExtension(const GeneratorOptions& options, io::Printer* printer,
                          const FieldDescriptor* field) const;
+  void GenerateExtensionDeclaration(const GeneratorOptions& options,
+                                    io::Printer* printer,
+                                    const FieldDescriptor* field) const;
+  void GenerateExtensionRegistration(const GeneratorOptions& options,
+                                     io::Printer* printer,
+                                     const FieldDescriptor* field) const;
 
   // Generate addFoo() method for repeated primitive fields.
   void GenerateRepeatedPrimitiveHelperMethods(const GeneratorOptions& options,
