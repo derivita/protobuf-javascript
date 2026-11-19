@@ -36,6 +36,8 @@
 struct FileToc {
   const char* name;
   const char* data;
+  const char* es6_data;
+  const char* dts_data;
 };
 
 extern struct FileToc well_known_types_js[];
